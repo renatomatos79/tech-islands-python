@@ -13,9 +13,14 @@ cd py-from-zero-to-hero-04
 python -m venv chat
 ```
 
-### And activate our new dynamic env "chat"
+### And activate our new dynamic env "chat" 
+#### Windows
 ```
 .\chat\Scripts\activate
+```
+#### Linux 
+```
+source ./chat/bin/activate
 ```
 
 ### Rather than installing packages one by one, let´s use our dependencies file :)
@@ -80,90 +85,51 @@ if "messages" not in st.session_state:
 ```
 
 
-### (1.4) Add a file named model.py
+### (1.4) Let´s prepare que question method 
 
-This file is used to map our order table fields
-- id
-- customer_id
-- order_date
-- order_status
-- order_value
+This method below is a callback for streamlit and it will be used to send user inputs to the backend api
+```
+def ask_question(question):
+    url = config_class.APP_BACKEND_URL + "/info"
+    payload = {
+        "client_id": st.session_state.client_id,
+        "question": question
+    }
+    response = requests.post(url, json=payload)
+    if response.status_code == 200:
+       return response.json().get("answer", "Error trying to get the server answer.")
+    if response.status_code in [400, 404]:
+       return response.json().get("error", "Error trying to get the server answer.")
+    return f"Erro: {response.status_code} - {response.text}"
 
 ```
-class Order(db.Model):
-    __tablename__ = "orders"
 
-    id = Column(Integer, primary_key=True)
-    customer_id = Column(Integer, nullable=False)
-    order_date = Column(Date, nullable=False)
-    # A: Active, C: Cancelled, D: Done
-    order_status = Column(String(1), nullable=False)
-    order_value = Column(Numeric(15,2), nullable=False)
-```
-
-### (1.5) Add an util file named util.py
-
-We will use this file to reuse the following common functions:
-- load_documents: Loads files from disk and converts them into langchain.docstore.document.Document objects.
-- parse_order: Utilizes the LLM to extract the order_id as an alternative to regex.
-- is_valid_scope: Validates the user's question scope to prevent consuming model credits on out-of-scope content.
-- bad_request: Returns an HTTP response for a 400 Bad Request status.
-- not_found_request: Returns an HTTP response for a 404 Not Found status.
-- ok_request: Provides an HTTP response for a 200 OK status.
-
-### (1.6) Finally, add a file named app.py
-
-Let me underline these packages and LLM methods: <br>
-
-#### OpenAIEmbeddings:
-This is used to generate vector embeddings for text using OpenAI's embedding models <br>
-which are commonly used for semantic search, retrieval-augmented generation (RAG), and vector database queries.
-
-#### FAISS:
-refers to LangChain's integration with FAISS (Facebook AI Similarity Search), <br> 
-which is an efficient vector search library used for storing, indexing, and searching high-dimensional embeddings.
+### (1.5) Refresh chat with previous content
 
 ```
-from langchain_openai import OpenAIEmbeddings
-from langchain_community.vectorstores import FAISS
-
-embeddings = OpenAIEmbeddings()
-documents = load_documents("docs", "*.txt")
-vectorstore = FAISS.from_documents(documents, embeddings)
-retriever = vectorstore.as_retriever()
+# load messages
+for message in st.session_state.messages:
+    with st.chat_message(message["role"]):
+        st.markdown(message["content"])
 ```
 
-Attention! <br>
-The retriever in responsible for fetching relevant documents based on the similarity <br>
-of their embeddings to a given query. It is commonly used in Retrieval-Augmented Generation (RAG) <br>
-systems to enhance AI responses with contextual information. 
-
-#### ChatOpenAI:
-This is a wrapper for OpenAI's chat models  (like gpt-3.5-turbo and gpt-4), <br>
-which provides an interface to interact with OpenAI’s chat-based models in LangChain.
-
-<b>temperature</b> parameter:
-- Lower values (e.g., 0) make the model more deterministic, <br> 
-  meaning it will produce the same response for the same input
-- Higher values (e.g., 1.0 or more) increase the randomness, <br> 
-  making the responses more diverse and creative.
-
+### (1.6) Define roles: bot and user
+User settings
 ```
-chat = ChatOpenAI(model=config_class.AI_MODEL_NAME, temperature=0)
-memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
-qa_chain = ConversationalRetrievalChain.from_llm(llm=chat, retriever=retriever, memory=memory)
-result = qa_chain.invoke({"question": question})
-answer = result.get("answer", "")
+st.session_state.messages.append({"role": "user", "content": prompt})
+st.chat_message("user").markdown(prompt)
 ```
 
-Attention! <br>
-- ConversationalRetrievalChain.from_llm: is part of LangChain and is used to build a question-answering system <br>
-that retrieves relevant documents from a vector database and maintains conversation history.
-- ConversationBufferMemory: stores conversation history, so the model can maintain context across multiple queries.
+Bot assistant
+```
+st.session_state.messages.append({"role": "assistant", "content": answer})
+with st.chat_message("assistant"):
+  st.markdown(answer)
+```
 
 ### (1.7) Running the app
 ```
-python app.py
+python chat.py
 ```
 
 ### So, let's run a quick demo to showcase what we've accomplished so far.
