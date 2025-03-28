@@ -1,0 +1,62 @@
+LITE 92
+Brand: Ultralight
+Technical Details: Rimless titanium design; deep rectangular frames; simple dipped bridge; razor-thin sides tapering into elongated temple tips; lightweight for all-day comfort.
+Color: Green
+Price: $345.25
+URL: https://github.com/renatomatos79/cgi-python-adventure/blob/main/images/glasses/lite92.png
+
+FERN
+Brand: LUXe
+Technical Details: Pilot-style acetate frames; glossy finish; temple detail with two-tone temple tips; tapered sides with double pin detail; double bridge; made from 91% recycled materials.​
+Color: Green
+Price: $499.31
+URL: https://github.com/renatomatos79/cgi-python-adventure/blob/main/images/glasses/fern.png
+
+MIMCO 01
+Brand: MIMCO
+Technical Details: Bold acetate frames; signature MIMCO detailing on temples; comfortable fit; suitable for all-day wear.
+Color: Black
+Price: $229.99
+URL: https://github.com/renatomatos79/cgi-python-adventure/blob/main/images/glasses/mimco.png
+
+ALEX PERRY 23
+Brand: Alex Perry
+Technical Details: Elegant metal frames; intricate detailing on the temples; lightweight design; perfect for a sophisticated look.
+Color: Gold
+Price: $279.00
+URL: https://github.com/renatomatos79/cgi-python-adventure/blob/main/images/glasses/alex-perry.png
+
+COUNTRY ROAD 07
+Brand: Country Road
+Technical Details: Classic rectangular frames; subtle branding on temples; durable acetate construction; ideal for everyday wear.
+Color: Tortoiseshell
+Price: $299.75
+URL: https://github.com/renatomatos79/cgi-python-adventure/blob/main/images/glasses/country-road.png
+
+TED BAKER 155
+Brand: Ted Baker
+Technical Details: Stylish round frames; unique patterned temples; comfortable nose pads; adds a touch of flair to any outfit.​
+Color: Gold
+Price: $299.01
+URL: https://github.com/renatomatos79/cgi-python-adventure/blob/main/images/glasses/ted-baker.png
+
+HUGO 05
+Brand: HUGO
+Technical Details: Sleek metal frames; minimalist design; flexible hinges for added comfort; embodies modern elegance.​
+Color: Silver
+Price: $299.78
+URL: https://github.com/renatomatos79/cgi-python-adventure/blob/main/images/glasses/hugo.png
+
+FLORENCE BY MILLS 02
+Brand: Florence by Mills
+Technical Details: Playful cat-eye frames; lightweight acetate material; designed for a youthful look; comfortable for extended wear.​
+Color: Pink
+Price: $199.98
+URL: https://github.com/renatomatos79/cgi-python-adventure/blob/main/images/glasses/florence-by-mills.png
+
+ADIDAS ORIGIN 21
+Brand: Adidas Originals
+Technical Details: Sporty rectangular frames; durable materials; subtle Adidas branding; perfect for an active lifestyle.
+Color: Black
+Price: $199.01
+URL: https://github.com/renatomatos79/cgi-python-adventure/blob/main/images/glasses/adidas-originals.png
