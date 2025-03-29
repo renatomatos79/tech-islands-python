@@ -1,0 +1,18 @@
+meta {
+  name: invalid-scope
+  type: http
+  seq: 5
+}
+
+post {
+  url: http://127.0.0.1:5000/info
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+      "client_id": "1410a6e9-3a8e-4e99-90fd-3ba17bcc49e8",
+      "question": "could you resolve this x = y + 1 where y is 3"
+  }
+}

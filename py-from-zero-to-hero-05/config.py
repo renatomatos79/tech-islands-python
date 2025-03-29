@@ -5,13 +5,18 @@ from dotenv import load_dotenv
 load_dotenv()
 
 class Config:
-    """Base config"""
-    APP_OPENAI_API_KEY = os.environ.get("APP_OPENAI_API_KEY", "")
+    """
+    Base config
+    SECRET_KEY: internally used by Flask dufing app.config.from_object(config_class)
+    AI_MODEL_NAME: model used for chatting
+    AI_EMBEDDING_MODEL: model used for rag during embedding process
+    """
     SECRET_KEY = os.environ.get("APP_SECRET_KEY", "")
     SQLALCHEMY_DATABASE_URI = os.environ.get("APP_DB_URL", "sqlite:///orders.db")
-    PORT = os.environ.get("APP_PORT", 5000)
-    # "gpt-4o", "gpt-3.5-turbo", "o3-mini", "o1-mini"
-    AI_MODEL_NAME = "gpt-4o"
+    PORT = os.environ.get("APP_PORT", 5001)
+    AI_MODEL_NAME = "mistral:7b"
+    AI_EMBEDDING_MODEL = "nomic-embed-text"
+    DB_COLLECTION_NAME = "db-vector"
 
 class DevelopmentConfig(Config):
     SQLALCHEMY_TRACK_MODIFICATIONS = True
@@ -24,5 +29,3 @@ class ProductionConfig(Config):
 ## Current config
 config_class = DevelopmentConfig if os.environ.get("APP_ENV") == "development" else ProductionConfig
 
-# Set OpenAI Api_Key
-os.environ["OPENAI_API_KEY"] = config_class.APP_OPENAI_API_KEY

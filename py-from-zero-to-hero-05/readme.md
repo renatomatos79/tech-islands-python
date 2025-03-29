@@ -1,9 +1,149 @@
 # Let´s build our LLM api
+# This project requires python 3.11
+brew install python@3.11
+python3.11 --version
 
-### Add a new folder "py-from-zero-to-hero-03"
+### Installing Ollama
+https://ollama.com/
+
+
+### Ollama
 ```
-mkdir py-from-zero-to-hero-03
-cd py-from-zero-to-hero-03
+Model defitiion, supported languages and use cases:
+https://ollama.com/library/llama3.3
+
+Benchmark table fields:
+MMLU: massive, mult task language understanding - Tests general world knowledge across 57 tasks.
+tests general knowledge across subjects (history, biology, law, etc.).
+
+MMLU PRO: Harder version of MMLU with 5-shot context and chain-of-thought (CoT) prompting **
+- 5-shot prompting: shows 5 examples before asking the model to solve a new one.
+- CoT (Chain-of-Thought) prompting: encourages the model to explain its reasoning step by step before answering.
+
+
+Example — Regular MMLU (0-shot)
+Question (Psychology):
+
+pgsql
+Copy
+Edit
+Which of the following best describes classical conditioning?
+
+A. A type of learning where behavior is controlled by consequences  
+B. Learning through observation of others  
+C. Learning through association of stimuli  
+D. Problem-solving through trial and error
+
+Expected model output:
+C
+
+MMLU PRO (5-shot + CoT)
+Prompt includes 5 examples:
+Q1: What is the capital of France?
+A1: Let's think step-by-step. France is a European country. Its most famous city is Paris, which is also the capital. So the answer is: Paris
+
+Q2: Who wrote the play "Romeo and Juliet"?
+A2: Let's think. "Romeo and Juliet" is a classic tragedy written in the 16th century. The most well-known playwright from that time is William Shakespeare. So the answer is: William Shakespeare
+
+...
+
+Q6: Which of the following best describes classical conditioning?
+
+A. A type of learning where behavior is controlled by consequences  
+B. Learning through observation of others  
+C. Learning through association of stimuli  
+D. Problem-solving through trial and error
+
+A6: Let's think step-by-step. Classical conditioning was first studied by Pavlov with dogs. It involves associating a neutral stimulus with a meaningful one. Over time, the neutral stimulus alone can trigger the response. This matches "learning through association of stimuli". So the answer is: C
+
+Why MMLU PRO is hard?
+The model needs to understand both subject matter and apply structured reasoning.
+
+It simulates more realistic "assistant-style" answers (like ChatGPT or Llama in a real chat app).
+
+Instruction Following
+IFEval: Measures how well the model follows instructions.
+MBPP EvalPlus: Similar but more beginner-friendly problems
+
+Code:
+HumanEval: Tests coding ability — can it solve real-world coding tasks?
+
+MATH:
+MATH benchmark: Tests math problem solving (0-shot with chain of thought).
+
+Reasoning:
+GPQA Diamond: Graduate-level reasoning questions.
+
+Tool Use
+BFCL v2: Evaluates model's ability to use APIs, tools, or function calls.
+
+Long Context
+NIH/Multi-needle: Tests performance with long documents.
+
+Multilingual
+Multilingual MGSM: Math reasoning in multiple languages.
+
+Pricing
+Cost to process 1 million tokens:
+
+Type 	 Llama 3.3 	  GPT-4o
+Input	    $ 0.10	   $2.50
+Output	  $ 0.40	  $10.00
+
+Understing model parameters
+q4:
+- q: Denotes quantization.​
+- 4: Indicates a 4-bit quantization, meaning each weight in the model is represented using 4 bits.​
+- k: Refers to the use of K-means clustering in the quantization process. K-means clustering helps in grouping similar weights, which can lead to better quantization with reduced precision loss.​
+- m: Represents the medium variant within the K-means quantization methods. The variants typically include:​
+
+Medium
+s: Small​
+m: Medium​
+l: Large​
+
+- context lenght: nunber of tokens (context window) model can process in a single input
+https://platform.openai.com/tokenizer
+
+- embedding lenght: This is the dimension of the embedding vectors produced by the model for each token.
+More expressive representations (better understanding of relationships) 
+
+- quantitization: 
+<4k: Super fast, barely touches RAM.
+8k:	 Standard use, excellent performance.
+16k: Still solid on most modern CPUs (e.g., M1/M2, Ryzen 7).
+32k: Possible with more RAM (16GB+), expect slower response time.
+65k – 131k:	You’ll need at least 32–64 GB RAM and may need llama.cpp with patched support. Only needed for advanced RAG or document summarization tasks.
+```
+
+### Most important Ollama Commands
+- ollama help
+- ollama pull : download the model
+- ollama list : available local models
+- ollama rm llama3.2:1b
+- ollama run codegema:2b
+- ollama -bye to leave editor
+
+### Customizing model using Modelfile
+1. Create a file named Modelfile
+2. Add this content to the file
+FROM llama3.2
+PARAMETER temperature 1 
+SYSTEM """
+You are Renato, a very funny assistant who answers questions using a joke style
+"""
+3. ollama create renato-model-llama -f ./Modelfile
+4. ollama list
+5. ollama run renato-model.llama
+What is your name? My name is Renato.
+
+### Important notes about SDK Reference
+https://python.langchain.com/v0.2/api_reference/ollama/chat_models/langchain_ollama.chat_models.ChatOllama.html
+
+### Add a new folder "py-from-zero-to-hero-05"
+```
+mkdir py-from-zero-to-hero-05
+cd py-from-zero-to-hero-05
 ```
 
 ### So, then let´s build a dynamic environment named "llmapi"
