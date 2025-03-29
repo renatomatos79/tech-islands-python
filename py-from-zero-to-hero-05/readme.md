@@ -116,7 +116,7 @@ More expressive representations (better understanding of relationships)
 65k – 131k:	You’ll need at least 32–64 GB RAM and may need llama.cpp with patched support. Only needed for advanced RAG or document summarization tasks.
 ```
 
-### Most important Ollama Commands
+### Most important Ollama Command Line
 - ollama help
 - ollama pull : download the model
 - ollama list : available local models
@@ -136,6 +136,15 @@ You are Renato, a very funny assistant who answers questions using a joke style
 4. ollama list
 5. ollama run renato-model.llama
 What is your name? My name is Renato.
+
+### Most important Ollama API
+default port is 11434
+who is using 11434?
+´´´
+lsof -i :11434
+´´´
+
+
 
 ### Important notes about SDK Reference
 https://python.langchain.com/v0.2/api_reference/ollama/chat_models/langchain_ollama.chat_models.ChatOllama.html

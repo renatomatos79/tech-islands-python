@@ -4,16 +4,14 @@ import logging
 from flask import Flask, request
 
 # LangChain
-from langchain_ollama import ChatOllama
-from langchain.chains import ConversationalRetrievalChain
-from langchain.memory import ConversationBufferMemory
+from ollama import chat
 
 # DB Settings
 from database import db
 from model import Order
 
 # Util
-from util import create_chain, create_retriever, create_vector_db, internal_server_error_request, load_documents, bad_request, parse_order, not_found_request, ok_request, is_valid_scope, split_documents
+from util import create_retriever, create_vector_db, internal_server_error_request, load_documents, bad_request, parse_order, not_found_request, ok_request, is_valid_scope, rag_query, split_documents
 
 # Import the config class
 from config import config_class
@@ -46,18 +44,14 @@ logging.info("Spliting documents in chunks...")
 chuncks = split_documents(documents)
 
 logging.info(f"Creating Vector DB {config_class.DB_COLLECTION_NAME} using model {config_class.AI_EMBEDDING_MODEL}...")
-vector_db = create_vector_db(chuncks, config_class.AI_EMBEDDING_MODEL, config_class.DB_COLLECTION_NAME)
+vector_db = create_vector_db(chuncks, config_class.AI_EMBEDDING_MODEL, config_class.DB_COLLECTION_NAME, config_class.DB_COLLECTION_PATH,)
 
 # chat section
 logging.info(f"Initializing ollama model {config_class.AI_MODEL_NAME}...")
-llm = ChatOllama(model=config_class.AI_MODEL_NAME
-)
+llm = chat(model=config_class.AI_MODEL_NAME, stream=False)
 
 logging.info("Creating retriever...")
 retriever = create_retriever(vector_db, llm)
-
-logging.info("Preparing chain...")
-chain = create_chain(retriever, llm)
 
 logging.info("Done!")
 
@@ -103,24 +97,8 @@ def ask():
    if scope_info.get("is_scoped") == False:
       return bad_request("We could not process your request. Try these topics: stores, products, purchases.")
 
-   # is not about order, follow the flow
-   logging.info("info:preparing buffer...")
-   if client_id not in client_memories:
-      client_memories[client_id] = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
-   memory = client_memories[client_id]
-    
-   # create chat using Retrieval (memory)
-   logging.info("info:creating retrieval chain..")
-   qa_chain = ConversationalRetrievalChain.from_llm(
-      llm=llm,
-      retriever=retriever,
-      memory=memory
-    )
-
-   # run the user question
-   logging.info("info:invoking question...")
-   result = qa_chain.invoke({"question": question})
-   answer = result.get("answer", "")
+   logging.info("info:running rag_query...")
+   answer = rag_query(config_class.AI_MODEL_NAME, retriever, question)
 
    logging.info("info:complete")
    return ok_request(answer)

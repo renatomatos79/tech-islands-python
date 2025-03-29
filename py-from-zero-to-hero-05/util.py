@@ -6,17 +6,18 @@ import os
 from langchain_community.vectorstores import Chroma
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain.docstore.document import Document
-from langchain.schema import SystemMessage, HumanMessage
-from langchain.prompts import ChatPromptTemplate, PromptTemplate
-from langchain.retrievers.multi_query import MultiQueryRetriever
+from langchain.prompts import ChatPromptTemplate
 from langchain_core.runnables import RunnablePassthrough
 from langchain_core.output_parsers import StrOutputParser
 
 # ollama
-from langchain_ollama import ChatOllama, OllamaEmbeddings
+from langchain_ollama import OllamaEmbeddings
+from ollama import chat
 
 # Rest API
 from flask import jsonify
+
+from model_info import OrderInfo, ScopeInfo
 
 
 def load_documents(folder_path, extension):
@@ -34,9 +35,10 @@ def split_documents(documents):
     chunks = text_splitter.split_documents(documents)
     return chunks
 
-def create_vector_db(chunks, embedding_model, db_collection_name):
+def create_vector_db(chunks, embedding_model, db_collection_name, db_collection_path):
     """ Using document chuncks, creates a vector DB """
     vector_db = Chroma.from_documents(
+        persist_directory=db_collection_path,
         documents=chunks,
         embedding=OllamaEmbeddings(model=embedding_model),
         collection_name=db_collection_name,
@@ -44,21 +46,7 @@ def create_vector_db(chunks, embedding_model, db_collection_name):
     return vector_db
 
 def create_retriever(vector_db, llm):
-    """Create a multi-query retriever."""
-    QUERY_PROMPT = PromptTemplate(
-        input_variables=["question"],
-        template="""You are an AI language model assistant. Your task is to generate five
-different versions of the given user question to retrieve relevant documents from
-a vector database. By generating multiple perspectives on the user question, your
-goal is to help the user overcome some of the limitations of the distance-based
-similarity search. Provide these alternative questions separated by newlines.
-Original question: {question}""",
-    )
-
-    retriever = MultiQueryRetriever.from_llm(
-        vector_db.as_retriever(), llm, prompt=QUERY_PROMPT
-    )
-    return retriever
+    return vector_db.as_retriever()
 
 def create_chain(retriever, llm):
     """Create the chain"""
@@ -79,17 +67,40 @@ Question: {question}
 
     return chain
 
+def rag_query(model, retriever, user_query):
+    # Step 1: Retrieve relevant documents
+    docs = retriever.get_relevant_documents(user_query)
+    
+    # Step 2: Concatenate them into a context string
+    context = "\n\n".join([doc.page_content for doc in docs])
+    
+    # Step 3: Create a prompt with the context
+    prompt = (
+        f"Use the following context to answer the question:\n\n"
+        f"{context}\n\n"
+        f"Question: {user_query}"
+    )
+    
+    # Step 4: Call Ollama chat
+    response = chat(
+        model=model,
+        messages=[
+            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "user", "content": prompt}
+        ]
+    )
+    
+    return response.message.content
+
 def parse_order(question, model):
     """ using LLM verifies if user request is related to an order """
     
     # Define the system and user prompt
     system_prompt = (
         "You are an assistant that analyzes questions to determine whether they refer to a purchase made on our e-commerce platform. "
-        "If the question is about a purchase, extract the order number (an integer) if present and identify the type of inquiry, "
-        "which can be: 'order status', 'order details', 'order date', 'order value'. "
-        "If the question is not about an order, return is_order as false. "
-        "Your response MUST be exclusively a valid JSON, without any additional text, in the following format: "
-        '{"is_order": <true or false>, "order_id": <number or null> }.'
+        "If the question is about a purchase, return is_order as True and order_id that is an integer. "
+        "If the question is not about an order, return is_order as False and order_id as None. "
+        "Your response MUST be a valid JSON format. "
     )
 
     messages = [
@@ -98,28 +109,22 @@ def parse_order(question, model):
     ]
 
     # Run the chat
-    llm = ChatOllama(model=model)
-    response = llm.invoke(messages)
+    response = chat(
+        model=model, 
+        messages=messages, 
+        stream=False,
+        format=OrderInfo.model_json_schema(),  # Use Pydantic to generate the schema or format=schema
+        options={'temperature': 0},  # Make responses more deterministic
+    )
+    
+    response_text = response.message.content.strip()
+    is_order_info_response = OrderInfo.model_validate_json(response_text) 
 
-    # Get response text
-    response_text = response.content.strip()
-    print("parse_order::response_text", response_text)
-
-    # Parse and validate JSON
-    try:
-        data = json.loads(response_text)
-        print("parse_order::data", data)
-        if (
-            isinstance(data, dict)
-            and "is_order" in data and isinstance(data["is_order"], bool)
-            and "order_id" in data and (isinstance(data["order_id"], int) or data["order_id"] is None)
-        ):
-            return data
-        else:
-            raise ValueError("Invalid JSON structure")
-    except json.JSONDecodeError:
-        raise ValueError("Response is not valid JSON")
-
+    if is_order_info_response:
+       return json.loads(response_text)
+    
+    # when it´s not a valid json
+    return None
 
 def is_valid_scope(question, model):
     """ using LLM verifies if user request is valid """
@@ -127,9 +132,9 @@ def is_valid_scope(question, model):
     # Define the system and user prompt
     system_prompt = (
         "You are an assistant that analyzes questions to determine whether they refer to purchase made on our e-commerce platform. "
-        "If the question is not about our store locations or event our product details"
-        "your response MUST be exclusively a valid JSON, without any additional text, in the following format: "
-        '{"is_scoped": <true or false>, "answer": "<string>"}.'
+        "If the question is not about our store locations or event our product details, return is_scoped as False and also provide an empty answer for the question. "
+        "However If the question is either about our store locations or event our product details, return is_scoped as True and also provide an answer for the user question. "
+        "Your response MUST be a valid JSON format. "
     )
 
     messages = [
@@ -138,25 +143,23 @@ def is_valid_scope(question, model):
     ]
 
     # Run the chat
-    llm = ChatOllama(model=model)
-    response = llm.invoke(messages)
+    response = chat(
+        model=model, 
+        messages=messages, 
+        stream=False,
+        format=ScopeInfo.model_json_schema(),  # Use Pydantic to generate the schema or format=schema
+        options={'temperature': 0},  # Make responses more deterministic
+    )
 
     # Get response text
-    response_text = response['message']['content'].strip()
+    response_text = response.message.content.strip()
+    is_scoped_info_response = ScopeInfo.model_validate_json(response_text) 
 
-    # Parse and validate JSON
-    try:
-        data = json.loads(response_text)
-        if (
-            isinstance(data, dict)
-            and "is_scoped" in data and isinstance(data["is_scoped"], bool)
-            and "answer" in data and (isinstance(data["answer"], str) or data["answer"] is None)
-        ):
-            return data
-        else:
-            raise ValueError("Invalid JSON structure")
-    except json.JSONDecodeError:
-        raise ValueError("Response is not valid JSON")
+    if is_scoped_info_response:
+       return json.loads(response_text)
+    
+    # when it´s not a valid json
+    return None
 
 def bad_request(message):
     return jsonify({"error": message}), 400

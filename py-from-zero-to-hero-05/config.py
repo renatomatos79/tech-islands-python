@@ -17,6 +17,7 @@ class Config:
     AI_MODEL_NAME = "mistral:7b"
     AI_EMBEDDING_MODEL = "nomic-embed-text"
     DB_COLLECTION_NAME = "db-vector"
+    DB_COLLECTION_PATH = "./chroma_db"
 
 class DevelopmentConfig(Config):
     SQLALCHEMY_TRACK_MODIFICATIONS = True
