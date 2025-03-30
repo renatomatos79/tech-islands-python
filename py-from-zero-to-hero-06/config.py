@@ -16,6 +16,7 @@ class Config:
     PORT = os.environ.get("APP_PORT", 5001)
     AI_MODEL_NAME = "mistral:7b"
     AI_EMBEDDING_MODEL = "nomic-embed-text"
+    SEMANTIC_SEARCH_THRESHOLD = 0.95
     DB_COLLECTION_NAME = "db-vector"
     DB_COLLECTION_PATH = "./chroma_db"
 

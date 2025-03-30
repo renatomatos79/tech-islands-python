@@ -14,5 +14,4 @@ ollama==0.4.7
 unstructured==0.17.2
 unstructured[all-docs]
 redis==5.2.1
-sentence-transformers==4.0.1
 numpy>=1.22.4,<2.0.0

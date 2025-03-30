@@ -13,14 +13,9 @@ from model import Order
 # Redis
 import redis
 
-# Sentence Transform for Cache
-from sentence_transformers import SentenceTransformer
-from langchain_ollama import OllamaEmbeddings
-
-import numpy as np
-
 # Util
 from util import create_retriever, create_vector_db, internal_server_error_request, load_documents, bad_request, parse_order, not_found_request, ok_request, is_valid_scope, rag_query, split_documents
+from cache import cache_query, search_cache
 
 # Import the config class
 from config import config_class
@@ -42,49 +37,7 @@ with app.app_context():
    db.create_all()
 
 # Connect to Redis
-r = redis.Redis(host='localhost', port=6379, db=0)
-
-# Embedding Transform for Cache
-# embed_model = SentenceTransformer(config_class.AI_EMBEDDING_MODEL)
-embed_model = OllamaEmbeddings(model=config_class.AI_EMBEDDING_MODEL)
-
-# Helper: Encode a query into a vector
-def embed_text(text):
-    vec = embed_model.embed_query(text)
-    return np.array(vec, dtype=np.float32)  # ensure NumPy array
-
-# Cosine similarity function
-def cosine_similarity(vec1, vec2):
-    return np.dot(vec1, vec2) / (np.linalg.norm(vec1) * np.linalg.norm(vec2))
-
-# Helper: Store query, vector, and response
-def cache_query(query, response):
-    vector = embed_text(query)
-    key = f"semantic:{query}"
-
-    # Save as bytes
-    r.hset(key, mapping={
-        "response": response,
-        "vector": vector.tobytes()
-    })
-
-# Helper: Search cache using cosine similarity
-def search_cache(query, threshold = 0.95):
-    new_vec = embed_text(query)
-    
-    for key in r.scan_iter("semantic:*"):
-        stored_vec = np.frombuffer(r.hget(key, "vector"), dtype=np.float32)
-        sim = cosine_similarity(new_vec, stored_vec)
-        
-        if sim >= threshold:
-            print(f"Cache hit! similarity={sim}")
-            return r.hget(key, "response").decode()
-
-    return None
-
-# Context Memory using Python Dictionary
-client_memories = {}  # chat
-client_context = {}
+redis_client = redis.Redis(host='localhost', port=6379, db=0)
 
 # load documents from docs folder
 logging.info("Loading documents...")
@@ -111,10 +64,9 @@ def ask():
    if not data or "client_id" not in data or "question" not in data:
        return bad_request("Invalid request. Missing fields: 'client_id' and 'question'.")
 
-   client_id = str(data["client_id"])
    question = str(data["question"])
 
-   cached = search_cache(question)
+   cached = search_cache(config_class.AI_EMBEDDING_MODEL, redis_client, question, config_class.SEMANTIC_SEARCH_THRESHOLD)
    if cached:
       return ok_request(cached)
 
@@ -129,10 +81,6 @@ def ask():
    if order_info.get("is_order"):
       logging.info("info:question is an order")
       order_id = int(order_info.get("order_id"))
-
-       # try to extract the order_id
-      if not order_id and client_id in client_context:
-         order_id = int(client_context[client_id])
       
       if not order_id:
          return bad_request("You need to provide the order number.")
@@ -140,27 +88,25 @@ def ask():
       # Get order details
       order = Order.query.get(order_id)
       if order:
-         # update context for that client_id
-         client_context[client_id] = order_id
-         cache_query(question, order.to_string())
+         cache_query(config_class.AI_EMBEDDING_MODEL, redis_client, question, order.to_string())
          return ok_request(order.to_string())
       else:
          content = f"There is no purchase related to this number: {order_id}."
-         cache_query(question, content)
+         cache_query(config_class.AI_EMBEDDING_MODEL, redis_client, question, content)
          return not_found_request(content)
 
    logging.info("info:validating scope...")
    scope_info = is_valid_scope(question, config_class.AI_MODEL_NAME)
    if scope_info.get("is_scoped") == False:
       content = "We could not process your request. Try these topics: stores, products, purchases."
-      cache_query(question, content)
+      cache_query(config_class.AI_EMBEDDING_MODEL, redis_client, question, content)
       return bad_request(content)
 
    logging.info("info:running rag_query...")
    answer = rag_query(config_class.AI_MODEL_NAME, retriever, question)
 
    logging.info("info:adding query to cache...")
-   cache_query(question, answer)
+   cache_query(config_class.AI_EMBEDDING_MODEL, redis_client, question, answer)
 
    logging.info("info:complete")
    return ok_request(answer)
