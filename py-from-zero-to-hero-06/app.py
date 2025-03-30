@@ -14,7 +14,7 @@ from model import Order
 import redis
 
 # Util
-from util import create_retriever, create_vector_db, internal_server_error_request, load_documents, bad_request, parse_order, not_found_request, ok_request, is_valid_scope, rag_query, split_documents
+from util import create_retriever, create_vector_db, internal_server_error_request, load_documents, bad_request, parse_order, not_found_request, ok_request, is_valid_scope, rag_query, sanitize_input, split_documents
 from cache import cache_query, search_cache
 
 # Import the config class
@@ -64,11 +64,15 @@ def ask():
    if not data or "client_id" not in data or "question" not in data:
        return bad_request("Invalid request. Missing fields: 'client_id' and 'question'.")
 
-   question = str(data["question"])
+   # sanitize the input content, by swearing words from text input
+   question = sanitize_input(str(data["question"]))
+   print("sanitize_input")
+   print(" -- before:", str(data["question"]))
+   print(" -- after:", question)
 
    cached = search_cache(config_class.AI_EMBEDDING_MODEL, redis_client, question, config_class.SEMANTIC_SEARCH_THRESHOLD)
    if cached:
-      return ok_request(cached)
+      return ok_request(cached.get("content"), cached.get("ttl"))
 
    # using LLM, try to extract the order_id
    logging.info("info:parsing order...")

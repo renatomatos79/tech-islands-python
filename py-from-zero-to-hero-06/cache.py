@@ -12,7 +12,7 @@ def cosine_similarity(vec1, vec2):
     return np.dot(vec1, vec2) / (np.linalg.norm(vec1) * np.linalg.norm(vec2))
 
 # Helper: Store query, vector, and response
-def cache_query(embedding_model, redis, query, response):
+def cache_query(embedding_model, redis, query, response, ttl=60):
     vector = embed_text(embedding_model, query)
     key = f"semantic:{query}"
 
@@ -21,6 +21,9 @@ def cache_query(embedding_model, redis, query, response):
         "response": response,
         "vector": vector.tobytes()
     })
+    
+    # Set expiration time
+    redis.expire(key, ttl)
 
 # Helper: Search cache using cosine similarity
 def search_cache(embedding_model, redis, query, threshold = 0.95):
@@ -32,6 +35,9 @@ def search_cache(embedding_model, redis, query, threshold = 0.95):
         
         if sim >= threshold:
             print(f"Cache hit! similarity={sim}")
-            return redis.hget(key, "response").decode()
+            return {
+                "content": redis.hget(key, "response").decode(),
+                "ttl": redis.ttl(key)
+            }
 
     return None
