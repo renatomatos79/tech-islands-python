@@ -1,9 +1,10 @@
 from sqlalchemy import Column, Integer, String, Date, Numeric
-from database import db
+from src.database import db
 
 # Order table
-class Order(db.Model):
+class OrderModel(db.Model):
     __tablename__ = "orders"
+    __table_args__ = {'extend_existing': True}
 
     id = Column(Integer, primary_key=True)
     customer_id = Column(Integer, nullable=False)

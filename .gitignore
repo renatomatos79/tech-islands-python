@@ -141,6 +141,9 @@ ENV/
 env.bak/
 venv.bak/
 
+# ChromaDB Folder
+**/chroma_db/
+
 # Spyder project settings
 .spyderproject
 .spyproject

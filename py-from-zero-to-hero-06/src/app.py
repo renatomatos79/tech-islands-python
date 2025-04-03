@@ -1,4 +1,9 @@
 import logging
+import os
+import sys
+
+# map SRC folder
+sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 
 # Rest API
 from flask import Flask, request
@@ -7,15 +12,29 @@ from flask import Flask, request
 from ollama import chat
 
 # DB Settings
-from database import db
-from model import Order
+from src.database import db
+from src.model import OrderModel
 
 # Redis
 import redis
 
 # Util
-from util import create_retriever, create_vector_db, internal_server_error_request, load_documents, bad_request, parse_order, not_found_request, ok_request, is_valid_scope, rag_query, sanitize_input, split_documents
-from cache import cache_query, search_cache
+from lib import (
+    bad_request,
+    cache_query,
+    create_retriever,
+    create_vector_db,
+    internal_server_error_request,
+    is_valid_scope,
+    load_documents,
+    not_found_request,
+    ok_request,
+    parse_order,
+    rag_query,
+    sanitize_input,
+    search_cache,
+    split_documents
+)
 
 # Import the config class
 from config import config_class
@@ -77,7 +96,7 @@ def ask():
    # using LLM, try to extract the order_id
    logging.info("info:parsing order...")
    order_info = parse_order(question, config_class.AI_MODEL_NAME)
-   if isinstance(order_info, ValueError):
+   if not order_info:
       logging.info("info:parse_order failed :(")
       return internal_server_error_request("Ops! Something went wrong! Try again")
 
@@ -90,7 +109,7 @@ def ask():
          return bad_request("You need to provide the order number.")
 
       # Get order details
-      order = Order.query.get(order_id)
+      order = OrderModel.query.get(order_id)
       if order:
          cache_query(config_class.AI_EMBEDDING_MODEL, redis_client, question, order.to_string())
          return ok_request(order.to_string())
