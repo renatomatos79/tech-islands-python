@@ -1,0 +1,1 @@
+from .info_bp import info_bp

@@ -19,6 +19,7 @@ class Config:
     SEMANTIC_SEARCH_THRESHOLD = 0.95
     DB_COLLECTION_NAME = "db-vector"
     DB_COLLECTION_PATH = "./chroma_db"
+    RAG_DOCUMENT_FOLDER = os.environ.get("APP_RAG_DOC_FOLDER", "~/Desktop/renato-matos/cgi-python-adventure/py-from-zero-to-hero-06/docs")
 
 class DevelopmentConfig(Config):
     SQLALCHEMY_TRACK_MODIFICATIONS = True
