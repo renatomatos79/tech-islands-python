@@ -1,0 +1,18 @@
+meta {
+  name: invalid-scope 3
+  type: http
+  seq: 11
+}
+
+post {
+  url: http://{{API_HOST}}/info
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+      "client_id": "1410a6e9-3a8e-4e99-90fd-3ba17bcc49e8",
+      "question": "an <script>evil()</script> example"
+  }
+}

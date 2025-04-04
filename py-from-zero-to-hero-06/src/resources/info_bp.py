@@ -55,9 +55,9 @@ def ask():
 
    # sanitize the input content, by swearing words from text input
    question = sanitize_input(str(data["question"]))
-   print("sanitize_input")
-   print(" -- before:", str(data["question"]))
-   print(" -- after:", question)
+   logging.info("sanitize_input")
+   logging.info(f" -- before: {str(data["question"])}")
+   logging.info(f" -- after: {question}")
 
    cached = search_cache(config_class.OLLAMA_HOST, config_class.AI_EMBEDDING_MODEL, redis_client, question, config_class.SEMANTIC_SEARCH_THRESHOLD)
    if cached:
