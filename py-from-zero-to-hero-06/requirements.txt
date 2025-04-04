@@ -18,3 +18,4 @@ unstructured==0.17.2
 unstructured[all-docs]
 redis==5.2.1
 numpy>=1.22.4,<2.0.0
+gunicorn==23.0.0

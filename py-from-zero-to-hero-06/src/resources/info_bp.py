@@ -3,7 +3,7 @@ import logging
 
 # util
 from src.lib.cache import cache_query, get_redis_client, search_cache
-from src.lib.prompt import is_valid_scope, parse_order, rag_query
+from src.lib.prompt import get_ollama_client, is_valid_scope, parse_order, rag_query
 from src.lib.util import bad_request, create_retriever, create_vector_db, internal_server_error_request, load_documents, not_found_request, ok_request, sanitize_input, split_documents
 
 # Import the config class
@@ -11,9 +11,6 @@ from config import config_class
 
 # Redis
 import redis
-
-# LangChain
-from ollama import chat
 
 # DB Models
 from src.model.order_model import OrderModel
@@ -25,24 +22,28 @@ info_bp = Blueprint("info_bp", __name__)
 logging.basicConfig(level=logging.INFO)
 
 # get redis client instance
-redis_client = get_redis_client(redis, "localhost", 6379, 0)
+redis_client = get_redis_client(redis, config_class.APP_REDIS_HOST, int(config_class.APP_REDIS_PORT), 0)
 
 # load documents from docs folder
-logging.info("Loading documents...{config_class.RAG_DOCUMENT_FOLDER}")
+logging.info(f"Loading documents...{config_class.RAG_DOCUMENT_FOLDER}")
 documents = load_documents(config_class.RAG_DOCUMENT_FOLDER, "*.txt")
+
+logging.info(f"Documents to index...{len(documents)}")
 
 logging.info("Spliting documents in chunks...")
 chuncks = split_documents(documents)
 
+logging.info(f"Chuncks count: {len(chuncks)}")
+
 logging.info(f"Creating Vector DB {config_class.DB_COLLECTION_NAME} using model {config_class.AI_EMBEDDING_MODEL}...")
-vector_db = create_vector_db(chuncks, config_class.AI_EMBEDDING_MODEL, config_class.DB_COLLECTION_NAME, config_class.DB_COLLECTION_PATH,)
+vector_db = create_vector_db(chuncks, config_class.OLLAMA_HOST, config_class.AI_EMBEDDING_MODEL, config_class.DB_COLLECTION_NAME, config_class.DB_COLLECTION_PATH,)
 
 # chat section
 logging.info(f"Initializing ollama model {config_class.AI_MODEL_NAME}...")
-llm = chat(model=config_class.AI_MODEL_NAME, stream=False)
+llm = get_ollama_client(config_class.OLLAMA_HOST).chat(model=config_class.AI_MODEL_NAME, stream=False)
 
 logging.info("Creating retriever...")
-retriever = create_retriever(vector_db, llm)
+retriever = create_retriever(vector_db)
 
 logging.info("Done!")
 
@@ -58,13 +59,13 @@ def ask():
    print(" -- before:", str(data["question"]))
    print(" -- after:", question)
 
-   cached = search_cache(config_class.AI_EMBEDDING_MODEL, redis_client, question, config_class.SEMANTIC_SEARCH_THRESHOLD)
+   cached = search_cache(config_class.OLLAMA_HOST, config_class.AI_EMBEDDING_MODEL, redis_client, question, config_class.SEMANTIC_SEARCH_THRESHOLD)
    if cached:
       return ok_request(cached.get("content"), cached.get("ttl"))
 
    # using LLM, try to extract the order_id
    logging.info("info:parsing order...")
-   order_info = parse_order(question, config_class.AI_MODEL_NAME)
+   order_info = parse_order(config_class.OLLAMA_HOST, question, config_class.AI_MODEL_NAME)
    if not order_info:
       logging.info("info:parse_order failed :(")
       return internal_server_error_request("Ops! Something went wrong! Try again")
@@ -80,25 +81,25 @@ def ask():
       # Get order details
       order = OrderModel.query.get(order_id)
       if order:
-         cache_query(config_class.AI_EMBEDDING_MODEL, redis_client, question, order.to_string())
+         cache_query(config_class.OLLAMA_HOST, config_class.AI_EMBEDDING_MODEL, redis_client, question, order.to_string())
          return ok_request(order.to_string())
       else:
          content = f"There is no purchase related to this number: {order_id}."
-         cache_query(config_class.AI_EMBEDDING_MODEL, redis_client, question, content)
+         cache_query(config_class.OLLAMA_HOST, config_class.AI_EMBEDDING_MODEL, redis_client, question, content)
          return not_found_request(content)
 
    logging.info("info:validating scope...")
-   scope_info = is_valid_scope(question, config_class.AI_MODEL_NAME)
+   scope_info = is_valid_scope(config_class.OLLAMA_HOST, question, config_class.AI_MODEL_NAME)
    if scope_info.get("is_scoped") == False:
       content = "We could not process your request. Try these topics: stores, products, purchases."
-      cache_query(config_class.AI_EMBEDDING_MODEL, redis_client, question, content)
+      cache_query(config_class.OLLAMA_HOST, config_class.AI_EMBEDDING_MODEL, redis_client, question, content)
       return bad_request(content)
 
    logging.info("info:running rag_query...")
-   answer = rag_query(config_class.AI_MODEL_NAME, retriever, question)
+   answer = rag_query(config_class.OLLAMA_HOST, config_class.AI_MODEL_NAME, retriever, question)
 
    logging.info("info:adding query to cache...")
-   cache_query(config_class.AI_EMBEDDING_MODEL, redis_client, question, answer)
+   cache_query(config_class.OLLAMA_HOST, config_class.AI_EMBEDDING_MODEL, redis_client, question, answer)
 
    logging.info("info:complete")
    return ok_request(answer)

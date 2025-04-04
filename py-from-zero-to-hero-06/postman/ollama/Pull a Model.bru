@@ -1,0 +1,17 @@
+meta {
+  name: Pull a Model
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://{{OLLAMA_HOST}}/api/pull
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "model": "nomic-embed-text"
+  }
+}

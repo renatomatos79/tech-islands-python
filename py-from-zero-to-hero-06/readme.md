@@ -1,5 +1,4 @@
 # Let´s build our LLM api
-export PYTHONPATH=$PYTHONPATH:./src
 python -m src.app.py
 
 # This project requires python 3.11
@@ -19,7 +18,28 @@ docker run -d --name redis-commander -p 8081:8081 --network=backend-bridge-netwo
 docker build -t flask-app .
 ```
 
-### Running our container
+### Running Docker Ollama (11435)
 ```
-docker run -d --name flask-container -p 8000:80 -e APP_SECRET_KEY=super_key_123 -e APP_DB_URL=sqlite:///dev_users.db -e APP_ENV=production flask-app
+docker run -d --name ollama \
+    -p 11435:11434 \
+    --network=backend-bridge-network \
+    -v ollama:/root/.ollama \
+    ollama/ollama
+```
+
+### Running Flask API (inside a container we must use internal ollama port number)
+```
+docker run -d --name flask-container \
+  -p 8000:80 \
+  --network=backend-bridge-network \
+  -v "$(pwd):/host-storage" \
+  -e APP_SECRET_KEY=super_key_123 \
+  -e APP_DB_URL=sqlite:///dev_users.db \
+  -e APP_OLLAMA_HOST=http://ollama:11434 \
+  -e APP_DB_COLLECTION_PATH=/host-storage/chroma_db \
+  -e APP_RAG_DOC_FOLDER=/host-storage/docs \
+  -e APP_REDIS_HOST=redisserver \
+  -e APP_REDIS_PORT=6379 \
+  -e APP_ENV=production \
+  flask-app
 ```

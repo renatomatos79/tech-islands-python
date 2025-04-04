@@ -1,0 +1,11 @@
+meta {
+  name: List Running Models
+  type: http
+  seq: 4
+}
+
+get {
+  url: http://{{OLLAMA_HOST}}/api/ps
+  body: none
+  auth: none
+}

@@ -1,5 +1,6 @@
 import os
 import sys
+import logging
 
 # map SRC folder
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
@@ -15,21 +16,29 @@ from config import config_class
 # Import user routes
 from src.resources import info_bp
 
-# Flask
-app = Flask(__name__)
+# Configure logging
+logging.basicConfig(level=logging.INFO)
 
-# Load configurations from config.py
-app.config.from_object(config_class)
+def create_app():
+    config_class.print_config()
 
-# Bind SQLAlchemy to Flask app
-db.init_app(app)
+    app = Flask(__name__)
+    # Load configurations from config.py
+    app.config.from_object(config_class)
+    # Bind SQLAlchemy to Flask app
+    db.init_app(app)
+    # Register Blueprints
+    app.register_blueprint(info_bp)
+    # for the first request, inits DB
+    @app.before_request
+    def create_db_tables():
+        logging.info("app:create_db_tables")
+        db.create_all()
 
-# Register Blueprints
-app.register_blueprint(info_bp)
+    return app
 
-# Initialize Database
-with app.app_context():
-   db.create_all()
+
+app = create_app()
 
 # Run the Flask App
 if __name__ == '__main__':
