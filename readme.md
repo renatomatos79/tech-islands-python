@@ -72,3 +72,12 @@ A multi-agent chat demo using AutoGen with Ollama as the local LLM backend, focu
 - Conversation flow management between student and teacher agents 💬
 - Ollama integration for local inference (llama3.2) 🧠
 - Temperature control differences per agent 🔥
+
+## (8) py-from-zero-to-hero-08
+### 🛒🧰 What is it?
+A multi-agent shopping cart system that showcases the tool-use design pattern with AutoGen + Ollama:
+
+- Dedicated agents for discovery, checkout, and orchestration (ShoppingAssistant, CatalogAgent, CheckoutAgent) 🤖
+- Tool-use pattern: LLMs propose tool calls while a user proxy executes them for real API-like actions 🧠
+- Mocked services for catalog, payments, delivery locations, cart, and checkout to simulate backend APIs 🧩
+- Structured validation and constraints (country-based availability, PT-only delivery, payment checks) ✅
