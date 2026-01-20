@@ -65,4 +65,10 @@ This is the production-ready version of the RAG/LLM API with enterprise-grade en
 - Comprehensive Docker orchestration with Redis, Ollama, and Flask containers 🐋
 
 ## (7) py-from-zero-to-hero-07
-Under construction...
+### 🧑‍🏫🤖 What is it?
+A multi-agent chat demo using AutoGen with Ollama as the local LLM backend, focused on teacher/student pedagogy:
+
+- Multi-agent role behavior with distinct personas via system messages 🎭
+- Conversation flow management between student and teacher agents 💬
+- Ollama integration for local inference (llama3.2) 🧠
+- Temperature control differences per agent 🔥
