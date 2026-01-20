@@ -66,6 +66,3 @@ This is the production-ready version of the RAG/LLM API with enterprise-grade en
 
 ## (7) py-from-zero-to-hero-07
 Under construction...
-
-## (5) Still writing something... :)
-
