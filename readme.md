@@ -40,5 +40,5 @@ In this final module, we will introduce this fantastic library.
 Instead of manually sending JSON requests to our API, 
 we'll leverage a chat assistant to help us to extract the backend information we need more efficiently.
 
-## (5) Get a breakdown about these four folders
-[https://www.youtube.com/watch?v=dP0zf8M2Lnc](https://www.youtube.com/watch?v=dP0zf8M2Lnc)
+## (5) Still writing something... :)
+
