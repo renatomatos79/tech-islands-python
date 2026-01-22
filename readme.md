@@ -91,3 +91,13 @@ A true multi-agent shopping cart system using AutoGen GroupChat + Ollama:
 - The user proxy executes tool calls while agents plan and coordinate actions 🧰
 - Mocked services for catalog, payments, delivery locations, cart, and checkout to simulate backend APIs 🧩
 - Structured validation and constraints (country-based availability, PT-only delivery, payment checks) ✅
+
+## (10) py-from-zero-to-hero-10
+### 🛒🧠 What is it?
+A shopping cart system using Microsoft Agent Framework with the same tools from folder 08:
+
+- Built-in run loop: no manual orchestration or custom looping logic ✅
+- Simpler single-agent flow while still enabling tool calls 🧰
+- Reduced dependencies compared to the AutoGen setup 📦
+- Uses Ollama via OpenAI-compatible client (llama3.2) 🧠
+- Learn more: https://learn.microsoft.com/en-us/agent-framework/overview/agent-framework-overview
