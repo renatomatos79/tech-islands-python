@@ -81,3 +81,13 @@ A multi-agent shopping cart system that showcases the tool-use design pattern wi
 - Tool-use pattern: LLMs propose tool calls while a user proxy executes them for real API-like actions 🧠
 - Mocked services for catalog, payments, delivery locations, cart, and checkout to simulate backend APIs 🧩
 - Structured validation and constraints (country-based availability, PT-only delivery, payment checks) ✅
+
+## (9) py-from-zero-to-hero-09
+### 🛒🤝 What is it?
+A true multi-agent shopping cart system using AutoGen GroupChat + Ollama:
+
+- Multiple agents actively collaborate in the same conversation (ShoppingAssistant, CatalogAgent, CheckoutAgent) 🤖
+- GroupChatManager orchestrates turn-taking across specialists in one shared thread 🧠
+- The user proxy executes tool calls while agents plan and coordinate actions 🧰
+- Mocked services for catalog, payments, delivery locations, cart, and checkout to simulate backend APIs 🧩
+- Structured validation and constraints (country-based availability, PT-only delivery, payment checks) ✅
