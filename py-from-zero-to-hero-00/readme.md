@@ -816,47 +816,48 @@ x in set   # O(1) average
 ### What is OOP (Object-Oriented Programming)?
 OOP is a programming paradigm built around:
 
-- Objects → things with state (data) and behavior (functions)
-- Classes → blueprints to create those objects
+- **Objects** → things with state (data) and behavior (functions)
+- **Classes** → blueprints used to create objects
 
 Real analogy:
-- Class = recipe to build something
-- Object = the cake itself.. we bake it from the recipe
+- **Class** = recipe to build something
+- **Object** = the cake itself — baked from the recipe
 
-To create a class, we just need to use the keyword class:
+To create a class, we just use the `class` keyword:
 
 ```python
 class MyClass:
-  x = 5
+    x = 5
 ```
 
-Once we have this class, lets create and delete an object
+Once we have this class, let’s create and delete an object:
+
 ```python
 obj1 = MyClass()
-print(p1.x)
+print(obj1.x)
 
 # deleting the object
 del obj1
 ```
 
-#### Initializing Objects with __init__
-Python uses __init__ to assign initial values:
+#### Initializing Objects with `__init__`
+Python uses `__init__` to assign initial values:
 
 ```python
 class Person:
     def __init__(self, name, age):
-        self.name = name   # instance attribute
+        self.name = name  # instance attribute
         self.age = age
 
 p1 = Person("Renato", 35)
 p2 = Person("Vanessa", 28)
 
-print(p1.name) # Renato
-print(p2.name) # Vanessa
+print(p1.name)  # Renato
+print(p2.name)  # Vanessa
 ```
 
-Attention! To these key concepts here:
-- self refers to the current instance
+Attention to these key concepts:
+- `self` refers to the current instance
 - attributes are bound to the instance
 
 #### Adding Methods (Behavior)
@@ -866,45 +867,45 @@ class Person:
     def __init__(self, name, age):
         self.name = name
         self.age = age
-    
+
     def say_hello(self):
-        print(f"Hi, I'm {self.name}!")\
-        
+        print(f"Hi, I'm {self.name}!")
 
 p = Person("Renato", 35)
-p.say_hello() # Hi, I'm Renato!
+p.say_hello()  # Hi, I'm Renato!
 ```
 
 #### Instance Attributes vs Class Attributes
-Instance Attributes vs Class Attributes
+Instance attributes belong to each object:
 
 ```python
 self.name = ...
 ```
 
-Class attributes → shared by all instances:
+Class attributes are shared by all instances:
 
 ```python
 class Dog:
-    species = "Canis familiaris"   # class attribute
+    species = "Canis familiaris"  # class attribute
 
     def __init__(self, name):
-        self.name = name           # instance attribute
+        self.name = name  # instance attribute
 
 d1 = Dog("Rex")
 d2 = Dog("Buddy")
 
-# we dont need an instance to access class attributes, we just need "Dog.species"
-print(d1.species, d2.species, Dog.species) 
+# no instance needed to access class attributes
+print(d1.species, d2.species, Dog.species)
 ```
 
 #### Encapsulation (Controlled Access)
 Python doesn’t enforce private members like Java/C#, but uses conventions:
 
-Prefix	Meaning
-name	public
-_name	protected (internal use)
-__name	name mangling (harder to access)
+| Prefix  | Meaning                       |
+|---------|-------------------------------|
+| `name`  | public                        |
+| `_name` | protected (internal use)      |
+| `__name` | name mangling (harder to access) |
 
 ```python
 class BankAccount:
@@ -915,13 +916,13 @@ class BankAccount:
         return self.__balance
 
 ba = BankAccount(100)
-print(ba.get_balance()) # 100
-print(ba.__balance) # AttributeError: 'BankAccount' object has no attribute '__balance'. Did you mean: 'get_balance'?
+print(ba.get_balance())  # 100
+print(ba.__balance)  # AttributeError
 ```
 
 #### Inheritance (Reusing Behavior)
-Dog inherited from Animal and overrides the speak method.
-Override means the behavior changes from parent class to the child one
+`Dog` inherits from `Animal` and overrides `speak()`.
+Override means the behavior changes from parent class to the child one.
 
 ```python
 class Animal:
@@ -957,7 +958,7 @@ for a in animals:
     a.speak()
 ```
 
-the output is
+Output:
 
 ```
 meow
@@ -973,35 +974,36 @@ class Engine:
 
 class Car:
     def __init__(self):
-        self.engine = Engine()   # composed
+        self.engine = Engine()  # composed
 
 my_car = Car()
-# using my_car object we can access engine object and call the start method
-my_car.engine.start() # engine on"
+# using my_car object we can access engine and call start()
+my_car.engine.start()  # engine on
 ```
 
-#### Special methods
+#### Special Methods
 Python allows customizing built-in behavior:
 
-Method	Purpose
-__init__	constructor
-__str__	printable string
-__len__	length
-__eq__	equality
-__repr__	developer string
+| Method     | Purpose           |
+|------------|-------------------|
+| `__init__` | constructor       |
+| `__str__`  | printable string  |
+| `__len__`  | length            |
+| `__eq__`   | equality          |
+| `__repr__` | developer string  |
 
 ```python
 class Person:
     def __init__(self, name):
         self.name = name
-    
+
     def __str__(self):
         return f"Person: {self.name}"
 
 print(Person("Renato"))  # Person: Renato
 ```
 
-Brief OOP Concept Summary
+#### OOP Concept Summary
 - Encapsulation → control access
 - Inheritance → reuse & extend
 - Polymorphism → same method, different behavior
@@ -1009,31 +1011,33 @@ Brief OOP Concept Summary
 - Composition → build by combining objects
 
 Use classes when:
--  modeling real-world entities
--  grouping data + behavior
--  building large systems
--  using frameworks (Flask, Django, FastAPI)
--  implementing design patterns
--  writing libraries
+- modeling real-world entities
+- grouping data + behavior
+- building large systems
+- using frameworks (Flask, Django, FastAPI)
+- implementing design patterns
+- writing libraries
 
-Don’t over-engineer. For simple scripting, something like this:
+Don’t over-engineer. For simple scripting, something like this is fine:
 
 ```python
 class Calculator:
-    def add(self, a, b): return a+b
+    def add(self, a, b):
+        return a + b
 
 # Functional style is fine :)
-def add(a, b): return a+b
+def add(a, b):
+    return a + b
 ```
 
-Mini Real-World Example
+#### Mini Real-World Example
 
 ```python
 class Order:
     def __init__(self, customer, items):
         self.customer = customer
         self.items = items
-    
+
     def total(self):
         return sum(item["price"] for item in self.items)
 
@@ -1052,4 +1056,3 @@ print(order.total())
 
 - Classes
 - Many files
-
