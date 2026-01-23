@@ -813,6 +813,241 @@ x in tuple # O(n)
 x in set   # O(1) average
 ```
 
+### What is OOP (Object-Oriented Programming)?
+OOP is a programming paradigm built around:
+
+- Objects → things with state (data) and behavior (functions)
+- Classes → blueprints to create those objects
+
+Real analogy:
+- Class = recipe to build something
+- Object = the cake itself.. we bake it from the recipe
+
+To create a class, we just need to use the keyword class:
+
+```python
+class MyClass:
+  x = 5
+```
+
+Once we have this class, lets create and delete an object
+```python
+obj1 = MyClass()
+print(p1.x)
+
+# deleting the object
+del obj1
+```
+
+#### Initializing Objects with __init__
+Python uses __init__ to assign initial values:
+
+```python
+class Person:
+    def __init__(self, name, age):
+        self.name = name   # instance attribute
+        self.age = age
+
+p1 = Person("Renato", 35)
+p2 = Person("Vanessa", 28)
+
+print(p1.name) # Renato
+print(p2.name) # Vanessa
+```
+
+Attention! To these key concepts here:
+- self refers to the current instance
+- attributes are bound to the instance
+
+#### Adding Methods (Behavior)
+
+```python
+class Person:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+    
+    def say_hello(self):
+        print(f"Hi, I'm {self.name}!")\
+        
+
+p = Person("Renato", 35)
+p.say_hello() # Hi, I'm Renato!
+```
+
+#### Instance Attributes vs Class Attributes
+Instance Attributes vs Class Attributes
+
+```python
+self.name = ...
+```
+
+Class attributes → shared by all instances:
+
+```python
+class Dog:
+    species = "Canis familiaris"   # class attribute
+
+    def __init__(self, name):
+        self.name = name           # instance attribute
+
+d1 = Dog("Rex")
+d2 = Dog("Buddy")
+
+# we dont need an instance to access class attributes, we just need "Dog.species"
+print(d1.species, d2.species, Dog.species) 
+```
+
+#### Encapsulation (Controlled Access)
+Python doesn’t enforce private members like Java/C#, but uses conventions:
+
+Prefix	Meaning
+name	public
+_name	protected (internal use)
+__name	name mangling (harder to access)
+
+```python
+class BankAccount:
+    def __init__(self, balance):
+        self.__balance = balance  # "private"
+
+    def get_balance(self):
+        return self.__balance
+
+ba = BankAccount(100)
+print(ba.get_balance()) # 100
+print(ba.__balance) # AttributeError: 'BankAccount' object has no attribute '__balance'. Did you mean: 'get_balance'?
+```
+
+#### Inheritance (Reusing Behavior)
+Dog inherited from Animal and overrides the speak method.
+Override means the behavior changes from parent class to the child one
+
+```python
+class Animal:
+    def speak(self):
+        print("some sound")
+
+class Dog(Animal):
+    def speak(self):
+        print("woof!")
+
+a = Animal()
+d = Dog()
+
+a.speak()  # some sound
+d.speak()  # woof!
+```
+
+#### Polymorphism
+With polymorphism, different classes respond to the same method name:
+
+```python
+class Cat:
+    def speak(self):
+        print("meow")
+
+class Dog:
+    def speak(self):
+        print("woof")
+
+animals = [Cat(), Dog()]
+
+for a in animals:
+    a.speak()
+```
+
+the output is
+
+```
+meow
+woof
+```
+
+#### Composition (Objects Inside Objects)
+
+```python
+class Engine:
+    def start(self):
+        print("engine on")
+
+class Car:
+    def __init__(self):
+        self.engine = Engine()   # composed
+
+my_car = Car()
+# using my_car object we can access engine object and call the start method
+my_car.engine.start() # engine on"
+```
+
+#### Special methods
+Python allows customizing built-in behavior:
+
+Method	Purpose
+__init__	constructor
+__str__	printable string
+__len__	length
+__eq__	equality
+__repr__	developer string
+
+```python
+class Person:
+    def __init__(self, name):
+        self.name = name
+    
+    def __str__(self):
+        return f"Person: {self.name}"
+
+print(Person("Renato"))  # Person: Renato
+```
+
+Brief OOP Concept Summary
+- Encapsulation → control access
+- Inheritance → reuse & extend
+- Polymorphism → same method, different behavior
+- Abstraction → hide complexity
+- Composition → build by combining objects
+
+Use classes when:
+-  modeling real-world entities
+-  grouping data + behavior
+-  building large systems
+-  using frameworks (Flask, Django, FastAPI)
+-  implementing design patterns
+-  writing libraries
+
+Don’t over-engineer. For simple scripting, something like this:
+
+```python
+class Calculator:
+    def add(self, a, b): return a+b
+
+# Functional style is fine :)
+def add(a, b): return a+b
+```
+
+Mini Real-World Example
+
+```python
+class Order:
+    def __init__(self, customer, items):
+        self.customer = customer
+        self.items = items
+    
+    def total(self):
+        return sum(item["price"] for item in self.items)
+
+order = Order(
+    customer="Renato",
+    items=[
+        {"name": "Keyboard", "price": 50},
+        {"name": "Mouse", "price": 30}
+    ]
+)
+
+print(order.total())
+```
+
 ## Coming next
 
 - Classes
