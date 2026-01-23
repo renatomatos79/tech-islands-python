@@ -1,108 +1,111 @@
 # Quick Introduction
 
-## What is Python & How Does It Run Code
-Python is an interpreted programming language, meaning code is not compiled "ahead of time" like C# or Go, instead, the Python interpreter reads and executes instructions line by line.
+Welcome! This is a friendly, practical intro to Python: how it runs, how to install it, and core language basics.
 
-Attention!
-"ahead of time" means we do not have a separate compile step that produces a final binary executable before running the program.
+## What Is Python & How Does It Run Code?
+Python is an interpreted programming language. That means code is not compiled **ahead of time** (like C# or Go). Instead, the Python interpreter reads and executes instructions line by line.
 
-So, to run the code we just need this simple command line below
+**Ahead of time** means there is no separate compile step that produces a final binary executable before running the program.
 
-```
+To run a file, use:
+
+```bash
 python3 app.py
 ```
 
-Python performs the following tasks:
-Parses the file
-Transforms to bytecode (.pyc)
-Executes bytecode on the Python Virtual Machine (PVM)
-This makes Python flexible and great for scripting, automation, AI, and data workflows.
+Under the hood, Python:
+1) parses the file
+2) transforms it into bytecode (`.pyc`)
+3) executes bytecode on the Python Virtual Machine (PVM)
 
-## Installing Python 
-https://www.python.org/downloads/release/python-3132/
+That’s why Python is flexible and great for scripting, automation, AI, and data workflows.
 
-On MAC
-```
+## Installing Python
+Official download (macOS and other OS):
+
+- https://www.python.org/downloads/release/python-3132/
+
+On macOS (Homebrew):
+
+```bash
 brew install python
 python3 --version
 ```
 
-# The Importance of Virtual Environments (-m venv)
-When working with Python you typically need isolated environments because different projects may require different dependencies (external packages)
+## The Importance of Virtual Environments (`-m venv`)
+Projects often need different dependency versions:
 
-Example:
-Project A requires this package Django 3.2
-Project B requires the same package but using different version Django 5.0
-Without isolation, they conflict :(
+- Project A → Django 3.2
+- Project B → Django 5.0
 
-As a result, before coding, we first need to prepare our house.. that means create an environment in order to isolate our dependencies from external ones
+Without isolation, these can conflict. So before coding, we prepare our **project environment** to keep dependencies separated.
 
+Create a virtual environment:
+
+```bash
+python3 -m venv .venv
 ```
-python3 -m venv .myenv
-```
 
-and now, active it
+Activate it:
 
-```
+```bash
 source .venv/bin/activate
 ```
 
-once getting into the env, we are safe to install our external packages using
+Install packages safely inside the environment:
 
-```
+```bash
 pip install package-name
 ```
 
-for instance
+Example:
 
-```
+```bash
 pip install flask
 ```
 
-and if we are also able to deactivate it any time using
+Deactivate any time:
 
-```
+```bash
 deactivate
 ```
 
+---
+
 # First Code Concepts
 
-### Variables
-
+## Variables
 Python infers types automatically:
 
 ```python
 age = 33
 name = "Renato"
 price = 19.99
-
 ```
 
-### Constants
-
-Python has no strict const keyword. Constants are defined by convention:
+## Constants
+Python has no strict `const` keyword. Use ALL CAPS by convention:
 
 ```python
 MAX_USERS = 100
 APP_NAME = "Python for code lovers"
 ```
 
-### Functions - Part 1
-
-We just need to add "def" before so then we can define our functions
+## Functions — Part 1
+Define a function with `def`:
 
 ```python
 def greet(name):
     return f"Hello, {name}!"
 ```
 
-so the, we are able to call it using
+Call it:
 
 ```python
 print(greet("Renato"))
 ```
 
-Calm down! Let´s talk about print function.. this is a really nice one
+### The `print()` Function
 
 #### Simple print
 
@@ -110,14 +113,13 @@ Calm down! Let´s talk about print function.. this is a really nice one
 print("Hello")
 ```
 
-
-#### Default and Custom separator
+#### Default and custom separators
 
 ```python
 print("Renato", "Mattos", "CGI")
 ```
 
-the output is
+Output:
 
 ```
 Renato Mattos CGI
@@ -127,89 +129,84 @@ Renato Mattos CGI
 print("Renato", "Mattos", "CGI", sep=" | ")
 ```
 
-now the output is
+Output:
 
 ```
 Renato | Mattos | CGI
 ```
 
 #### Changing line ending
-
-Default ends with newline:
+Default ends with a newline:
 
 ```python
 print("Hello")
 print("World")
 ```
 
-now the output is
+Output:
 
 ```
 Hello
 World
 ```
 
-using Custom ending:
+Custom ending:
 
 ```python
 print("Hello", end=" ")
 print("World")
 ```
 
-now the output is
+Output:
 
 ```
 Hello World
 ```
 
-#### Printing To a File
+#### Printing to a file
 
 ```python
 with open("log.txt", "w") as f:
     print("Logging something...", file=f)
 ```
 
-Forcing the Immediate Output with FLUSH
+#### Forcing immediate output with `flush`
 
 ```python
 print("processing...", flush=True)
 ```
 
-
-#### and remember Print can print anything
+#### `print()` can print anything
 
 ```python
-print([1,2,3], {"name":"Renato"}, 55.5)
+print([1, 2, 3], {"name": "Renato"}, 55.5)
 ```
 
-### Back to the Functions - Part 2
+---
 
+## Functions — Part 2
 A function can accept:
 
-✔ positional parameters
-✔ keyword parameters
-✔ default values
-✔ variable number of arguments
+- positional parameters
+- keyword parameters
+- default values
+- variable number of arguments
 
 ```python
 def register_user(name, age=18, *skills, active=True, **metadata):
     print(name, age, skills, active, metadata)
 ```
 
-Attention!
-The *skills parameter collects any extra positional arguments into a tuple.
-
-calling the function
+Calling the function:
 
 ```python
 register_user("Renato")
 register_user("Renato", 35, "Python", "C#", active=False, country="Portugal")
 ```
 
-Attention!
-Python is not “pass by value” or “pass by reference” in traditional language terms.
-Variables are names pointing to objects. Functions receive references to those objects.
-
+**Attention:**
+- `*skills` collects extra positional arguments into a tuple.
+- Python is not “pass by value” or “pass by reference” in traditional terms. Variables are names pointing to objects, and functions receive references to those objects.
 
 ```python
 def modify(x):
@@ -220,37 +217,36 @@ modify(lst)
 print(lst)
 ```
 
-that produces
+Output:
 
 ```python
 [1, 2, 3, 100]
 ```
 
-Don´t worry, we have a very specific topic to discuss about list, tuples, etc.
+### Mutable vs Immutable Types (Super Important)
 
-Attention!
-Immutable vs Mutable Types (Super Important)
+| Type            | Category  |
+|-----------------|-----------|
+| `int`           | immutable |
+| `str`           | immutable |
+| `tuple`         | immutable |
+| `float`         | immutable |
+| `list`          | mutable   |
+| `dict`          | mutable   |
+| `set`           | mutable   |
+| objects/classes | mutable unless designed otherwise |
 
+---
 
-Type	        Category
-int	            immutable
-str	            immutable
-tuple	        immutable
-float	        immutable
-list	        mutable
-dict	        mutable
-set	            mutable
-objects/classes	mutable unless designed otherwise
+## Function Overloading (and Python’s Alternative)
+Unlike C#, Java, or Go, Python doesn’t support traditional overloading like:
 
-
-Unlike C#, Java, or Go, Python does not support traditional overloading like:
-
-```python
+```c#
 void do(int x)
 void do(string x)
 ```
 
-If we define two functions with the same name, the last one wins :(
+If we define two functions with the same name, the last one wins:
 
 ```python
 def someFunc(x): print("name")
@@ -259,13 +255,13 @@ def someFunc(x): print("age")
 someFunc("Renato")
 ```
 
-it produces
+Output:
 
-```python
+```
 age
 ```
 
-But for these cases we have an alternative using default parameters
+### A simple alternative: default parameters
 
 ```python
 def area(width, height=None):
@@ -277,14 +273,12 @@ print(area(10))     # square
 print(area(10, 5))  # rectangle
 ```
 
-Attention!
-Attention again! :)
-Another way to act using a pseudo-overload mechanism via runtime type dispatch:
-
-
-from functools import singledispatch
+### A more powerful alternative: `singledispatch`
+Python can emulate type-based dispatch at runtime:
 
 ```python
+from functools import singledispatch
+
 @singledispatch
 def show(x):
     print("object:", x)
@@ -301,110 +295,52 @@ show(10)
 show("abc")
 ```
 
-The output is
+Output:
 
 ```
 integer: 10
 string: abc
 ```
 
-Let's break it down carefully and clearly.
-When using languages like C#, Java, Go allow:
-
-```c#
-void show(int x)
-void show(string x)
-```
-
-Once Python does not support this natively. If we define two functions with the same name in Python, the last one overrides the first one. So Python gives us a tool called single dispatch to emulate type-based overloading.
-
-Where singledispatch lets you register multiple implementations of the same function name, and Python will pick which one to run based on the type of the first argument.
-
-We created a generic base function called show.
-If Python receives a type it doesn't know, it uses this default implementation.
-
-```python
-from functools import singledispatch
-
-@singledispatch
-def show(x):
-    print("object:", x)
-```
-
-Now we add specific implementations to the show function
-so, If the argument type is int, use this version.
-
-```python
-@show.register(int)
-def _(x):
-    print("integer:", x)
-```
-
-and another version for string arg
-
-```python
-@show.register(str)
-def _(x):
-    print("string:", x)
-```
-
-finally, calling the function using different data types
-```python
-show(10)
-show("abc")
-```
-
-we have this
-
-```
-integer: 10
-string: abc
-```
-
-Wait a minute! and If we call with something unregistered????
-A float input for instance?
+If you call with an unregistered type, it falls back to the base function:
 
 ```python
 show(3.14)
 ```
 
-Output (default):
+Output:
 
 ```
 object: 3.14
 ```
 
-Why Use This Instead of if / elif?
+Why use `singledispatch` instead of `if / elif`?
+
+- makes code modular
+- allows extension in other files/modules
+- follows the OOP “open for extension” principle
+
+---
+
+## IF / ELIF / ELSE — Python’s Conditional Logic
+In Python, conditional logic is written using:
+
+- `if`
+- `elif` (short for **else if**)
+- `else`
+
+Basic structure:
 
 ```python
-def show(x):
-    if isinstance(x, int):
-        ...
-    elif isinstance(x, str):
-        ...
-```
-
-Because adopting singledispatch:
-✔ makes code modular
-✔ allows extension in other files/modules
-✔ follows OOP "open for extension" principle
-
-### IF / ELIF / ELSE — Python’s Conditional Logic
-
-In Python, conditional logic is written using:
-if
-elif (short for else if)
-else
-
-another words, the Basic Structure is
-
 if condition:
     # do something
 elif other_condition:
     # do something else
 else:
     # fallback
+```
 
+Example:
 
 ```python
 age = 20
@@ -417,22 +353,21 @@ else:
     print("Child")
 ```
 
-Hey! Pay attention at this!
-
-Like many languages, Python evaluates values in if as True or False.
-Examples considered False:
+### Truthy & Falsy Values
+Python evaluates values in `if` as True or False.
+Examples considered **False**:
 
 ```python
 0
 0.0
-"" (empty string)
+""  # empty string
 None
-[] (empty list)
-{} (empty dict)
+[]  # empty list
+{}  # empty dict
 False
 ```
 
-Everything else is True!! :)
+Everything else is True.
 
 ```python
 name = ""
@@ -443,32 +378,34 @@ else:
     print("No name")
 ```
 
-this produces
+Output:
 
 ```
 No name
 ```
 
-#### Comparison Operators
+### Comparison Operators
 
-Operator	Meaning
-==	        equal
-!=	        not equal
-<	        less than
-<=	        less or equal
->	        greater than
->=	        greater or equal
+| Operator | Meaning       |
+|----------|---------------|
+| `==`     | equal         |
+| `!=`     | not equal     |
+| `<`      | less than     |
+| `<=`     | less or equal |
+| `>`      | greater than  |
+| `>=`     | greater or equal |
 
 ```python
 if 10 == 10:
     print("Equal")
 ```
 
-#### Logical Operators
+### Logical Operators
+
 Python uses:
-- and
-- or
-- not
+- `and`
+- `or`
+- `not`
 
 ```python
 age = 25
@@ -478,10 +415,260 @@ if age >= 18 and country == "PT":
     print("Can drive in Portugal")
 ```
 
-#### Membership Operators
+### Membership Operators
 
 ```python
 if "Renato" in ["Renato", "João", "Maria"]:
     print("Found")
 ```
 
+---
+
+## Looping in Python
+Python has two main loops:
+
+- `for` → iterate over items
+- `while` → repeat while a condition is true
+
+### `for` Loop — Iterates Over Items
+
+```python
+for name in ["Renato", "Ana", "João"]:
+    print(name)
+```
+
+Output:
+
+```
+Renato
+Ana
+João
+```
+
+### Using `range()`
+`range()` generates sequences of numbers:
+
+```python
+for i in range(5):
+    print(i)
+```
+
+Output:
+
+```
+0
+1
+2
+3
+4
+```
+
+You can pass `start`, `end`, and `step`:
+
+```python
+for i in range(10, 0, -2):
+    print(i)
+```
+
+Output:
+
+```
+10
+8
+6
+4
+2
+```
+
+### `while` Loop — Repeat Until Condition Changes
+
+```python
+count = 0
+
+while count < 5:
+    print(count)
+    count += 1
+```
+
+### `break` and `continue`
+
+| Keyword  | Meaning             |
+|----------|----------------------|
+| `break`  | exit loop            |
+| `continue` | skip to next iteration |
+
+Example with `break`:
+
+```python
+for i in range(10):
+    if i == 3:
+        break
+    print(i)
+```
+
+Example with `continue`:
+
+```python
+for i in range(5):
+    if i == 2:
+        continue
+    print(i)
+```
+
+### `else` on Loops (Python Special Feature)
+Python has a unique construction that many languages don’t:
+
+```python
+for item in items:
+    if condition:
+        break
+else:
+    print("No break happened")
+```
+
+Example:
+
+```python
+for n in [1, 2, 3]:
+    if n == 5:
+        print("Found")
+        break
+else:
+    print("Not found!")
+```
+
+### Best Practices for Conditionals & Loops
+
+- Prefer `for` over `while` when iterating collections.
+- Use `enumerate()` when you need the index:
+
+```python
+for i, val in enumerate(items):
+    print(i, val)
+```
+
+- Use `break`/`continue` sparingly; avoid hard-to-follow nested logic.
+- Avoid deeply nested conditionals (use early returns).
+
+Example (hard to reason about):
+
+```python
+for x in matrix:
+    for y in x:
+        if condition1:
+            break
+        if condition2:
+            break
+        if condition3:
+            continue
+```
+
+Cleaner loop pattern using `for/else`:
+
+```python
+for item in items:
+    if item == target:
+        print("found")
+        break
+else:
+    print("not found")
+```
+
+---
+
+## Looping Over Dictionaries
+A dictionary (`dict`) stores key–value pairs:
+
+```
+key → value
+```
+
+Create and read values:
+
+```python
+data = {
+    "name": "Renato",
+    "country": "PT"
+}
+
+print(data["name"])    # Renato
+print(data["country"]) # PT
+```
+
+**Attention:** if a key doesn’t exist, Python raises `KeyError`.
+
+Looping with `items()`:
+
+```python
+data = {"name": "Renato", "country": "PT"}
+
+for key, value in data.items():
+    print(key, value)
+```
+
+`data.items()` returns key/value pairs:
+
+```python
+[("name", "Renato"), ("country", "PT")]
+```
+
+So on each iteration, Python unpacks into:
+- `key`
+- `value`
+
+Output:
+
+```
+name Renato
+country PT
+```
+
+More loops:
+
+```python
+for key in data.keys():
+    print(key)
+```
+
+```python
+for value in data.values():
+    print(value)
+```
+
+Updating/removing:
+
+```python
+data["city"] = "Lisbon"      # adds
+
+data["country"] = "Portugal" # updates
+
+data.pop("name")             # removes
+```
+
+### Nested Dictionary Example
+A dictionary can contain another dictionary:
+
+```python
+user = {
+    "name": "Renato",
+    "location": {
+        "country": "PT",
+        "city": "Lisbon"
+    }
+}
+```
+
+Access nested values:
+
+```python
+print(user["location"]["city"])
+```
+
+---
+
+## Next Episodes \0/
+Coming next:
+
+- Lists
+- Tuples
+- Sets
