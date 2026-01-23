@@ -664,11 +664,157 @@ Access nested values:
 print(user["location"]["city"])
 ```
 
----
+### Lists
+A list is an **ordered** and **mutable** collection of items. Simple as that.
 
-## Next Episodes \0/
-Coming next:
+```python
+fruits = ["apple", "banana", "orange"]
+```
 
-- Lists
-- Tuples
-- Sets
+Key properties:
+- Ordered
+- Indexable
+- Mutable (you can change it)
+- Allows duplicates
+
+Common operations: add, update, remove, and read
+
+```python
+fruits.append("kiwi")
+fruits[1] = "mango"
+fruits.remove("apple")
+print(fruits[0])
+
+for fruit in fruits:
+    print(fruit)
+```
+
+Use a list when you need:
+- ordering
+- fast iteration
+- dynamic resizing
+- duplicates
+- frequent access by index
+
+Real-world examples:
+- items in a shopping cart
+- queue of tasks
+- log of actions
+- list of students
+
+### Tuples
+A tuple is an **ordered** and **immutable** sequence.
+
+```python
+point = (10, 20)
+```
+
+Properties:
+- Ordered
+- Indexable
+- Immutable (cannot change after creation)
+- Allows duplicates
+
+Why immutability matters:
+- data safety
+- hashability (can be dict keys)
+- performance optimization
+
+```python
+colors = ("red", "green", "blue")
+
+# don't do it... tuples are immutable
+colors[1] = "yellow"  # error
+```
+
+Use a tuple when you need:
+- data should not change
+- representing a fixed structure
+- multiple return values
+- used as keys in dictionaries
+- performance-sensitive structures
+
+Real-world examples:
+
+1) Returning multiple values from a function
+
+```python
+def get_position():
+    return (10, 20)
+
+x, y = get_position()
+```
+
+2) Database row representation
+
+```python
+row = (1, "Renato", "PT")
+```
+
+### Sets
+A set is an **unordered** collection of **unique** items.
+
+```python
+tags = {"python", "backend", "api"}
+```
+
+Properties:
+- Unordered
+- No indexing
+- No duplicates
+- Mutable (but elements must be hashable)
+
+Common operations: add, read, remove
+
+```python
+tags.add("ai")
+tags.add("python")  # ignored (already exists)
+tags.remove("api")
+
+for tag in tags:
+    print(tag)
+```
+
+When to use sets:
+- removing duplicates
+- membership testing (`in`)
+- mathematical operations (union, intersection)
+
+```python
+users_a = {"Renato", "Ana", "João"}
+users_b = {"Ana", "Carlos"}
+
+print(users_a & users_b)  # intersection
+print(users_a | users_b)  # union
+```
+
+### Quick Comparison
+
+| Feature            | List | Tuple | Set |
+|--------------------|------|-------|-----|
+| Ordered            | ✔    | ✔     | ❌  |
+| Mutable            | ✔    | ❌    | ✔   |
+| Allows duplicates  | ✔    | ✔     | ❌  |
+| Indexable          | ✔    | ✔     | ❌  |
+| Unique elements    | ❌   | ❌     | ✔   |
+| Hashable           | ❌   | ✔     | ❌  |
+| Best for           | dynamic sequences | fixed records | uniqueness & membership |
+
+Before you choose, use this rule of thumb:
+- If you need a sequence that changes → **List**
+- If you need a fixed data structure → **Tuple**
+- If you need unique items / fast membership test → **Set**
+
+### Performance insights
+
+```python
+x in list  # O(n)
+x in tuple # O(n)
+x in set   # O(1) average
+```
+
+## Coming next
+
+- Classes
+- Many files
+
