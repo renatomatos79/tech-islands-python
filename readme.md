@@ -10,6 +10,15 @@ This repository is designed for curious minds who want to level up their Python 
 
 # 📌 Projects in This Adventure
 
+## (0) py-from-zero-to-hero-00
+### 🖥️ What is it?
+A friendly, beginner-first introduction to Python that helps you get productive fast:
+- What Python is and how it executes code ⚙️
+- How to install Python and run your first script 🧪
+- Why virtual environments matter (and how to use them) 🧰
+- Core language basics: variables, functions, conditionals, loops, and dicts 🧱
+- Practical notes, examples, and clean formatting for easy study 📘
+
 ## (1) py-from-zero-to-hero-01 
 ### 🖥️ What is it? 
 A console-based CRUD application built with Python and SQLite, that contains concepts of: 
