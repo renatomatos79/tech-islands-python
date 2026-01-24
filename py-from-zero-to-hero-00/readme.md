@@ -1459,6 +1459,26 @@ with this output
 3   Pedro   15      Es          minor
 ```
 
+We have played with mean function.. however we have much more.. you just need to try them:
+
+| Function   | Description         |
+|------------|---------------------|
+| `.sum()`   | total               |
+| `.mean()`  | average             |
+| `.min()`   | minimum             |
+| `.max()`   | maximum             |
+| `.count()` | count rows          |
+| `.nunique()`| count unique values |
+| `.median()`| median              |
+| `.std()`   | standard deviation  |
+
+
+Something like
+```python
+df.groupby("country")["age"].max()
+df.groupby("country")["age"].count()
+```
+
 ## Coming next
 
 - packages
