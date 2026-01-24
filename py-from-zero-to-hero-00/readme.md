@@ -108,6 +108,113 @@ if (age >= 18) {
 }
 ```
 
+VB / Pascal-style:
+```vb
+if age >= 18 then
+begin
+    writeln('Adult');
+end;
+```
+
+Python does not use any of these.. however!
+Python Uses Indentation to Define Scope
+
+```python
+if age >= 18:
+    print("Adult")
+else:
+    print("Minor")
+```
+
+As a result, pay attention about wrong identation.. :/
+
+```python
+if age >= 18:
+print("Adult") #IndentationError: expected an indented block
+```
+
+Why Did Python Choose This Design?
+Because indentation enforces:
+- clean code
+- consistent formatting
+- readability (highly valued in Python culture)
+
+Python follows the philosophy:
+<br>
+“Code is read much more often than it is written.”
+
+Be aware!
+Indentation Creates Scope for:
+
+- if / elif / else
+- for / while
+- try / except / finally
+- def
+- class
+- with
+
+```python
+for i in range(3):
+    print("Loop", i)
+print("Done")
+```
+
+Produces this output
+```
+Loop 0
+Loop 1
+Loop 2
+Done
+```
+
+But, doing a wrong identation
+
+```python
+for i in range(3):
+    print("Loop", i)
+    print("Done") # here is the issue
+```
+
+The code produces this:
+```
+Loop 0
+Done
+Loop 1
+Done
+Loop 2
+Done
+```
+
+Attention!
+<br>
+Python requires consistent spacing:
+- Using 4 spaces is the community standard
+- Tabs are discouraged
+- Mixing tabs + spaces produces:
+
+```
+TabError: inconsistent use of tabs and spaces in indentation
+```
+
+Indentation Enables Expressions like this:
+
+```python
+if active:
+    process()
+```
+
+or this:
+
+```python
+if user.is_admin:
+    show_panel()
+else:
+    show_login()
+```
+
+**Therefore!**
+
+This is not optional, it is part of the language. If we don't indent properly, our code won’t run or will behave incorrectly.
 
 ## Functions — Part 1
 Define a function with `def`:
@@ -1117,7 +1224,242 @@ order = Order(
 print(order.total())
 ```
 
+## 🐼 Pandas! What It Is and How to Use It
+Thi is a Python library for working with structured data, especially:
+- tables
+- spreadsheets
+- CSV files
+- SQL query results
+- time series
+- analytics data
+
+Blending these items, we have:
+```
+Excel + SQL + Python = Pandas
+```
+
+Using pandas we have two main data types:
+- Series → 1D labeled data
+- DataFrame → 2D table data (like an Excel sheet)
+
+
+**Installing Pandas**
+```
+pip install pandas
+```
+
+### Creating a DataFrame
+
+```python
+import pandas as pd
+
+data = {
+    "name": ["Renato", "Ana", "Carlos"],
+    "age": [35, 28, 40],
+    "country": ["PT", "BR", "US"]
+}
+
+df = pd.DataFrame(data)
+print(df)
+```
+
+with this output
+
+```
+     name  age country
+0  Renato   35      PT
+1     Ana   28      BR
+2  Carlos   40      US
+```
+
+### Reading Real Data (CSV / Excel / SQL)**
+
+```python
+# reading from CSV file
+df = pd.read_csv("users.csv")
+
+# reading from Excel
+df = pd.read_excel("orders.xlsx")
+
+# FROM SQL ouput
+df = pd.read_sql("SELECT * FROM orders", connection)
+```
+
+WoW! This makes Pandas a glue layer between systems.
+
+Once we have the DataFrame, we can filter content like SQL.
+For instance, applying a filter to fetch data where `age > 30`
+
+```python
+import pandas as pd
+
+data = {
+    "name": ["Renato", "Ana", "Carlos"],
+    "age": [35, 28, 40],
+    "country": ["PT", "BR", "US"]
+}
+
+df = pd.DataFrame(data)
+
+filtered = df[df["age"] > 30]
+
+print(filtered)
+```
+
+the output is
+
+```
+     name  age country
+0  Renato   35      PT
+2  Carlos   40      US
+```
+
+But if we just need some specific columns?
+
+```python
+# do this for a single column
+df["name"]
+
+# or multiple
+df[["name", "country"]]
+```
+
+Something like this
+
+```python
+import pandas as pd
+
+data = {
+    "name": ["Renato", "Ana", "Carlos"],
+    "age": [35, 28, 40],
+    "country": ["PT", "BR", "US"]
+}
+
+df = pd.DataFrame(data)
+
+filtered = df[df["age"] > 30]
+
+print(filtered[["name", "country"]])
+```
+
+which procudes this
+
+```
+     name country
+0  Renato      PT
+2  Carlos      US
+```
+
+**Let´s Grouping and Aggregating**
+if you have already played with `Group By` in `SQL`, this is very similar
+The code below groups the content by the `country` field and calculates the average of the values in each group
+
+```python
+df.groupby("country")["age"].mean()
+```
+
+Let´s see the whole code in action
+
+```python
+import pandas as pd
+
+data = {
+    "name": ["Renato", "Ana", "Carlos"],
+    "age": [32, 28, 40],
+    "country": ["PT", "BR", "PT"]
+}
+
+df = pd.DataFrame(data)
+
+avgResult = df.groupby("country")["age"].mean()
+
+print(avgResult)
+```
+
+with this output
+
+```
+country
+BR    28.0
+PT    36.0
+
+Name: age, dtype: float64
+```
+
+We can also apply functions and much more
+
+```python
+df["group"] = df["age"].apply(lambda x: "adult" if x >= 18 else "minor")
+```
+
+Let´s verify the whole code once more
+
+```python
+import pandas as pd
+
+data = {
+    "name": ["Renato", "Ana", "Carlos", "Pedro"],
+    "age": [32, 28, 40, 15],
+    "country": ["PT", "BR", "PT", "Es"]
+}
+
+df = pd.DataFrame(data)
+
+# df.apply() allows us to apply a function to each row or each column of a DataFrame.
+# where 
+# axis=0 → apply to columns
+# axis=0 → apply to columns
+result = df.apply(
+    # lambda row creates an anonymous function that receives a row
+    # using this inline IF condition
+    # ("adult" if row['age'] >= 18 else "minor")
+    lambda row: f"{row['name']} ({row['age']}) is an " + ("adult" if row['age'] >= 18 else "minor"),
+    axis=1
+)
+
+# in this sample we used axis=1 that means:
+# For each row in the DataFrame, execute this function once.
+print(result)
+```
+
+with this output
+
+```python
+0    Renato (32) is an adult
+1       Ana (28) is an adult
+2    Carlos (40) is an adult
+3     Pedro (15) is an minor
+```
+
+we can also run the function adding a new column to the output, for instance, adding a classification column name
+
+```python
+import pandas as pd
+
+data = {
+    "name": ["Renato", "Ana", "Carlos", "Pedro"],
+    "age": [32, 28, 40, 15],
+    "country": ["PT", "BR", "PT", "Es"]
+}
+
+df = pd.DataFrame(data)
+
+df["classification"] = df["age"].apply(lambda x: "adult" if x >= 18 else "minor")
+
+print(df)
+```
+
+with this output
+
+```python
+     name  age country classification
+0  Renato   32      PT          adult
+1     Ana   28      BR          adult
+2  Carlos   40      PT          adult
+3   Pedro   15      Es          minor
+```
+
 ## Coming next
 
-- Classes
+- packages
 - Many files
