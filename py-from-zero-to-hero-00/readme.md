@@ -91,6 +91,24 @@ MAX_USERS = 100
 APP_NAME = "Python for code lovers"
 ```
 
+## Code Blocks & Indentation in Python
+Many languages use braces or keywords to define blocks:
+
+C#
+```c#
+if (age >= 18) {
+    Console.WriteLine("Adult");
+}
+```
+
+JavaScript:
+```js
+if (age >= 18) {
+    console.log("Adult")
+}
+```
+
+
 ## Functions — Part 1
 Define a function with `def`:
 
@@ -1002,6 +1020,53 @@ class Person:
 
 print(Person("Renato"))  # Person: Renato
 ```
+
+#### Abstract Base Classes (ABCs)
+To enforce an interface-like contract, Python provides:
+
+```python
+from abc import ABC, abstractmethod
+
+class Animal(ABC):
+    @abstractmethod
+    def speak(self):
+        pass
+
+# Concrete classes must implement "speak"
+class Dog(Animal):
+    def speak(self):
+        print("woof")
+
+```
+
+In case the contract class miss implementing the mandatory method
+
+```python
+
+class Cat(Animal):
+    pass
+
+```
+
+BANG!
+
+TypeError: Can't instantiate abstract class Cat with abstract method speak
+
+Are you curious about "pass"?
+
+pass is a no-op statement in Python, meaning “Do nothing here.”
+
+Python requires indentation blocks after constructs like:
+- class
+- def
+- if
+- for
+- while
+- try
+
+So if you don't have any code yet, you must write something to keep the syntax valid.
+
+
 
 #### OOP Concept Summary
 - Encapsulation → control access
