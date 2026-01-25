@@ -1479,6 +1479,88 @@ df.groupby("country")["age"].max()
 df.groupby("country")["age"].count()
 ```
 
+#### Running our samples
+1. into the folder py-from-zero-to-hero-00 we have added a file name `requirements.txt`in order to centralize our external dependencies.
+2. build a local env named samples using the command line below
+
+```
+python3.11 -m venv samples
+```
+
+3. activate this env using
+
+```
+source samples/bin/activate
+```
+
+4. install the dependencies mentioned into requirements.txt file using
+
+```
+pip install -r ./requirements.txt
+```
+
+4. run the first demo app using
+
+```
+python3.11 ./src/dataframe01.py
+```
+
+this produces this output
+
+```python
+=== BASIC AGGREGATIONS ===
+Total revenue:          4635.0
+Average line total:     579.375
+Min line total:         50.0
+Max line total:         2100.0
+Std deviation:          728.7780256801694
+
+=== DISTINCT / UNIQUE VALUES ===
+Unique products:         ['Keyboard' 'Mouse' 'Monitor' 'Headset' 'Chair']
+Number of products:      5
+
+=== GROUP BY CUSTOMER ===
+             sum   mean    min     max  count         std
+customer                                                 
+Ana        450.0  225.0   50.0   400.0      2  247.487373
+Carlos    1335.0  667.5  135.0  1200.0      2  753.068722
+Renato    2850.0  712.5   50.0  2100.0      4  957.753448
+
+=== GROUP BY CUSTOMER + CATEGORY ===
+                         sum    mean     min     max  count
+customer category                                          
+Ana      Audio         400.0   400.0   400.0   400.0      1
+         Peripherals    50.0    50.0    50.0    50.0      1
+Carlos   Furniture    1200.0  1200.0  1200.0  1200.0      1
+         Peripherals   135.0   135.0   135.0   135.0      1
+Renato   Furniture    2100.0  2100.0  2100.0  2100.0      1
+         Monitor       600.0   600.0   600.0   600.0      1
+         Peripherals   150.0    75.0    50.0   100.0      2
+
+=== PRODUCT LEVEL STATS ===
+          total_revenue  avg_unit_price  times_sold  distinct_customers
+product                                                                
+Chair            3300.0           300.0           2                   2
+Headset           400.0            80.0           1                   1
+Keyboard          185.0            47.5           2                   2
+Monitor           600.0           200.0           1                   1
+Mouse             150.0            25.0           2                   2
+
+=== SUMMARY OF AGGREGATION FUNCTIONS ===
+sum      4635.000000
+mean      579.375000
+min        50.000000
+max      2100.000000
+count       8.000000
+std       728.778026
+Name: total, dtype: float64
+
+Distinct products:       5
+Product list:            ['Keyboard', 'Mouse', 'Monitor', 'Headset', 'Chair']
+```
+
+Try other samples
+
 ## Coming next
 
 - packages
