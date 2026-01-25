@@ -1561,6 +1561,25 @@ Product list:            ['Keyboard', 'Mouse', 'Monitor', 'Headset', 'Chair']
 
 Try other samples
 
+## Building charts using plotly library
+Plotly's Python graphing library makes interactive, publication-quality graphs. 
+https://plotly.com/python/
+
+In the next example (plotly02.py), we use Pandas together with Plotly to visualize a shopping cart dataset. The script is located in the src folder, and the code is straightforward and well-documented.
+
+Let´s run it
+
+```
+cd py-from-zero-to-hero-00
+python3.11 -m venv samples
+source samples/bin/activate
+pip install -r ./requirements.txt
+python3.11 ./src/plotly02.py
+```
+
+![alt text](image.png)
+
+
 ## Coming next
 
 - packages
