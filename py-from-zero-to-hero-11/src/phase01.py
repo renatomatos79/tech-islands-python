@@ -160,7 +160,7 @@ async def _extract_case(agent: ChatAgent, text: str, source: Path) -> CaseResult
 async def run_pipeline() -> List[CaseResult]:
     base_dir = Path(__file__).resolve().parents[1]
     docs_dir = base_dir / "docs"
-    output_path = "./output.json"
+    output_path = base_dir / "src" / "output.json"
 
     if not docs_dir.exists():
         raise FileNotFoundError(f"Docs folder not found: {docs_dir}")

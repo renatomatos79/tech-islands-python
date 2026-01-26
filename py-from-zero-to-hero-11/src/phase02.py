@@ -3,6 +3,10 @@ from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Any, Dict, List, Tuple, Optional
 
+import pandas as pd
+from plotly.subplots import make_subplots
+import plotly.graph_objects as go
+
 
 # Optional: month number -> name (if you want nicer output)
 MONTH_NAMES = {
@@ -28,6 +32,9 @@ def load_results(json_path: Path) -> List[Dict[str, Any]]:
         return json.load(handle)
 
 
+# -------------------------------------------------------------------
+# TEXTUAL SUMMARIES (same as before)
+# -------------------------------------------------------------------
 def summarize_basic(results: List[Dict[str, Any]]) -> None:
     total = len(results)
     success_count = sum(1 for r in results if r.get("Success"))
@@ -70,7 +77,10 @@ def summarize_by_year_month(results: List[Dict[str, Any]]) -> None:
         counter[(year, month)] += 1
 
     print("=== CASES BY YEAR / MONTH ===")
-    for (year, month), count in sorted(counter.items(), key=lambda x: (x[0][0] or 0, x[0][1] or 0)):
+    for (year, month), count in sorted(
+        counter.items(),
+        key=lambda x: (x[0][0] or 0, x[0][1] or 0),
+    ):
         year_str = str(year) if year is not None else "Unknown year"
         if isinstance(month, int):
             month_str = MONTH_NAMES.get(month, f"Month {month}")
@@ -133,23 +143,199 @@ def summarize_by_city_and_year(results: List[Dict[str, Any]]) -> None:
     print()
 
 
+# -------------------------------------------------------------------
+# PLOTTING DASHBOARD WITH PLOTLY
+# -------------------------------------------------------------------
+def build_dashboard(results: List[Dict[str, Any]]) -> None:
+    # Convert to DataFrame for easier aggregations
+    df = pd.DataFrame(results)
+
+    if df.empty:
+        print("No data available to plot.")
+        return
+
+    # Use only successful records
+    df_success = df[df["Success"] == True].copy()  # noqa: E712
+
+    if df_success.empty:
+        print("No successful records to plot.")
+        return
+
+    # ------------------------------
+    # Aggregations for charts
+    # ------------------------------
+
+    # 1) Cases per city
+    cases_city = (
+        df_success
+        .groupby("city", dropna=False)
+        .size()
+        .reset_index(name="count")
+        .sort_values("count", ascending=False)
+    )
+    cases_city["city"] = cases_city["city"].fillna("Unknown")
+
+    # 2) Cases per occurrence type
+    cases_occ = (
+        df_success
+        .groupby("occurrence", dropna=False)
+        .size()
+        .reset_index(name="count")
+        .sort_values("count", ascending=False)
+    )
+    cases_occ["occurrence"] = cases_occ["occurrence"].fillna("Unknown")
+
+    # 3) Cases per year-month
+    # Guard: year / month might be None
+    df_success["year"] = df_success["year"].fillna(0).astype(int)
+    df_success["month"] = df_success["month"].fillna(0).astype(int)
+
+    cases_year_month = (
+        df_success
+        .groupby(["year", "month"])
+        .size()
+        .reset_index(name="count")
+        .sort_values(["year", "month"])
+    )
+
+    # Create a label like "2023-03" or "Unknown" if missing
+    def ym_label(row):
+        year = row["year"]
+        month = row["month"]
+        if year == 0 or month == 0:
+            return "Unknown"
+        return f"{int(year):04d}-{int(month):02d}"
+
+    cases_year_month["label"] = cases_year_month.apply(ym_label, axis=1)
+
+    # 4) Cases per city x year (for heatmap)
+    cases_city_year = (
+        df_success
+        .groupby(["city", "year"])
+        .size()
+        .reset_index(name="count")
+    )
+    cases_city_year["city"] = cases_city_year["city"].fillna("Unknown")
+
+    pivot_city_year = (
+        cases_city_year
+        .pivot(index="city", columns="year", values="count")
+        .fillna(0)
+        .sort_index()
+    )
+
+    # ------------------------------
+    # Create 2x2 subplot dashboard
+    # ------------------------------
+    fig = make_subplots(
+        rows=2,
+        cols=2,
+        subplot_titles=(
+            "Cases per City",
+            "Cases per Occurrence Type",
+            "Cases per Year-Month",
+            "Cases per City and Year (Heatmap)",
+        ),
+        specs=[
+            [{"type": "xy"},       {"type": "xy"}],
+            [{"type": "xy"},       {"type": "heatmap"}],
+        ],
+    )
+
+    # (1) Bar chart: Cases per City (row 1, col 1)
+    fig.add_trace(
+        go.Bar(
+            x=cases_city["city"],
+            y=cases_city["count"],
+            name="Cases per City",
+        ),
+        row=1,
+        col=1,
+    )
+
+    # (2) Bar chart: Cases per Occurrence Type (row 1, col 2)
+    fig.add_trace(
+        go.Bar(
+            x=cases_occ["occurrence"],
+            y=cases_occ["count"],
+            name="Cases per Occurrence",
+        ),
+        row=1,
+        col=2,
+    )
+
+    # (3) Bar chart: Cases per Year-Month (row 2, col 1)
+    fig.add_trace(
+        go.Bar(
+            x=cases_year_month["label"],
+            y=cases_year_month["count"],
+            name="Cases per Year-Month",
+        ),
+        row=2,
+        col=1,
+    )
+
+    # (4) Heatmap: Cases per City and Year (row 2, col 2)
+    if not pivot_city_year.empty:
+        fig.add_trace(
+            go.Heatmap(
+                z=pivot_city_year.values,
+                x=[str(c) for c in pivot_city_year.columns],
+                y=pivot_city_year.index.tolist(),
+                coloraxis="coloraxis",
+                name="City-Year Heatmap",
+            ),
+            row=2,
+            col=2,
+        )
+
+    # ------------------------------
+    # Layout / axes
+    # ------------------------------
+    fig.update_layout(
+        title="Police Cases Overview",
+        height=900,
+        showlegend=False,
+        coloraxis=dict(colorscale="Blues"),
+        margin=dict(l=40, r=40, t=80, b=40),
+    )
+
+    fig.update_xaxes(title_text="City", row=1, col=1)
+    fig.update_yaxes(title_text="Number of Cases", row=1, col=1)
+
+    fig.update_xaxes(title_text="Occurrence Type", row=1, col=2)
+    fig.update_yaxes(title_text="Number of Cases", row=1, col=2)
+
+    fig.update_xaxes(title_text="Year-Month", row=2, col=1)
+    fig.update_yaxes(title_text="Number of Cases", row=2, col=1)
+
+    fig.update_xaxes(title_text="Year", row=2, col=2)
+    fig.update_yaxes(title_text="City", row=2, col=2)
+
+    # Render interactive dashboard
+    fig.show()
+
+
 def main() -> None:
-    # phase02 sits in the same folder level as phase01,
-    # so output.json is assumed to be one level up in the project.
+    # Adjust this to your structure if needed:
+    # phase02 sits in src/, output.json in project root or src/
     base_dir = Path(__file__).resolve().parents[1]
     json_path = base_dir / "src" / "output.json"
+    # If your file lives in src/output.json, then:
+    # json_path = base_dir / "src" / "output.json"
 
     results = load_results(json_path)
 
-    # High-level summaries
+    # -------- Text summaries in terminal --------
     summarize_basic(results)
     summarize_errors(results, max_examples=5)
-
-    # Analytical summaries
     summarize_by_year_month(results)
     summarize_by_city(results)
     summarize_by_occurrence(results)
     summarize_by_city_and_year(results)
+
+    # -------- Visual dashboard with Plotly --------
+    build_dashboard(results)
 
 
 if __name__ == "__main__":
