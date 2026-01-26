@@ -1,8 +1,8 @@
 ## Context
 
-Classify police case reports based on unstructured text. From each document we needed to extract key pieces of information:  city, district, year, month, and the type of occurrence (hate crime, robbery followed by murder, traffic accident, femicide, etc.). These insights need to be aggregated month by month  to measure government performance and analyze trends in crime reduction across the state. 
+Use unstructured police case reports to classify incidents and extract key fields including city, district, year, month, and type of occurrence (e.g., hate crime, robbery-homicide, traffic accident, femicide, etc.). The extracted data should then be aggregated on a monthly basis to evaluate government performance and identify trends in statewide crime reduction. 
 
-# Building the output.json
+# Running the first app and building the output.json
 
 ```
 python3.11 -m venv challenge
@@ -71,7 +71,7 @@ This is a sample of the `output.json` file
 ]
 ```
 
-# Building the dashboard
+# Using the output.json file to build the final dashboard
 
 ```
 python3.11 ./src/phase02.py
