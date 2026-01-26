@@ -114,3 +114,12 @@ A shopping cart system using Microsoft Agent Framework with the same tools from 
 - Reduced dependencies compared to the AutoGen setup 📦
 - Uses Ollama via OpenAI-compatible client (llama3.2) 🧠
 - Learn more: https://learn.microsoft.com/en-us/agent-framework/overview/agent-framework-overview
+
+## (11) py-from-zero-to-hero-11
+### 🧾📊 What is it?
+A two-phase pipeline that classifies police case PDFs and then builds analytics:
+
+- Phase 01 extracts district, city, year, month, and occurrence from each PDF into `output.json` 🗂️
+- Phase 02 loads the output and generates summaries/aggregations for dashboarding 📈
+- Uses Ollama (llama3.2) via Microsoft Agent Framework to structure unstructured reports 🧠
+- Designed to separate heavy classification from fast analytics rendering 🧪
