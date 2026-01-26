@@ -1,0 +1,2002 @@
+[
+  {
+    "district": "Centro",
+    "city": "São José dos Campos",
+    "year": 2022,
+    "month": 1,
+    "occurrence": "cyber fraud",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_001.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Jardins",
+    "city": "Campinas",
+    "year": 2024,
+    "month": 1,
+    "occurrence": "drug trafficking",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_002.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Jardins",
+    "city": "Ribeirão Preto",
+    "year": 2023,
+    "month": 3,
+    "occurrence": "traffic accident",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_003.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Industrial",
+    "city": "Osasco",
+    "year": 2023,
+    "month": 2,
+    "occurrence": "kidnapping",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_004.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Leste",
+    "city": "Santos",
+    "year": 2023,
+    "month": 6,
+    "occurrence": "vehicle theft",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_005.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Vila Nova",
+    "city": "Guarulhos",
+    "year": 2022,
+    "month": 10,
+    "occurrence": "kidnapping",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_006.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Vila Nova",
+    "city": "Guarulhos",
+    "year": 2024,
+    "month": 2,
+    "occurrence": "robbery followed by murder",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_007.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Sul",
+    "city": "Santos",
+    "year": 2022,
+    "month": 11,
+    "occurrence": "vandalism",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_008.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Centro",
+    "city": "Osasco",
+    "year": 2024,
+    "month": 1,
+    "occurrence": "burglary",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_009.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Norte",
+    "city": "São Paulo",
+    "year": 2023,
+    "month": 12,
+    "occurrence": "vandalism",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_010.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Sul",
+    "city": "São Paulo",
+    "year": 2024,
+    "month": 11,
+    "occurrence": "vandalism",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_011.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Vila Nova",
+    "city": "Santos",
+    "year": null,
+    "month": 2,
+    "occurrence": "burglary",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_012.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Leste",
+    "city": "São Paulo",
+    "year": 2024,
+    "month": 1,
+    "occurrence": "femicide",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_013.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Leste",
+    "city": "Osasco",
+    "year": 2023,
+    "month": 2,
+    "occurrence": "vehicle theft",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_014.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Oeste",
+    "city": "Santos",
+    "year": 2024,
+    "month": 3,
+    "occurrence": "robbery followed by murder",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_015.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Norte",
+    "city": "Osasco",
+    "year": 2023,
+    "month": 9,
+    "occurrence": "armed robbery",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_016.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Norte",
+    "city": "Campinas",
+    "year": 2024,
+    "month": 7,
+    "occurrence": "vandalism",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_017.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Industrial",
+    "city": "São José dos Campos",
+    "year": 2022,
+    "month": 11,
+    "occurrence": "assault",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_018.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Centro",
+    "city": "Guarulhos",
+    "year": 2024,
+    "month": 12,
+    "occurrence": "traffic accident",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_019.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Centro",
+    "city": "Santos",
+    "year": 2023,
+    "month": 5,
+    "occurrence": "vehicle theft",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_020.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Industrial",
+    "city": "São José dos Campos",
+    "year": 2022,
+    "month": 6,
+    "occurrence": "vandalism",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_021.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Sul",
+    "city": "São José dos Campos",
+    "year": 2023,
+    "month": 6,
+    "occurrence": "hate crime",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_022.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Vila Nova",
+    "city": "Campinas",
+    "year": 2023,
+    "month": 12,
+    "occurrence": "domestic violence",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_023.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Centro",
+    "city": "Campinas",
+    "year": 2023,
+    "month": 9,
+    "occurrence": "femicide",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_024.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Norte",
+    "city": "Campinas",
+    "year": 2022,
+    "month": 12,
+    "occurrence": "vehicle theft",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_025.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Centro",
+    "city": "Guarulhos",
+    "year": 2024,
+    "month": 10,
+    "occurrence": "femicide",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_026.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Leste",
+    "city": "Osasco",
+    "year": 2022,
+    "month": 5,
+    "occurrence": "cyber fraud",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_027.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Industrial",
+    "city": "Osasco",
+    "year": 2022,
+    "month": 9,
+    "occurrence": "vehicle theft",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_028.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Centro",
+    "city": "Ribeirão Preto",
+    "year": 2022,
+    "month": 5,
+    "occurrence": "burglary",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_029.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Oeste",
+    "city": "São Paulo",
+    "year": 2022,
+    "month": 12,
+    "occurrence": "vandalism",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_030.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Sul",
+    "city": "Osasco",
+    "year": 2023,
+    "month": 8,
+    "occurrence": "robbery followed by murder",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_031.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Centro",
+    "city": "São José dos Campos",
+    "year": 2024,
+    "month": 7,
+    "occurrence": "femicide",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_032.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Oeste",
+    "city": "Guarulhos",
+    "year": 2022,
+    "month": 6,
+    "occurrence": "robbery followed by murder",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_033.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Centro",
+    "city": "Santos",
+    "year": 2024,
+    "month": 4,
+    "occurrence": "traffic accident",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_034.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Jardins",
+    "city": "São Paulo",
+    "year": 2023,
+    "month": 9,
+    "occurrence": "robbery followed by murder",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_035.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Oeste",
+    "city": "São José dos Campos",
+    "year": 2022,
+    "month": 1,
+    "occurrence": "femicide",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_036.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Jardins",
+    "city": "São José dos Campos",
+    "year": 2023,
+    "month": 3,
+    "occurrence": "femicide",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_037.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Centro",
+    "city": "São Paulo",
+    "year": 2022,
+    "month": 10,
+    "occurrence": "assault",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_038.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Industrial",
+    "city": "Ribeirão Preto",
+    "year": 2022,
+    "month": 4,
+    "occurrence": "drug trafficking",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_039.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Centro",
+    "city": "Osasco",
+    "year": 2024,
+    "month": 8,
+    "occurrence": "vehicle theft",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_040.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Centro",
+    "city": "São Paulo",
+    "year": 2022,
+    "month": 11,
+    "occurrence": "drug trafficking",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_041.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Sul",
+    "city": "São Paulo",
+    "year": 2022,
+    "month": 5,
+    "occurrence": "Robbery followed by murder",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_042.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Norte",
+    "city": "Osasco",
+    "year": 2022,
+    "month": 9,
+    "occurrence": "vehicle theft",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_043.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Sul",
+    "city": "São José dos Campos",
+    "year": 2023,
+    "month": 4,
+    "occurrence": "vandalism",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_044.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Leste",
+    "city": "Campinas",
+    "year": 2024,
+    "month": 9,
+    "occurrence": "traffic accident",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_045.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Sul",
+    "city": "Guarulhos",
+    "year": 2022,
+    "month": null,
+    "occurrence": "drug trafficking",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_046.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Vila Nova",
+    "city": "Osasco",
+    "year": 2024,
+    "month": 12,
+    "occurrence": "ficide",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_047.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Norte",
+    "city": "São Paulo",
+    "year": 2023,
+    "month": 10,
+    "occurrence": "assault",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_048.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Sul",
+    "city": "São José dos Campos",
+    "year": 2023,
+    "month": 12,
+    "occurrence": "vehicle theft",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_049.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Centro",
+    "city": "São Paulo",
+    "year": 2022,
+    "month": 1,
+    "occurrence": "kidnapping",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_050.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Vila Nova",
+    "city": "Guarulhos",
+    "year": 2022,
+    "month": 1,
+    "occurrence": "vandalism",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_051.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Industrial",
+    "city": "Guarulhos",
+    "year": 2024,
+    "month": 6,
+    "occurrence": "armed robbery",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_052.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Industrial",
+    "city": "Santos",
+    "year": 2022,
+    "month": 4,
+    "occurrence": "assault",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_053.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Oeste",
+    "city": "Ribeirão Preto",
+    "year": 2024,
+    "month": 9,
+    "occurrence": "hate crime",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_054.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Leste",
+    "city": "Guarulhos",
+    "year": 2024,
+    "month": 7,
+    "occurrence": "traffic accident",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_055.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Centro",
+    "city": "Guarulhos",
+    "year": 2023,
+    "month": 11,
+    "occurrence": "robbery followed by murder",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_056.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Industrial",
+    "city": "Santo",
+    "year": 2022,
+    "month": 10,
+    "occurrence": "domestic violence",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_057.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Vila Nova",
+    "city": "Campinas",
+    "year": 2024,
+    "month": 3,
+    "occurrence": "armed robbery",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_058.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Sul",
+    "city": "Osasco",
+    "year": 2024,
+    "month": 1,
+    "occurrence": "assault",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_059.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Sul",
+    "city": "Guarulhos",
+    "year": 2023,
+    "month": 8,
+    "occurrence": "vehicle theft",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_060.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Industrial",
+    "city": "Ribeirão Preto",
+    "year": 2022,
+    "month": 6,
+    "occurrence": "assault",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_061.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Norte",
+    "city": "Santos",
+    "year": 2023,
+    "month": 5,
+    "occurrence": "drug trafficking",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_062.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Centro",
+    "city": "Campinas",
+    "year": 2024,
+    "month": 5,
+    "occurrence": "femicide",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_063.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Jardins",
+    "city": "São José dos Campos",
+    "year": 2022,
+    "month": 10,
+    "occurrence": "assault",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_064.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Norte",
+    "city": "Guarulhos",
+    "year": 2024,
+    "month": 8,
+    "occurrence": "robbery followed by murder",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_065.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Leste",
+    "city": "Osasco",
+    "year": 2024,
+    "month": 6,
+    "occurrence": "cyber fraud",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_066.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Industrial",
+    "city": "Ribeirão Preto",
+    "year": 2023,
+    "month": 11,
+    "occurrence": "traffic accident",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_067.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Sul",
+    "city": "Campinas",
+    "year": 2023,
+    "month": 4,
+    "occurrence": "robbery followed by murder",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_068.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Sul",
+    "city": "Guarulhos",
+    "year": 2024,
+    "month": 6,
+    "occurrence": "hate crime",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_069.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Centro",
+    "city": "Santos",
+    "year": 2022,
+    "month": 7,
+    "occurrence": "armed robbery",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_070.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Norte",
+    "city": "Guarulhos",
+    "year": 2023,
+    "month": 3,
+    "occurrence": "cyber fraud",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_071.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Jardins",
+    "city": "Campinas",
+    "year": 2023,
+    "month": 5,
+    "occurrence": "burglary",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_072.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Norte",
+    "city": "Guarulhos",
+    "year": 2022,
+    "month": 10,
+    "occurrence": "burglary",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_073.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Leste",
+    "city": "Campinas",
+    "year": 2024,
+    "month": 3,
+    "occurrence": "armed robbery",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_074.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Vila Nova",
+    "city": "São Paulo",
+    "year": 2022,
+    "month": 5,
+    "occurrence": "vandalism",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_075.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Vila Nova",
+    "city": "Osasco",
+    "year": 2023,
+    "month": 8,
+    "occurrence": "vandalism",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_076.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Centro",
+    "city": "Guarulhos",
+    "year": 2024,
+    "month": 9,
+    "occurrence": "drug trafficking",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_077.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Sul",
+    "city": "Guarulhos",
+    "year": 2023,
+    "month": 4,
+    "occurrence": "drug trafficking",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_078.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Centro",
+    "city": "Osasco",
+    "year": 2022,
+    "month": 5,
+    "occurrence": "robbery followed by murder",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_079.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Oeste",
+    "city": "Santos",
+    "year": null,
+    "month": 5,
+    "occurrence": "domestic violence",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_080.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Leste",
+    "city": "São Paulo",
+    "year": 2024,
+    "month": 4,
+    "occurrence": "vandalism",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_081.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Oeste",
+    "city": "São José dos Campos",
+    "year": 2022,
+    "month": 4,
+    "occurrence": "femicide",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_082.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Leste",
+    "city": "São José dos Campos",
+    "year": 2024,
+    "month": 8,
+    "occurrence": "domestic violence",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_083.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Jardins",
+    "city": "Santos",
+    "year": 2024,
+    "month": 4,
+    "occurrence": "vehicle theft",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_084.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Industrial",
+    "city": "São Paulo",
+    "year": 2022,
+    "month": 1,
+    "occurrence": "vehicle theft",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_085.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Norte",
+    "city": "Guarulhos",
+    "year": 2024,
+    "month": 4,
+    "occurrence": "hate crime",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_086.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Norte",
+    "city": "Ribeirão Preto",
+    "year": 2023,
+    "month": 6,
+    "occurrence": "vehicle theft",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_087.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Industrial",
+    "city": "Santos",
+    "year": 2023,
+    "month": 12,
+    "occurrence": "robbery followed by murder",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_088.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Vila Nova",
+    "city": "Osasco",
+    "year": 2023,
+    "month": 7,
+    "occurrence": "femicide",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_089.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Industrial",
+    "city": "Santos",
+    "year": 2024,
+    "month": 10,
+    "occurrence": "vandalism",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_090.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Vila Nova",
+    "city": "São José dos Campos",
+    "year": 2024,
+    "month": 3,
+    "occurrence": "armed robbery",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_091.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Oeste",
+    "city": "Osasco",
+    "year": 2024,
+    "month": 1,
+    "occurrence": "vandalism",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_092.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Sul",
+    "city": "São Paulo",
+    "year": 2022,
+    "month": 11,
+    "occurrence": "traffic accident",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_093.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Jardins",
+    "city": "Ribeirão Preto",
+    "year": 2022,
+    "month": 5,
+    "occurrence": "vehicle theft",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_094.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Jardins",
+    "city": "São Paulo",
+    "year": 2024,
+    "month": 5,
+    "occurrence": "kidnapping",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_095.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Sul",
+    "city": "São Paulo",
+    "year": 2024,
+    "month": 1,
+    "occurrence": "kidnapping",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_096.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Oeste",
+    "city": "São Paulo",
+    "year": 2022,
+    "month": 11,
+    "occurrence": "burglary",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_097.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Vila Nova",
+    "city": "Guarulhos",
+    "year": 2023,
+    "month": 8,
+    "occurrence": "vandalism",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_098.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Oeste",
+    "city": "São Paulo",
+    "year": 2024,
+    "month": 8,
+    "occurrence": "kidnapping",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_099.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Vila Nova",
+    "city": "Ribeirão Preto",
+    "year": 2022,
+    "month": 7,
+    "occurrence": "assault",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_100.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Oeste",
+    "city": "Osasco",
+    "year": 2023,
+    "month": 9,
+    "occurrence": "drug trafficking",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_101.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Centro",
+    "city": "São Paulo",
+    "year": 2023,
+    "month": 2,
+    "occurrence": "kidnapping",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_102.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Industrial",
+    "city": "São Jós e dos Campos",
+    "year": 2023,
+    "month": 5,
+    "occurrence": "assault",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_103.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Centro",
+    "city": "Guarulhos",
+    "year": 2022,
+    "month": 5,
+    "occurrence": "vehicle theft",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_104.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Jardins",
+    "city": "Osasco",
+    "year": 2022,
+    "month": 6,
+    "occurrence": null,
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_105.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Jardins",
+    "city": "São José dos Campos",
+    "year": 2024,
+    "month": 5,
+    "occurrence": "kidnapping",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_106.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Industrial",
+    "city": "Santos",
+    "year": 2024,
+    "month": 11,
+    "occurrence": "robbery followed by murder",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_107.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Vila Nova",
+    "city": "Santos",
+    "year": 2024,
+    "month": 3,
+    "occurrence": "traffic accident",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_108.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Vila Nova",
+    "city": "Guarulhos",
+    "year": 2022,
+    "month": 4,
+    "occurrence": "drug trafficking",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_109.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Leste",
+    "city": "Osasco",
+    "year": 2022,
+    "month": 1,
+    "occurrence": "femicide",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_110.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Leste",
+    "city": "São José dos Campos",
+    "year": 2022,
+    "month": 8,
+    "occurrence": "vandalism",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_111.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Vila Nova",
+    "city": "Santos",
+    "year": 2022,
+    "month": 9,
+    "occurrence": "vandalism",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_112.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Industrial",
+    "city": "São José dos Campos",
+    "year": 2022,
+    "month": 1,
+    "occurrence": "armed robbery",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_113.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Vila Nova",
+    "city": "São Paulo",
+    "year": 2022,
+    "month": 9,
+    "occurrence": "vandalism",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_114.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Leste",
+    "city": "Osasco",
+    "year": 2023,
+    "month": 8,
+    "occurrence": "vehicle theft",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_115.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Leste",
+    "city": "São Paulo",
+    "year": 2024,
+    "month": 3,
+    "occurrence": "drug trafficking",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_116.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Jardins",
+    "city": "Osasco",
+    "year": 2023,
+    "month": 6,
+    "occurrence": "armed robbery",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_117.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Industrial",
+    "city": "Campinas",
+    "year": 2022,
+    "month": 11,
+    "occurrence": "burglary",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_118.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Industrial",
+    "city": "Campinas",
+    "year": 2024,
+    "month": 7,
+    "occurrence": "vehicle theft",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_119.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Jardins",
+    "city": "Ribeirão Preto",
+    "year": 2023,
+    "month": 7,
+    "occurrence": "assault",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_120.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Norte",
+    "city": "Osasco",
+    "year": 2023,
+    "month": 3,
+    "occurrence": "robbery followed by murder",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_121.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Leste",
+    "city": "São José dos Campos",
+    "year": 2024,
+    "month": 7,
+    "occurrence": "vandalism",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_122.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Industrial",
+    "city": "Osasco",
+    "year": 2023,
+    "month": 1,
+    "occurrence": "vandalism",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_123.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Centro",
+    "city": "Ribeirão Preto",
+    "year": 2024,
+    "month": 5,
+    "occurrence": "drug trafficking",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_124.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Vila Nova",
+    "city": "Osasco",
+    "year": 2024,
+    "month": 6,
+    "occurrence": "burglary",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_125.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Centro",
+    "city": "São Paulo",
+    "year": 2022,
+    "month": 5,
+    "occurrence": "robbery followed by murder",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_126.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Sul",
+    "city": "Campinas",
+    "year": 2022,
+    "month": 3,
+    "occurrence": "femicide",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_127.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Jardins",
+    "city": "Ribeirão Preto",
+    "year": 2022,
+    "month": 2,
+    "occurrence": "assault",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_128.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Sul",
+    "city": "Guarulhos",
+    "year": 2024,
+    "month": 10,
+    "occurrence": "femicide",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_129.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Industrial",
+    "city": "Guarulhos",
+    "year": 2022,
+    "month": 9,
+    "occurrence": "kidnapping",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_130.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Sul",
+    "city": "São José dos Campos",
+    "year": 2022,
+    "month": 2,
+    "occurrence": "vandalism",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_131.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Oeste",
+    "city": "São José dos Campos",
+    "year": 2024,
+    "month": 12,
+    "occurrence": "kidnapping",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_132.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Leste",
+    "city": "Guarulhos",
+    "year": 2022,
+    "month": 3,
+    "occurrence": "cyber fraud",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_133.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Centro",
+    "city": "Osasco",
+    "year": 2023,
+    "month": 12,
+    "occurrence": "burglary",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_134.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Sul",
+    "city": "São José dos Campos",
+    "year": 2024,
+    "month": 9,
+    "occurrence": "kidnapping",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_135.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Jardins",
+    "city": "Ribeirão Preto",
+    "year": 2022,
+    "month": 7,
+    "occurrence": "kidnapping",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_136.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Norte",
+    "city": "Ribeirão Preto",
+    "year": 2023,
+    "month": 12,
+    "occurrence": "armed robbery",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_137.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Centro",
+    "city": "São José dos Campos",
+    "year": 2024,
+    "month": 1,
+    "occurrence": "hate crime",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_138.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Industrial",
+    "city": "Campinas",
+    "year": 2024,
+    "month": 3,
+    "occurrence": "murder followed by robbery",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_139.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Industrial",
+    "city": "Osasco",
+    "year": 2024,
+    "month": 4,
+    "occurrence": "assault",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_140.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Sul",
+    "city": "São José dos Campos",
+    "year": 2023,
+    "month": 5,
+    "occurrence": "kidnapping",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_141.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Leste",
+    "city": "Ribeirão Preto",
+    "year": 2022,
+    "month": 7,
+    "occurrence": "burglary",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_142.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Jardins",
+    "city": "Guarulhos",
+    "year": 2022,
+    "month": 1,
+    "occurrence": "assault",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_143.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Sul",
+    "city": "São Paulo",
+    "year": 2023,
+    "month": 10,
+    "occurrence": "vandalism",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_144.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Vila Nova",
+    "city": "Guarulhos",
+    "year": 2024,
+    "month": 9,
+    "occurrence": "robbery followed by murder",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_145.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Centro",
+    "city": "Ribeirão Preto",
+    "year": 2023,
+    "month": 9,
+    "occurrence": "robbery followed by murder",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_146.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Jardins",
+    "city": "Santos",
+    "year": 2023,
+    "month": 12,
+    "occurrence": "domestic violence",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_147.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Industrial",
+    "city": "Guarulhos",
+    "year": 2024,
+    "month": 5,
+    "occurrence": "cyber fraud",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_148.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Sul",
+    "city": "Campinas",
+    "year": 2023,
+    "month": 3,
+    "occurrence": "hate crime",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_149.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Oeste",
+    "city": "Ribeirão Preto",
+    "year": 2022,
+    "month": 7,
+    "occurrence": "burglary",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_150.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Vila Nova",
+    "city": "Osasco",
+    "year": 2024,
+    "month": 10,
+    "occurrence": null,
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_151.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Jardins",
+    "city": "Santos",
+    "year": 2022,
+    "month": 6,
+    "occurrence": "traffic accident",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_152.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Vila Nova",
+    "city": "São José dos Campos",
+    "year": 2023,
+    "month": 2,
+    "occurrence": "drug trafficking",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_153.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Leste",
+    "city": "Ribeirão Preto",
+    "year": 2024,
+    "month": 10,
+    "occurrence": "domestic violence",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_154.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Sul",
+    "city": "Santos",
+    "year": 2024,
+    "month": 5,
+    "occurrence": "burglary",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_155.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Industrial",
+    "city": "Campinas",
+    "year": 2022,
+    "month": 7,
+    "occurrence": "burglary",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_156.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Jardins",
+    "city": "São José dos Campos",
+    "year": 2022,
+    "month": 2,
+    "occurrence": "robbery followed by murder",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_157.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Jardins",
+    "city": "São Paulo",
+    "year": 2024,
+    "month": 12,
+    "occurrence": "robbery followed by murder",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_158.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Sul",
+    "city": "Santos",
+    "year": 2023,
+    "month": 9,
+    "occurrence": "vehicle theft",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_159.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Centro",
+    "city": "Osasco",
+    "year": 2024,
+    "month": 4,
+    "occurrence": "vandalism",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_160.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Oeste",
+    "city": "Osasco",
+    "year": 2024,
+    "month": 12,
+    "occurrence": "kidnapping",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_161.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Sul",
+    "city": "Santos",
+    "year": 2024,
+    "month": 6,
+    "occurrence": "assault",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_162.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Centro",
+    "city": "Osasco",
+    "year": 2022,
+    "month": 12,
+    "occurrence": "burglary",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_163.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Oeste",
+    "city": "Santos",
+    "year": 2024,
+    "month": 8,
+    "occurrence": "robbery followed by murder",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_164.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Sul",
+    "city": "Santos",
+    "year": 2023,
+    "month": 3,
+    "occurrence": "kidnapping",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_165.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Vila Nova",
+    "city": "São José dos Campos",
+    "year": 2024,
+    "month": 3,
+    "occurrence": "robbery followed by murder",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_166.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Vila Nova",
+    "city": "São Paulo",
+    "year": 2024,
+    "month": 3,
+    "occurrence": "domestic violence",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_167.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Leste",
+    "city": "Guarulhos",
+    "year": 2022,
+    "month": 6,
+    "occurrence": "cyber fraud",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_168.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Industrial",
+    "city": "Ribeirão Preto",
+    "year": 2024,
+    "month": 9,
+    "occurrence": "kidnapping",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_169.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Vila Nova",
+    "city": "Ribeirão Preto",
+    "year": 2022,
+    "month": 12,
+    "occurrence": "kidnapping",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_170.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Vila Nova",
+    "city": "Santos",
+    "year": 2023,
+    "month": 7,
+    "occurrence": "burglary",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_171.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Norte",
+    "city": "Santos",
+    "year": 2024,
+    "month": 7,
+    "occurrence": "fematicide",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_172.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Leste",
+    "city": "Osasco",
+    "year": 2023,
+    "month": 5,
+    "occurrence": "domestic violence",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_173.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Centro",
+    "city": "Ribeirão Preto",
+    "year": 2023,
+    "month": 3,
+    "occurrence": "assault",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_174.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Centro",
+    "city": "Campinas",
+    "year": 2023,
+    "month": 2,
+    "occurrence": "vehicle theft",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_175.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Norte",
+    "city": "Ribeirão Preto",
+    "year": 2024,
+    "month": 4,
+    "occurrence": "drug trafficking",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_176.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Oeste",
+    "city": "Campinas",
+    "year": 2024,
+    "month": 6,
+    "occurrence": "robbery followed by murder",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_177.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Centro",
+    "city": "São Paulo",
+    "year": 2022,
+    "month": 5,
+    "occurrence": "drug trafficking",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_178.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Vila Nova",
+    "city": "Campinas",
+    "year": 2022,
+    "month": 1,
+    "occurrence": "armed robbery",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_179.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Oeste",
+    "city": "São Paulo",
+    "year": 2023,
+    "month": 10,
+    "occurrence": "vehicle theft",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_180.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Norte",
+    "city": "São Paulo",
+    "year": 2023,
+    "month": 4,
+    "occurrence": "traffic accident",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_181.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Centro",
+    "city": "Osasco",
+    "year": 2023,
+    "month": 6,
+    "occurrence": "vandalism",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_182.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Oeste",
+    "city": "Guarulhos",
+    "year": 2022,
+    "month": 10,
+    "occurrence": "traffic accident",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_183.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Jardins",
+    "city": "Guarulhos",
+    "year": 2023,
+    "month": 7,
+    "occurrence": "armed robbery",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_184.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Sul",
+    "city": "Ribeirão Preto",
+    "year": 2023,
+    "month": 11,
+    "occurrence": "vandalism",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_185.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Centro",
+    "city": "Guarulhos",
+    "year": 2024,
+    "month": 2,
+    "occurrence": "drug trafficking",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_186.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Jardins",
+    "city": "São Paulo",
+    "year": 2022,
+    "month": 7,
+    "occurrence": "drug trafficking",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_187.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Leste",
+    "city": "Osasco",
+    "year": 2024,
+    "month": 4,
+    "occurrence": "femicide",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_188.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Jardins",
+    "city": "Santos",
+    "year": 2023,
+    "month": 4,
+    "occurrence": "hate crime",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_189.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Sul",
+    "city": "Campinas",
+    "year": 2022,
+    "month": 2,
+    "occurrence": "traffic accident",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_190.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Centro",
+    "city": "São José dos Campos",
+    "year": 2024,
+    "month": 9,
+    "occurrence": "kidnapping",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_191.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Sul",
+    "city": "Guarulhos",
+    "year": 2024,
+    "month": 6,
+    "occurrence": "vandalism",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_192.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Leste",
+    "city": "Osasco",
+    "year": 2023,
+    "month": 5,
+    "occurrence": "armed robbery",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_193.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Centro",
+    "city": "São Paulo",
+    "year": 2022,
+    "month": 9,
+    "occurrence": "cyber fraud",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_194.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Sul",
+    "city": "Santos",
+    "year": 2023,
+    "month": 9,
+    "occurrence": "traffic accident",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_195.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Industrial",
+    "city": "Campinas",
+    "year": 2023,
+    "month": 2,
+    "occurrence": "drug trafficking",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_196.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Leste",
+    "city": "Guarulhos",
+    "year": 2022,
+    "month": 3,
+    "occurrence": "hate crime",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_197.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Leste",
+    "city": "Campinas",
+    "year": 2023,
+    "month": 8,
+    "occurrence": "armed robbery",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_198.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Norte",
+    "city": "Santos",
+    "year": 2024,
+    "month": 11,
+    "occurrence": "domestic violence",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_199.pdf",
+    "Success": true,
+    "ERROR": null
+  },
+  {
+    "district": "Sul",
+    "city": "Osasco",
+    "year": 2022,
+    "month": 5,
+    "occurrence": "vehicle theft",
+    "source": "/Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-11/docs/case_200.pdf",
+    "Success": true,
+    "ERROR": null
+  }
+]
