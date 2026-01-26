@@ -13,11 +13,15 @@ This repository is designed for curious minds who want to level up their Python 
 ## (0) py-from-zero-to-hero-00
 ### 🖥️ What is it?
 A friendly, beginner-first introduction to Python that helps you get productive fast:
-- What Python is and how it executes code ⚙️
+- What Python is, how it executes code, and what “interpreted” means ⚙️
 - How to install Python and run your first script 🧪
-- Why virtual environments matter (and how to use them) 🧰
-- Core language basics: variables, functions, conditionals, loops, and dicts 🧱
-- Practical notes, examples, and clean formatting for easy study 📘
+- Virtual environments: why they matter, create/activate/deactivate, safe installs 🧰
+- Core language basics: variables, constants, and data types 🧱
+- Indentation, code blocks, and how scope works in Python ✍️
+- Functions: definitions, calling, parameters, defaults, `*args`/`**kwargs` 🔧
+- The `print()` function: separators, line endings, files, and `flush` 🖨️
+- Mutable vs immutable types and why it matters 🧠
+- Function “overloading” in Python and the common alternatives ✅
 
 ## (1) py-from-zero-to-hero-01 
 ### 🖥️ What is it? 

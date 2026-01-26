@@ -1233,6 +1233,12 @@ Thi is a Python library for working with structured data, especially:
 - time series
 - analytics data
 
+Why people love Pandas:
+- It feels like Excel + SQL + Python combined
+- Fast filtering, grouping, and aggregations
+- Great for data cleaning and exploration
+- Works seamlessly with CSV/Excel/SQL sources
+
 Blending these items, we have:
 ```
 Excel + SQL + Python = Pandas
@@ -1247,6 +1253,14 @@ Using pandas we have two main data types:
 ```
 pip install pandas
 ```
+
+**Core operations you will use all the time**
+- Preview: `df.head()` / `df.tail()`
+- Shape: `df.shape`
+- Column types: `df.dtypes`
+- Summary stats: `df.describe()`
+- Sort: `df.sort_values("column")`
+- Missing values: `df.isna().sum()` and `df.fillna(0)`
 
 ### Creating a DataFrame
 
@@ -1564,6 +1578,30 @@ Try other samples
 ## Building charts using plotly library
 Plotly's Python graphing library makes interactive, publication-quality graphs. 
 https://plotly.com/python/
+
+Why Plotly?
+- Interactive charts (zoom, hover, filter)
+- Works in notebooks, scripts, and web apps
+- Easy export to HTML or images
+
+**Installing Plotly**
+```
+pip install plotly
+```
+
+**Basic example**
+```python
+import plotly.express as px
+
+df = px.data.iris()
+fig = px.scatter(df, x="sepal_width", y="sepal_length", color="species")
+fig.show()
+```
+
+**Save an interactive chart to HTML**
+```python
+fig.write_html("chart.html")
+```
 
 In the next example (plotly02.py), we use Pandas together with Plotly to visualize a shopping cart dataset. The script is located in the src folder, and the code is straightforward and well-documented.
 
