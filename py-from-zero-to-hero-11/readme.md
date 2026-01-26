@@ -10,3 +10,6 @@ source challenge/bin/activate
 pip install -r ./requirements.txt
 python3.11 ./src/phase01.py
 ```
+
+
+![alt text](image.png)

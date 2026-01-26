@@ -8,7 +8,7 @@ from plotly.subplots import make_subplots
 import plotly.graph_objects as go
 
 
-# Optional: month number -> name (if you want nicer output)
+# Mapping month names
 MONTH_NAMES = {
     1: "January",
     2: "February",
@@ -24,7 +24,10 @@ MONTH_NAMES = {
     12: "December",
 }
 
-
+# ------------------------------------------------------------------------------
+# This function loads the output.json file and mapp it into a List of Dicionary
+# So then, we are able to access any JSON field using row.get("Field Name")
+# ------------------------------------------------------------------------------
 def load_results(json_path: Path) -> List[Dict[str, Any]]:
     if not json_path.exists():
         raise FileNotFoundError(f"JSON file not found: {json_path}")
@@ -33,7 +36,7 @@ def load_results(json_path: Path) -> List[Dict[str, Any]]:
 
 
 # -------------------------------------------------------------------
-# TEXTUAL SUMMARIES (same as before)
+# TEXTUAL SUMMARIES
 # -------------------------------------------------------------------
 def summarize_basic(results: List[Dict[str, Any]]) -> None:
     total = len(results)
@@ -48,61 +51,83 @@ def summarize_basic(results: List[Dict[str, Any]]) -> None:
 
 
 def summarize_errors(results: List[Dict[str, Any]], max_examples: int = 10) -> None:
+    """
+    Prints a human-readable summary of failed document extractions.
+    """
+
+    # Extract only the entries where the pipeline flagged the item as failed.
+    # We inspect the "Success" boolean field that phase01 generated.
+    # If Success == False, we consider it a failure.
     failures = [r for r in results if not r.get("Success")]
+
+    # If we don't have any failures at all, we simply show a friendly message
+    # and exit early because there's nothing else to enumerate.
     if not failures:
         print("=== ERRORS ===")
-        print("No failures. 🎉")
+        print("No failures. :)")
         print()
         return
 
     print("=== ERRORS (examples) ===")
+
+    # We only show up to `max_examples` errors to avoid spamming the console.
     for idx, item in enumerate(failures[:max_examples], start=1):
+
+        # We try to extract optional metadata to help debugging:
+        #   - source: which file failed (path/filename)
+        #   - ERROR: the exception message captured during extraction
         source = item.get("source", "<unknown>")
         error = item.get("ERROR", "<no error message>")
+
+        # Example output:
+        #  1. File: case_041.pdf
+        #      Error: NetworkTimeout: llama backend not responding
         print(f"{idx:2}. File: {source}")
         print(f"    Error: {error}")
+
+    # If the number of failures was greater than what we printed,
     if len(failures) > max_examples:
         print(f"... and {len(failures) - max_examples} more failures.")
-    print()
 
-
-def summarize_by_year_month(results: List[Dict[str, Any]]) -> None:
-    counter: Counter[Tuple[Optional[int], Optional[int]]] = Counter()
-
-    for r in results:
-        if not r.get("Success"):
-            continue  # skip failed ones from the metrics
-        year = r.get("year")
-        month = r.get("month")
-        counter[(year, month)] += 1
-
-    print("=== CASES BY YEAR / MONTH ===")
-    for (year, month), count in sorted(
-        counter.items(),
-        key=lambda x: (x[0][0] or 0, x[0][1] or 0),
-    ):
-        year_str = str(year) if year is not None else "Unknown year"
-        if isinstance(month, int):
-            month_str = MONTH_NAMES.get(month, f"Month {month}")
-        else:
-            month_str = "Unknown month"
-        print(f"{year_str:<12} {month_str:<12} -> {count}")
+    # Final newline for cleaner terminal formatting
     print()
 
 
 def summarize_by_city(results: List[Dict[str, Any]]) -> None:
+    """
+    Aggregates the number of successful cases per city and prints a summary table.
+    """
+
+    # We use a Counter, which is a convenient dictionary subclass that automatically counts occurrences of keys. 
+    # Example:
+    #   counter["São Paulo"] += 1
+    #   counter["Santos"] += 1
+    # and so on.
     counter: Counter[str] = Counter()
 
+    # Iterate through all result records 
     for r in results:
+        # Skip rows flagged as failed extractions ("Success" == False),
         if not r.get("Success"):
             continue
+
+        # Extract the city field. If the field is None or missing,
+        # we normalize it to "Unknown" so it still contributes to the count.
         city = r.get("city") or "Unknown"
+
+        # Increase the count for that city.
         counter[city] += 1
 
     print("=== CASES BY CITY ===")
+
+    # We print results sorted by frequency, highest first.
+    # Counter.most_common() returns items ordered by descending count.
     for city, count in counter.most_common():
         print(f"{city:<25} -> {count}")
+
+    # Blank line at the end for better terminal readability.
     print()
+
 
 
 def summarize_by_occurrence(results: List[Dict[str, Any]]) -> None:
@@ -121,7 +146,6 @@ def summarize_by_occurrence(results: List[Dict[str, Any]]) -> None:
 
 
 def summarize_by_city_and_year(results: List[Dict[str, Any]]) -> None:
-    # Optional extra: breakdown by city + year
     grouped: Dict[str, Counter[int]] = defaultdict(Counter)
 
     for r in results:
@@ -142,21 +166,29 @@ def summarize_by_city_and_year(results: List[Dict[str, Any]]) -> None:
             print(f"    {label:<12} -> {count}")
     print()
 
-
 # -------------------------------------------------------------------
-# PLOTTING DASHBOARD WITH PLOTLY
+# PLOTTING dashboard using PLOTLY library already mentioned in the folder 00
 # -------------------------------------------------------------------
 def build_dashboard(results: List[Dict[str, Any]]) -> None:
-    # Convert to DataFrame for easier aggregations
+    """
+    Builds and renders a multi-panel analytical dashboard using Plotly.
+    The dashboard summarizes crime reports across different dimensions
+    (city, occurrence type, time, and year-over-year comparisons).
+    """
+
+    # Convert list of dictionaries into a DataFrame for easier grouping,
+    # aggregation, pivoting and sorting.
     df = pd.DataFrame(results)
 
+    # If nothing came from phase01, there is no value in plotting.
     if df.empty:
         print("No data available to plot.")
         return
 
-    # Use only successful records
-    df_success = df[df["Success"] == True].copy()  # noqa: E712
+    # Keep only successfully processed documents.
+    df_success = df[df["Success"] == True].copy()  # noqa: E712 -> explicit equality for clarity
 
+    # If all records failed, we skip plotting to avoid empty charts.
     if df_success.empty:
         print("No successful records to plot.")
         return
@@ -164,8 +196,10 @@ def build_dashboard(results: List[Dict[str, Any]]) -> None:
     # ------------------------------
     # Aggregations for charts
     # ------------------------------
+    # Each chart below corresponds to one or more aggregations produced
+    # using groupby() and pivot() operations.
 
-    # 1) Cases per city
+    # (1) Cases per city (geographic distribution)
     cases_city = (
         df_success
         .groupby("city", dropna=False)
@@ -173,9 +207,10 @@ def build_dashboard(results: List[Dict[str, Any]]) -> None:
         .reset_index(name="count")
         .sort_values("count", ascending=False)
     )
+    # Normalize missing cities to "Unknown" for consistent visualization.
     cases_city["city"] = cases_city["city"].fillna("Unknown")
 
-    # 2) Cases per occurrence type
+    # (2) Cases per occurrence type (crime distribution)
     cases_occ = (
         df_success
         .groupby("occurrence", dropna=False)
@@ -185,8 +220,7 @@ def build_dashboard(results: List[Dict[str, Any]]) -> None:
     )
     cases_occ["occurrence"] = cases_occ["occurrence"].fillna("Unknown")
 
-    # 3) Cases per year-month
-    # Guard: year / month might be None
+    # (3) Cases per year-month (temporal trend)
     df_success["year"] = df_success["year"].fillna(0).astype(int)
     df_success["month"] = df_success["month"].fillna(0).astype(int)
 
@@ -198,7 +232,7 @@ def build_dashboard(results: List[Dict[str, Any]]) -> None:
         .sort_values(["year", "month"])
     )
 
-    # Create a label like "2023-03" or "Unknown" if missing
+    # Create a YYYY-MM label for plotting. Unknown entries are preserved as "Unknown".
     def ym_label(row):
         year = row["year"]
         month = row["month"]
@@ -208,7 +242,7 @@ def build_dashboard(results: List[Dict[str, Any]]) -> None:
 
     cases_year_month["label"] = cases_year_month.apply(ym_label, axis=1)
 
-    # 4) Cases per city x year (for heatmap)
+    # (4) Cases per city × year (used for heatmap visualization)
     cases_city_year = (
         df_success
         .groupby(["city", "year"])
@@ -217,6 +251,7 @@ def build_dashboard(results: List[Dict[str, Any]]) -> None:
     )
     cases_city_year["city"] = cases_city_year["city"].fillna("Unknown")
 
+    # Pivot to make cities become rows and years become columns.
     pivot_city_year = (
         cases_city_year
         .pivot(index="city", columns="year", values="count")
@@ -224,82 +259,136 @@ def build_dashboard(results: List[Dict[str, Any]]) -> None:
         .sort_index()
     )
 
-    # ------------------------------
-    # Create 2x2 subplot dashboard
-    # ------------------------------
+    # (5) Cases per occurrence × year (2022 vs 2023 vs 2024 comparison)
+    cases_occ_year = (
+        df_success[df_success["year"].isin([2022, 2023, 2024])]
+        .groupby(["occurrence", "year"])
+        .size()
+        .reset_index(name="count")
+    )
+    cases_occ_year["occurrence"] = cases_occ_year["occurrence"].fillna("Unknown")
+
+    pivot_occ_year = (
+        cases_occ_year
+        .pivot(index="occurrence", columns="year", values="count")
+        .fillna(0)
+        .sort_index()
+    )
+
+    # ----------------------------------------------------------------------
+    # DASHBOARD LAYOUT (3 rows × 2 columns)
+    # ----------------------------------------------------------------------
+    # Row 1: city distribution and occurrence distribution
+    # Row 2: time trend        and city-year heatmap
+    # Row 3: year-over-year crime comparison (dedicated line to this chart)
+    # ----------------------------------------------------------------------
     fig = make_subplots(
-        rows=2,
+        rows=3,
         cols=2,
         subplot_titles=(
-            "Cases per City",
-            "Cases per Occurrence Type",
+            "Cases per City (All Years)",
+            "Cases per Occurrence Type (All Years)",
             "Cases per Year-Month",
             "Cases per City and Year (Heatmap)",
+            "Cases per Occurrence by Year",
         ),
         specs=[
             [{"type": "xy"},       {"type": "xy"}],
             [{"type": "xy"},       {"type": "heatmap"}],
+            [{"type": "xy", "colspan": 2}, None],
         ],
     )
 
-    # (1) Bar chart: Cases per City (row 1, col 1)
+    # (1) Cases per City — Bar Chart
     fig.add_trace(
         go.Bar(
             x=cases_city["city"],
             y=cases_city["count"],
             name="Cases per City",
         ),
-        row=1,
-        col=1,
+        row=1, col=1,
     )
 
-    # (2) Bar chart: Cases per Occurrence Type (row 1, col 2)
+    # (2) Cases per Occurrence Type — Bar Chart
     fig.add_trace(
         go.Bar(
             x=cases_occ["occurrence"],
             y=cases_occ["count"],
             name="Cases per Occurrence",
         ),
-        row=1,
-        col=2,
+        row=1, col=2,
     )
 
-    # (3) Bar chart: Cases per Year-Month (row 2, col 1)
+    # (3) Cases per Year-Month — Line Chart (trend view)
     fig.add_trace(
-        go.Bar(
+        go.Scatter(
             x=cases_year_month["label"],
             y=cases_year_month["count"],
+            mode="lines+markers",
             name="Cases per Year-Month",
+            marker=dict(size=8),
+            line=dict(width=2),
         ),
-        row=2,
-        col=1,
+        row=2, col=1,
     )
 
-    # (4) Heatmap: Cases per City and Year (row 2, col 2)
+    # (4) City × Year — Heatmap (trend + geography interaction)
     if not pivot_city_year.empty:
         fig.add_trace(
             go.Heatmap(
                 z=pivot_city_year.values,
-                x=[str(c) for c in pivot_city_year.columns],
+                x=[str(y) for y in pivot_city_year.columns],
                 y=pivot_city_year.index.tolist(),
                 coloraxis="coloraxis",
                 name="City-Year Heatmap",
             ),
-            row=2,
-            col=2,
+            row=2, col=2,
         )
 
-    # ------------------------------
-    # Layout / axes
-    # ------------------------------
+    # (5) Occurrence × Year — Grouped Bar Chart (YoY comparison)
+    if not pivot_occ_year.empty:
+        occ_index = pivot_occ_year.index.tolist()
+
+        # Helper function to return values per year or zeros if that year didn't appear.
+        def get_year_values(year: int) -> List[float]:
+            return pivot_occ_year[year].tolist() if year in pivot_occ_year.columns else [0] * len(occ_index)
+
+        # Manual palette for clarity (can be adjusted later)
+        year_configs = [
+            (2022, "2022", "blue"),
+            (2023, "2023", "red"),
+            (2024, "2024", "green"),
+        ]
+
+        for year, label, color in year_configs:
+            fig.add_trace(
+                go.Bar(
+                    x=occ_index,
+                    y=get_year_values(year),
+                    name=label,           
+                    marker_color=color,  
+                ),
+                row=3, col=1,
+            )
+
+    # Layout, axes, legend & sizing
     fig.update_layout(
         title="Police Cases Overview",
-        height=900,
-        showlegend=False,
+        height=1200,
         coloraxis=dict(colorscale="Blues"),
         margin=dict(l=40, r=40, t=80, b=40),
+        barmode="group",  # Ensures bars in row 3 appear grouped side-by-side
+        showlegend=True,
+        legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=1.05,
+            xanchor="center",
+            x=0.5,
+        )
     )
 
+    # Label axes for all charts for readability
     fig.update_xaxes(title_text="City", row=1, col=1)
     fig.update_yaxes(title_text="Number of Cases", row=1, col=1)
 
@@ -312,9 +401,11 @@ def build_dashboard(results: List[Dict[str, Any]]) -> None:
     fig.update_xaxes(title_text="Year", row=2, col=2)
     fig.update_yaxes(title_text="City", row=2, col=2)
 
-    # Render interactive dashboard
-    fig.show()
+    fig.update_xaxes(title_text="Occurrence Type", row=3, col=1)
+    fig.update_yaxes(title_text="Number of Cases", row=3, col=1)
 
+    # Render the full interactive dashboard.
+    fig.show()
 
 def main() -> None:
     # Adjust this to your structure if needed:
@@ -329,7 +420,6 @@ def main() -> None:
     # -------- Text summaries in terminal --------
     summarize_basic(results)
     summarize_errors(results, max_examples=5)
-    summarize_by_year_month(results)
     summarize_by_city(results)
     summarize_by_occurrence(results)
     summarize_by_city_and_year(results)
