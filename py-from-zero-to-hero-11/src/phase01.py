@@ -24,7 +24,7 @@ from agent_framework.openai import OpenAIChatClient
 
 
 # -----------------------------------------------------
-# OLLAMA CONFIGURATION (requested format)
+# CONFIGURATION
 # -----------------------------------------------------
 config_list = [
     {
@@ -34,6 +34,13 @@ config_list = [
         "price": [0, 0],  # prompt_price_per_1k, completion_price_per_1k
     },
 ]
+
+# Cooldown between requests to avoid hammering CPU / server
+COOLDOWN_SECONDS = 0.5  # adjust: 0.2, 0.5, 1.0, etc.
+
+# Retry config for transient connection issues
+MAX_RETRIES = 3
+BASE_RETRY_DELAY = 2  # seconds
 
 
 @dataclass
@@ -161,20 +168,54 @@ async def run_pipeline() -> List[CaseResult]:
         raise FileNotFoundError(f"No PDF files found in: {docs_dir}")
 
     for idx, pdf_path in enumerate(pdf_files, start=1):
-        # Pretty progress bar-ish feedback on one updating line
+        # Pretty progress feedback on one updating line
         bar = f"[{idx}/{total}]"
         sys.stdout.write(f"\r{bar} Processing: {pdf_path.name}")
         sys.stdout.flush()
 
         text = _extract_text_from_pdf(pdf_path)
-        result = await _extract_case(agent, text, pdf_path)
-        results.append(result)
 
-    # Final newline so the prompt doesn't stick to the progress line
+        # --- Retry loop for LLM call ---
+        last_exc: Optional[BaseException] = None
+        for attempt in range(1, MAX_RETRIES + 1):
+            try:
+                result = await _extract_case(agent, text, pdf_path)
+                results.append(result)
+                last_exc = None
+                break
+            except Exception as exc:  # noqa: BLE001 - generic is fine at this level
+                last_exc = exc
+                # move to new line so error message doesn't overwrite progress
+                sys.stdout.write("\n")
+                print(
+                    f"Error processing {pdf_path.name} "
+                    f"(attempt {attempt}/{MAX_RETRIES}): {exc}"
+                )
+                if attempt < MAX_RETRIES:
+                    delay = BASE_RETRY_DELAY * attempt
+                    print(f"Retrying in {delay} seconds...")
+                    await asyncio.sleep(delay)
+
+        if last_exc is not None:
+            # after all retries, skip file but continue pipeline
+            print(f"Skipping {pdf_path.name} after {MAX_RETRIES} failed attempts.")
+            continue
+
+        # --- Cooldown to avoid CPU / server overload ---
+        if COOLDOWN_SECONDS > 0:
+            await asyncio.sleep(COOLDOWN_SECONDS)
+
+    # Final newline so the shell prompt doesn't hug the progress line
     print()
 
+    # Write JSON with proper UTF-8 characters
     with output_path.open("w", encoding="utf-8") as handle:
-        json.dump([item.to_dict() for item in results], handle, indent=2)
+        json.dump(
+            [item.to_dict() for item in results],
+            handle,
+            indent=2,
+            ensure_ascii=False,
+        )
 
     return results
 
