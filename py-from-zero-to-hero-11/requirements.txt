@@ -1,3 +1,5 @@
 agent-framework --pre
 pypdf
 PyPDF2
+pandas
+plotly

@@ -36,7 +36,7 @@ config_list = [
 ]
 
 # Cooldown between requests to avoid hammering CPU / server
-COOLDOWN_SECONDS = 0.5  # adjust: 0.2, 0.5, 1.0, etc.
+COOLDOWN_SECONDS = 0.5  # adjust as needed: 0.2, 0.5, 1.0, etc.
 
 # Retry config for transient connection issues
 MAX_RETRIES = 3
@@ -51,6 +51,9 @@ class CaseResult:
     month: Optional[int]
     occurrence: Optional[str]
     source: str
+    # New fields for reliability
+    Success: bool = True
+    ERROR: Optional[str] = None
 
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -60,6 +63,8 @@ class CaseResult:
             "month": self.month,
             "occurrence": self.occurrence,
             "source": self.source,
+            "Success": self.Success,
+            "ERROR": self.ERROR,
         }
 
 
@@ -115,6 +120,8 @@ def _normalize_result(data: Dict[str, Any], source: Path) -> CaseResult:
         month=_coerce_int(data.get("month")),
         occurrence=str(occurrence).strip() if occurrence is not None else None,
         source=str(source),
+        # Success=True and ERROR=None by default (see dataclass defaults),
+        # but we could set explicitly if you prefer.
     )
 
 
@@ -153,7 +160,7 @@ async def _extract_case(agent: ChatAgent, text: str, source: Path) -> CaseResult
 async def run_pipeline() -> List[CaseResult]:
     base_dir = Path(__file__).resolve().parents[1]
     docs_dir = base_dir / "docs"
-    output_path = base_dir / "output.json"
+    output_path = "./output.json"
 
     if not docs_dir.exists():
         raise FileNotFoundError(f"Docs folder not found: {docs_dir}")
@@ -173,17 +180,37 @@ async def run_pipeline() -> List[CaseResult]:
         sys.stdout.write(f"\r{bar} Processing: {pdf_path.name}")
         sys.stdout.flush()
 
-        text = _extract_text_from_pdf(pdf_path)
+        # Extract PDF text first (if this throws, we catch below)
+        try:
+            text = _extract_text_from_pdf(pdf_path)
+        except Exception as exc:  # noqa: BLE001
+            # Fatal for this file, but not for the pipeline.
+            sys.stdout.write("\n")
+            print(f"Error reading PDF {pdf_path.name}: {exc}")
+            error_result = CaseResult(
+                district=None,
+                city=None,
+                year=None,
+                month=None,
+                occurrence=None,
+                source=str(pdf_path),
+                Success=False,
+                ERROR=str(exc),
+            )
+            results.append(error_result)
+            # continue with next file
+            continue
 
         # --- Retry loop for LLM call ---
         last_exc: Optional[BaseException] = None
+        result: Optional[CaseResult] = None
+
         for attempt in range(1, MAX_RETRIES + 1):
             try:
                 result = await _extract_case(agent, text, pdf_path)
-                results.append(result)
                 last_exc = None
                 break
-            except Exception as exc:  # noqa: BLE001 - generic is fine at this level
+            except Exception as exc:  # noqa: BLE001 - generic at this level
                 last_exc = exc
                 # move to new line so error message doesn't overwrite progress
                 sys.stdout.write("\n")
@@ -197,9 +224,23 @@ async def run_pipeline() -> List[CaseResult]:
                     await asyncio.sleep(delay)
 
         if last_exc is not None:
-            # after all retries, skip file but continue pipeline
-            print(f"Skipping {pdf_path.name} after {MAX_RETRIES} failed attempts.")
-            continue
+            # After all retries failed, record error in JSON and continue.
+            print(f"Giving up on {pdf_path.name} after {MAX_RETRIES} failed attempts.")
+            error_result = CaseResult(
+                district=None,
+                city=None,
+                year=None,
+                month=None,
+                occurrence=None,
+                source=str(pdf_path),
+                Success=False,
+                ERROR=str(last_exc),
+            )
+            results.append(error_result)
+        else:
+            # Successful processing
+            # result already has Success=True, ERROR=None from defaults
+            results.append(result)  # type: ignore[arg-type]
 
         # --- Cooldown to avoid CPU / server overload ---
         if COOLDOWN_SECONDS > 0:
@@ -208,7 +249,7 @@ async def run_pipeline() -> List[CaseResult]:
     # Final newline so the shell prompt doesn't hug the progress line
     print()
 
-    # Write JSON with proper UTF-8 characters
+    # Write JSON with proper UTF-8 characters and the new fields
     with output_path.open("w", encoding="utf-8") as handle:
         json.dump(
             [item.to_dict() for item in results],
