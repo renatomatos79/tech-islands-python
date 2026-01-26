@@ -1,0 +1,10 @@
+[
+    {
+        "district": "district name from pdf content",
+        "city": "city name from pdf content",
+        "year":  "must be a number from pdf content",
+        "month": "must be a number from pdf content",
+        "occurrence": "same from pdf",
+        "source": "pdf path"
+    }
+]
