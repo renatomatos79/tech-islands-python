@@ -123,3 +123,14 @@ A two-phase pipeline that classifies police case PDFs and then builds analytics:
 - Phase 02 loads the output and generates summaries/aggregations for dashboarding 📈
 - Uses Ollama (llama3.2) via Microsoft Agent Framework to structure unstructured reports 🧠
 - Designed to separate heavy classification from fast analytics rendering 🧪
+
+## (12) py-from-zero-to-hero-12
+### 🧾📊 What is it?
+An automated document extraction pipeline that combines OCR with a local LLM to produce structured JSON:
+
+- Accepts document images (`.png`, `.jpg`, `.jpeg`, single-page `.pdf`) as input 🖼️
+- Uses OCR (Tesseract) to extract raw text from real-world receipts/invoices 🔎
+- Leverages a local LLM via Ollama to interpret noisy OCR output and normalize fields 🧠
+- Outputs a predictable JSON array of `{ "field": "...", "value": "..." }` pairs ✅
+- Targets multiple document types (e.g., supermarket invoices, gas station receipts, medical receipts) 🧾
+- Designed to run fully offline (local OCR + local LLM) 🏠

@@ -163,3 +163,66 @@ source challenge/bin/activate
 pip install -r ./requirements.txt
 python3.11 ./src/phase01.py
 ```
+
+![alt text](image.png)
+
+## JSON output
+
+```json
+{
+  "IMG_9294.png": {
+    "ocr_text": "ria do Fran\n\nFarmacia Fura\npir. lec:\navenida Bombe 110\n\n‘eI -352 OV )\nCédigo Postal: 3880-94 i\nContribuinte: 506990826 A\n\nTelefone: 956591161 as\n(Chanada para a rede f1x@ nacional)\n\nEmail: ‘armaciadofuradourcégma || COM\n\nxjhS-Processado por Prograila\nCertificado n? 1665/A1\n\nFactura FR 1FR1/92283\n\nData: 2025-12-08 11:21\n\n(132143) (SV)\n\n| Sees sS see\n\nDesignacao\npyp......",
+    "fields": [
+      {
+        "field": "store_name",
+        "value": "Farmacia Fura"
+      },
+      {
+        "field": "street",
+        "value": "avenida Bombe 110"
+      },
+      {
+        "field": "postal_code",
+        "value": "3880-94 i"
+      },
+      {
+        "field": "owner",
+        "value": "506990826"
+      },
+      {
+        "field": "phone_number",
+        "value": "956591161"
+      },
+      {
+        "field": "email_address",
+        "value": "armaciadofuradourcégma || COM"
+      },
+      {
+        "field": "processed_by",
+        "value": "Prograila"
+      },
+      {
+        "field": "certificate_number",
+        "value": "1665/A1"
+      },
+      ....
+    ]
+  },
+  "IMG_9295.png": {
+    "ocr_text": "CNT Ovar\nsMEPCADOS 5.A.\nMODE TNENTE HIPERMERCADOS | A\nRUA JOAG, MEARE, N 505 4464-503 SENHOR\n\nHORA 475\n% Registad y sob n 502011\nNe P1004 147510, 9: 40% 627.000, 001EUR\nProdutor En. proi102979; EEE PT000291;\nOL PTOSOD282. pA PrOB000504; P.....",
+    "fields": [
+      {
+        "field": "address",
+        "value": "Rua Joago, Meare, nº 505, 4464-503 Senhor"
+      },
+      {
+        "field": "store_name",
+        "value": "Hipermercados TNENTE HIPERMERCADOS A"
+      },
+      {
+        "field": "issue_date",
+        "value": "2026-01-28T10:30"
+      },
+      .......
+      
+```
