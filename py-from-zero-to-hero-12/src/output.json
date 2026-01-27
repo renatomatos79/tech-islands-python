@@ -1,0 +1,82 @@
+{
+  "IMG_9294.png": {
+    "ocr_text": "ria do Fran\n\nFarmacia Fura\npir. lec:\navenida Bombe 110\n\n‘eI -352 OV )\nCédigo Postal: 3880-94 i\nContribuinte: 506990826 A\n\nTelefone: 956591161 as\n(Chanada para a rede f1x@ nacional)\n\nEmail: ‘armaciadofuradourcégma || COM\n\nxjhS-Processado por Prograila\nCertificado n? 1665/A1\n\nFactura FR 1FR1/92283\n\nData: 2025-12-08 11:21\n\n(132143) (SV)\n\n| Sees sS see\n\nDesignacao\npyp Pr.Ref IVA Qtd Estado % Valor\n\n=—— aE ae\n= er —— =\n——_— =—\n\nsrippostad Comp revest 400mg+10mg 16\n9.50. 0:00». 6% > 15.50 08\n\n",
+    "fields": [
+      {
+        "field": "store_name",
+        "value": "Farmacia Fura"
+      },
+      {
+        "field": "street_address",
+        "value": "avenida Bombe 110"
+      },
+      {
+        "field": "city",
+        "value": "ria do Fran"
+      },
+      {
+        "field": "cnpj_niss",
+        "value": ""
+      },
+      {
+        "field": "phone_number",
+        "value": "956591161"
+      },
+      {
+        "field": "postal_code",
+        "value": "3880-94"
+      },
+      {
+        "field": "tax_identification_number",
+        "value": "506990826"
+      },
+      {
+        "field": "tax_payer",
+        "value": ""
+      },
+      {
+        "field": "email",
+        "value": ""
+      },
+      {
+        "field": "issuer_name",
+        "value": "Prograila"
+      },
+      {
+        "field": "invoice_number",
+        "value": "FR 1FR1/92283"
+      },
+      {
+        "field": "issue_date",
+        "value": "2025-12-08 11:21"
+      },
+      {
+        "field": "total_amount",
+        "value": ""
+      },
+      {
+        "field": "quantity",
+        "value": ""
+      },
+      {
+        "field": "item_name",
+        "value": "srippostad Comp revest 400mg+10mg"
+      },
+      {
+        "field": "unit_price",
+        "value": "9.50"
+      },
+      {
+        "field": "discount_percentage",
+        "value": "6%"
+      },
+      {
+        "field": "discount_amount",
+        "value": "15.50"
+      }
+    ]
+  },
+  "IMG_9295.png": {
+    "error": "Model returned invalid JSON:\n[\n  { \"cnpj\": \"\", \"description\": \"\",\n    \"doc_number\": \"FS AAP204/026754\",\n    \"date_issued\": \"\",\n    \"date_valid\": \"\",\n    \"document_type\": \"Fatura Simplificada\",\n    \"file_origin\": \"Hipermercados A\", \n    \"issue_date\": \"\",\n    \"nif_cnpj\": \"\",\n    \"number_of_items\": \"\",\n    \"payment_method\": \"\",\n    \"price_unit\": \"€ 627,00\",\n    \"product_name\": [\n      {\n        \"product_type\": \"Chocolate Pintarolas\",\n        \"quantity\": \"8x220\"\n      },\n      {\n        \"product_type\": \"Mochas\",\n        \"quantity\": \"poupança\"\n      }\n    ],\n    \"store_info\": \"TNENTE HIPERMERCADOS A\",\n    \"total_amount\": \"€ 22.04 eZ 23, 36%\",\n    \"voucher_number\": \"\n\", \"voucher_date\": \"\"\n  },\n  {\n     \"amount_descontos_poupanca\": \"26.07\"\n    }"
+  }
+}
