@@ -226,3 +226,66 @@ python3.11 ./src/phase01.py
       .......
       
 ```
+
+# Running the second app objects.py
+Run Docker Ollama (port 11435):
+```bash
+docker run -d --name ollama \
+  -p 11435:11434 \
+  --network=backend-bridge-network \
+  -v ollama:/root/.ollama \
+  --cpus="4.0" \
+  --memory="8g" \
+  -e OLLAMA_NUM_PARALLEL=1 \
+  -e OLLAMA_NUM_THREADS=4 \
+  ollama/ollama
+```
+
+Pull the `llama3.2` model:
+```bash
+docker exec -it ollama bash
+ollama pull llava:7b
+```
+
+Confirm the model was pulled:
+```bash
+docker exec -it ollama bash
+ollama list
+```
+
+docker exec -it <container_id> /bin/bash
+ollama pull llava
+
+docker ps
+CONTAINER ID   IMAGE           COMMAND               CREATED      STATUS       PORTS                                             NAMES
+c31b611ee2b5   ollama/ollama   "/bin/ollama serve"   5 days ago   Up 6 hours   0.0.0.0:11435->11434/tcp, [::]:11435->11434/tcp   ollama
+(challenge) renatomatos@PT-D144L6PXF0 python-adventure % docker exec -it ollama /bin/bash
+
+
+root@c31b611ee2b5:/# ollama pull llava
+pulling manifest 
+pulling 170370233dd5: 100% ▕████████████████████████████████████████████████████████████████████████████████████████████████▏ 4.1 GB                         
+pulling 72d6f08a42f6: 100% ▕████████████████████████████████████████████████████████████████████████████████████████████████▏ 624 MB                         
+pulling 43070e2d4e53: 100% ▕████████████████████████████████████████████████████████████████████████████████████████████████▏  11 KB                         
+pulling c43332387573: 100% ▕████████████████████████████████████████████████████████████████████████████████████████████████▏   67 B                         
+pulling ed11eda7790d: 100% ▕████████████████████████████████████████████████████████████████████████████████████████████████▏   30 B                         
+pulling 7c658f9561e5: 100% ▕████████████████████████████████████████████████████████████████████████████████████████████████▏  564 B                         
+verifying sha256 digest 
+writing manifest 
+success 
+
+ollama list
+NAME               ID              SIZE      MODIFIED       
+llava:latest       8dd30f6b0cb1    4.7 GB    13 minutes ago    
+llama3.2:latest    a80c4f17acd5    2.0 GB    7 days ago   
+
+lets validate ollama api is ok
+curl http://localhost:11435/api/tags
+{"models":[{"name":"llava:latest","model":"llava:latest","modified_at":"2026-01-27T15:59:45.933695009Z","size":4733363377,"digest":"8dd30f6b0cb19f555f2c7a7ebda861449ea2cc76bf1f44e262931f45fc81d081","details":{"parent_model":"","format":"gguf","family":"llama","families":["llama","clip"],"parameter_size":"7B","quantization_level":"Q4_0"}},{"name":"llama3.2:latest","model":"llama3.2:latest","modified_at":"2026-01-20T14:57:16.960827012Z","size":2019393189,"digest":"a80c4f17acd55265feec403c7aef86be0c25983ab279d83f3bcd3abbcb5b8b72","details":{"parent_model":"","format":"gguf","family":"llama","families":["llama"],"parameter_size":"3.2B","quantization_level":"Q4_K_M"}}]}%                               
+
+```bash
+python3.11 -m venv challenge
+source challenge/bin/activate
+pip install -r ./requirements.txt
+python3.11 ./src/objects.py
+```
