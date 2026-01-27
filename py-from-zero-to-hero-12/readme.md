@@ -7,10 +7,67 @@ The pipeline must:
 - Process them through OCR
 - Leverage an LLM to produce a normalized JSON array containing every relevant field and value present in the document
 
-Isn´t a sort of tasks that can simplify be done by a simple OCR library?
-No, we are leverage the agent feature in order to make easier the process to indentify the fields and format the output.
-OCR is being used to extract the text but the content is not well formated.. for instance this is the OCR output and for this output
-we have tbis mapped JSON
+## Isn’t It Overkill to Add an LLM If OCR Can Handle This?
+
+A traditional OCR library will only extract raw text from the image. This library doesn’t understand the structure, semantic meaning, or intent behind the content. For example, OCR doesn’t know whether `22,04€` refers to a unit price, a tax amount, a discount, a subtotal, or the final total. It also won’t normalize field names, separate line items, infer document type, or produce machine-readable output.
+
+In our case, we are combining two steps:
+- OCR → converts the image to plain text
+- Agent/LLM → interprets that text and transforms it into structured JSON fields
+
+The agent layer is doing the heavy lifting:
+- Identifying field boundaries
+- Classifying information
+- Normalizing field names
+- Dealing with noise
+- Extracting nested values (e.g., items, dates, totals)
+- Outputting a predictable JSON schema
+
+Here’s why OCR alone isn’t enough:
+- OCR output is usually noisy, fragmented, or non-linear
+- Invoices differ wildly between vendors
+- Multiple layouts, languages, tax systems, and fonts
+- Signal-to-noise is high (headers, disclaimers, footnotes, coupons, ads, legal text)
+- No “field” notion (OCR just dumps characters)
+
+For example, given this OCR result:
+
+```text
+SUPERMERCADOS A
+FS AAP204/026754
+Chocolate Pintarolas 8x220
+€ 22,04
+poupança 6%
+Total € 23,36
+```
+
+A human can easily identify these fields:
+- `store_name = Supermercados A`
+- `invoice_number = FS AAP204/026754`
+- `item_name = Chocolate Pintarolas`
+- `quantity = 8x220`
+- `total_amount = 23.36`
+- `discount = 6%`
+
+But OCR libraries do not do that.
+
+Our pipeline converts this into something structured, like:
+
+```json
+{
+  "store_name": "Supermercados A",
+  "invoice_number": "FS AAP204/026754",
+  "items": [
+    {
+      "product_name": "Chocolate Pintarolas",
+      "quantity": "8x220",
+      "unit_price": "22.04",
+      "discount": "6%"
+    }
+  ],
+  "total_amount": "23.36"
+}
+```
 
 ## Document Types
 
@@ -52,7 +109,7 @@ A supermarket invoice might produce output such as:
 ```json
 [
   { "field": "store_name", "value": "Supermarket XPTO" },
-  { "field": "cnpj", "value": "12.345.678/0001-99" },
+  { "field": "contribuinte", "value": "500997833" },
   { "field": "issue_date", "value": "2026-01-28" },
   { "field": "item_name_1", "value": "Rice 5kg" },
   { "field": "item_price_1", "value": "25.90" },
@@ -85,15 +142,22 @@ The challenge is considered successful if:
 4. The system runs offline (local OCR + local LLM)
 5. Output remains consistent across document variations
 
-# Installing OS tools
+## Installing OS Tools
 
-```
+macOS:
+```bash
 brew install tesseract
 ```
 
-# Running our APP
-
+Linux: 
+```bash
+sudo apt-get install tesseract-ocr
 ```
+
+
+## Running the App
+
+```bash
 python3.11 -m venv challenge
 source challenge/bin/activate
 pip install -r ./requirements.txt

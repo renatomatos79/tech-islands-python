@@ -21,6 +21,13 @@ IMAGES_FOLDER = "images"
 OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", "http://localhost:11435/v1")
 OLLAMA_MODEL_ID = os.getenv("OLLAMA_MODEL_ID", "llama3.2")
 
+# this big instruction block \0/ exists to make the model behave like a
+# deterministic extraction engine instead of a creative writer, so we can
+# reliably plug its output into our Python code without surprises:
+# - define a strict contract for the output
+# - reduce ambiguity for the model
+# - enforce a consistent schema
+# - protect the pipeline from JSON errors
 AGENT_INSTRUCTIONS = """
 You are an AI specialized in extracting structured data from real-world documents.
 
@@ -36,7 +43,7 @@ Your goal:
 Output format (example):
 [
   { "field": "store_name", "value": "Supermarket XPTO" },
-  { "field": "cnpj", "value": "12.345.678/0001-99" },
+  { "field": "contribuinte", "value": "506990826" },
   { "field": "issue_date", "value": "2026-01-28" },
   { "field": "total_amount", "value": "34.40" }
 ]
@@ -48,6 +55,11 @@ Rules:
 - IMPORTANT: The response MUST be valid JSON. Do NOT wrap it in markdown fences.
 - No trailing commas.
 - Do NOT add any natural language outside the JSON.
+- Do not output nested JSON objects or arrays. Flatten all information into { "field": "...", "value": "..." } form. 
+- Each piece of extracted information must have exactly one field and one value.
+- If the invoice has multiple line items, output them as:
+{ "field": "item_1", "value": "Chocolate Pintarolas 8x220" }
+{ "field": "item_2", "value": "Mochas (poupança)" }
 """
 
 # ----------------------------
@@ -61,8 +73,8 @@ def create_extraction_agent():
     """
     chat_client = OpenAIChatClient(
         model_id=OLLAMA_MODEL_ID,
-        api_key="ollama",              # dummy key, Ollama ignores it
-        base_url=OLLAMA_BASE_URL,      # point to Ollama's OpenAI-compatible endpoint
+        api_key="ollama",  # a minor reminder.. for ollama we can use an empty string            
+        base_url=OLLAMA_BASE_URL,    
     )
 
     agent = ChatAgent(
@@ -83,6 +95,7 @@ def ocr_image_to_text(image_path: str) -> str:
     text = pytesseract.image_to_string(image, lang="por+eng")
     return text
 
+# Thanks stackoverflow \0/
 def extract_field_value_pairs_fallback(content: str) -> List[Dict[str, Any]]:
     """
     Fallback parser when JSON is invalid:
@@ -114,17 +127,17 @@ OCR TEXT:
 
     content = getattr(result, "text", str(result)).strip()
 
-    # Remove possíveis fences ```json ... ```
+    # Remove possible fences ```json ... ```
     if content.startswith("```"):
         content = content.strip("`")
         if content.lower().startswith("json"):
             content = content[4:].strip()
 
-    # 1ª tentativa: parse direto
+    # 1ª Try to parse the JSON with a fallback
     try:
         parsed = json.loads(content)
     except json.JSONDecodeError:
-        # pequena tentativa de correção simples (falta de colchete final)
+        # fixing possible missed []
         s = content.strip()
         if s.startswith("[") and not s.rstrip().endswith("]"):
             s = s.rstrip() + "]"
@@ -135,14 +148,14 @@ OCR TEXT:
         else:
             parsed = None
 
-        # se ainda deu ruim, usa o fallback por regex
+        # maybe a second shot using regex :(
         if parsed is None:
             fallback = extract_field_value_pairs_fallback(content)
             if not fallback:
                 raise ValueError(f"Model returned invalid JSON:\n{content}")
             return fallback
 
-    # Garantir que temos um array
+    # at the end we need an array to build our dictionary
     if isinstance(parsed, dict):
         parsed = [parsed]
     if not isinstance(parsed, list):
@@ -167,7 +180,7 @@ async def process_all_images():
         print(f"No images found in folder '{IMAGES_FOLDER}'.")
         return
     
-    # build the output path
+    # build the output path where output.json file is going to be placed
     base_dir = Path(__file__).resolve().parents[1]
     output_path = base_dir / "src" / "output.json"
 
@@ -181,7 +194,7 @@ async def process_all_images():
 
         try:
             fields = await extract_fields_from_text(agent, ocr_text)
-            # fields is already a list of { "field": ..., "value": ... }
+            # fields is already a list of { "field": ..., "value": ... } along with the extracted OCR content
             results[filename] = {
                 "ocr_text": ocr_text,
                 "fields": fields
