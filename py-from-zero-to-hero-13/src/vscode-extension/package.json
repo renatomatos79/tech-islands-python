@@ -2,7 +2,7 @@
   "name": "python-adventure",
   "displayName": "Python Adventure Smart Code Assistant",
   "description": "Generate tests, add header comments and fix errors using your own LLM API.",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "publisher": "Renato Matos",
   "engines": {
     "vscode": "^1.84.0"
@@ -12,6 +12,11 @@
     "url": "https://github.com/renatomatos79/python-adventure.git"
   },
   "license": "MIT",
+  "icon": "icon.png",
+  "galleryBanner": {
+    "color": "#1e1e1e",
+    "theme": "dark"
+  },
   "main": "./out/extension.js",
   "activationEvents": [
     "onCommand:python-adventure.setApiEndpoint",
@@ -74,3 +79,5 @@
     "vsce": "^2.15.0"
   }
 }
+
+

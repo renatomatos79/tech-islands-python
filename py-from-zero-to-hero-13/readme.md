@@ -256,7 +256,7 @@ From vscode-extension folder, select the vsix file and click on the Blue Install
 ![alt text](./imgs/image-2.png)
 
 Once the extension is available let´s test it
-![alt text](./imgs/image-3.png)
+![alt text](./imgs/image-ext.png)
 
 Into the demo folder, open the main.py file
 Select the invalid function block
