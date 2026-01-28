@@ -2,7 +2,7 @@
   "name": "python-adventure",
   "displayName": "Python Adventure Smart Code Assistant",
   "description": "Generate tests, add header comments and fix errors using your own LLM API.",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "publisher": "Renato Matos",
   "engines": {
     "vscode": "^1.84.0"
@@ -64,7 +64,8 @@
   "scripts": {
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
-    "build": "vsce package"
+    "vscode:prepublish": "npm run compile",
+    "build": "npm run compile && vsce package"
   },
   "devDependencies": {
     "typescript": "^5.0.0",

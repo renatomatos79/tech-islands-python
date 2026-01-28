@@ -240,11 +240,11 @@ async function runTaskOnSelection(
         };
 
         if (task === 'generate_tests') {
-          await handleGenerateTestsResult(document, languageId, body.updated_code);
+          await handleGenerateTestsResult(document, languageId, stripCodeFences(body.updated_code));
         } else {
           // For add_header_comments and fix_errors: replace code in place
           await editor.edit((editBuilder) => {
-            editBuilder.replace(range, body.updated_code);
+            editBuilder.replace(range, stripCodeFences(body.updated_code));
           });
         }
 
