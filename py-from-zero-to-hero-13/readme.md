@@ -354,3 +354,148 @@ from main import calc
 You should see the terminal output window:
 
 ![Test output](./imgs/image-9.png)
+
+
+# Let's build another topic: breaking down the VS Code extension
+Inside the `vscode-extension` folder we have the core files. Let's start with `package.json`.
+```json
+{
+  "name": "python-adventure",
+  "displayName": "Python Adventure Smart Code Assistant",
+  "description": "Generate tests, add header comments and fix errors using your own LLM API.",
+  "version": "0.0.9",
+  "publisher": "Renato Matos",
+  "engines": {
+    "vscode": "^1.84.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/renatomatos79/python-adventure.git"
+  },
+  "license": "MIT",
+  "icon": "icon.png",
+  "galleryBanner": {
+    "color": "#1e1e1e",
+    "theme": "dark"
+  },
+  "main": "./out/extension.js",
+```
+
+These initial fields describe the extension and include:\n+- extension name and display name\n+- version used to build the `.vsix` file\n+- publisher\n+- supported VS Code engine version\n+- source repository\n+- license\n+- extension icon and basic theme settings
+
+## activationEvents section
+These define when the extension is activated.
+```json
+"activationEvents": [
+    "onCommand:python-adventure.setApiEndpoint",
+    "onCommand:python-adventure.generateTests",
+    "onCommand:python-adventure.addHeaderComments",
+    "onCommand:python-adventure.fixErrors"
+],
+```
+
+`onCommand:<command-id>`\n+- Activate the extension when that command is executed.\n+- Command IDs must match the `commands` section in `package.json`.\n+\n+What each event means:
+
+`onCommand:python-adventure.setApiEndpoint` activates when the user runs `python-adventure.setApiEndpoint`.
+
+`onCommand:python-adventure.generateTests` activates when test generation is triggered.
+
+`onCommand:python-adventure.addHeaderComments` activates when the user asks to add header comments.
+
+`onCommand:python-adventure.fixErrors` activates when the user requests error fixing.
+
+**Commands can be triggered by:**
+
+- Command Palette (Ctrl+Shift+P)
+- Keyboard shortcuts
+- Context menus
+- API calls from other extensions
+
+**Important:**
+
+For each command there is a corresponding task implemented in `src/extension.ts`. Each command ID maps to an internal handler that runs the appropriate logic.
+
+## contributes section
+The `contributes` section tells VS Code which features the extension adds. Examples include:
+
+- commands
+- menus
+- keybindings
+- languages
+- themes
+- snippets
+
+In this project, we contribute commands and menu entries.
+```json
+
+"commands": [
+  {
+    "command": "python-adventure.generateTests",
+    "title": "Python Adventure: Generate Unit Tests"
+  },
+  ...
+]
+```
+
+Each item defines a command with two fields:
+
+`title`: Human-friendly label shown in the UI (Command Palette, etc.).
+
+`command`: Internal ID used in code. This must match what your extension listens for.
+
+For example, in TypeScript we register the command like this:
+
+```ts
+vscode.commands.registerCommand("python-adventure.generateTests", handler);
+```
+
+## menus section
+
+
+```json
+"menus": {
+  "editor/context": [
+    {
+      "command": "python-adventure.generateTests",
+      "group": "python-adventure",
+      "when": "editorHasSelection"
+    },
+    ...
+  ]
+}
+```
+
+This defines where commands appear in the VS Code UI. Here, `editor/context` means:
+
+Right-click context menu inside the editor.
+
+**Breaking down one menu entry:**
+
+`command`: Which command to show in that menu.
+
+`group`: Controls ordering and grouping in the menu. Optional but helps organize layout.
+
+`when`: Determines when it should be visible. 
+
+`editorHasSelection` means only show if the user has selected text.
+
+So the UX becomes:
+User selects some code, right-clicks, and sees **Generate Tests** + **Fix Errors**.
+
+User with no selection only sees **Run Tests**.
+
+## scripts section
+
+```json
+ "scripts": {
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "vscode:prepublish": "npm run compile",
+    "build": "npm run compile && vsce package"
+  },
+```
+
+- `compile`: Runs TypeScript using `tsconfig.json` and converts `.ts` to `.js`.
+- `watch`: Same as compile, but watches for file changes and recompiles automatically while editing.
+- `vscode:prepublish`: VS Code uses this hook before publishing or packaging. It compiles everything first.
+- `build`: Runs `npm run compile` and then `vsce package`.
