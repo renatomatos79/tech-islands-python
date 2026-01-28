@@ -143,3 +143,12 @@ Objects challenge notes (`src/objects.py`):
 - Sends Base64-encoded images to Ollama (`llava:7b`) via `/api/chat` 🧠
 - Enforces strict JSON output: `{ "objects": [...], "summary": "..." }` ✅
 - Includes light cleanup to handle model noise (extra text/code fences) 🧹
+
+## (13) py-from-zero-to-hero-13
+### 🧩🧠 What is it?
+A two-part build that combines a local LLM API with a custom VS Code extension:
+
+- FastAPI service that calls Ollama (`qwen2.5-coder`) for code tasks (fix errors, add header comments, generate tests) 🧠
+- Simple `/ping` health check plus `/analyze` task endpoint for editor integrations 🔌
+- VS Code extension UI that sends selected code to the API and shows the updated result 🧩
+- Local-first workflow: run Ollama + API locally, then drive code updates inside VS Code 🏠
