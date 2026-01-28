@@ -35,13 +35,31 @@ export function activate(context: vscode.ExtensionContext) {
     }
   );
 
+  const runTestsCmd = vscode.commands.registerCommand(
+    'python-adventure.runTests',
+    async () => {
+      const task = new vscode.Task(
+        { type: 'python-adventure' },
+        vscode.TaskScope.Workspace,
+        'Run Python Tests',
+        'python-adventure',
+        new vscode.ShellExecution('pytest -q')
+      );
+      vscode.tasks.executeTask(task);
+    }
+  );
+
   context.subscriptions.push(
     setEndpointCmd,
     generateTestsCmd,
     addHeaderCommentsCmd,
-    fixErrorsCmd
+    fixErrorsCmd,
+    runTestsCmd
   );
 }
+
+
+
 
 export function deactivate() {
   console.log('Python Adventure extension deactivated');
@@ -177,11 +195,11 @@ async function runTaskOnSelection(
   // If no selection, operate on the whole file
   const range = selection.isEmpty
     ? new vscode.Range(
-        0,
-        0,
-        document.lineCount - 1,
-        document.lineAt(document.lineCount - 1).text.length
-      )
+      0,
+      0,
+      document.lineCount - 1,
+      document.lineAt(document.lineCount - 1).text.length
+    )
     : selection;
 
   const code = document.getText(range);

@@ -1,5 +1,5 @@
-def register_user(name, age=18, *skills, active=True, **metadata):
-    print(name, age, skills, active, metadata)
+def calc(a, b):
+    return a * b
 
-register_user("Renato")
-register_user("Renato", 35, "Python", "C#", active=False, country="Portugal")
+print(calc(1, 2))
+print(calc(5,8))

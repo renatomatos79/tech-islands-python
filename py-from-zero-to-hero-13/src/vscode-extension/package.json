@@ -2,7 +2,7 @@
   "name": "python-adventure",
   "displayName": "Python Adventure Smart Code Assistant",
   "description": "Generate tests, add header comments and fix errors using your own LLM API.",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "publisher": "Renato Matos",
   "engines": {
     "vscode": "^1.84.0"
@@ -36,19 +36,27 @@
       {
         "command": "python-adventure.fixErrors",
         "title": "Python Adventure: Fix Errors"
+      },
+      {
+        "command": "python-adventure.runTests",
+        "title": "Python Adventure: Run Tests"
       }
     ],
     "menus": {
       "editor/context": [
         {
-        "command": "python-adventure.generateTests",
-        "group": "python-adventure",
-        "when": "editorHasSelection"
+          "command": "python-adventure.generateTests",
+          "group": "python-adventure",
+          "when": "editorHasSelection"
         },
         {
           "command": "python-adventure.fixErrors",
           "group": "python-adventure",
           "when": "editorHasSelection"
+        },
+        {
+          "command": "python-adventure.runTests",
+          "group": "python-adventure"
         }
       ]
     }
