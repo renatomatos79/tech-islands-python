@@ -126,11 +126,20 @@ A two-phase pipeline that classifies police case PDFs and then builds analytics:
 
 ## (12) py-from-zero-to-hero-12
 ### 🧾📊 What is it?
-An automated document extraction pipeline that combines OCR with a local LLM to produce structured JSON:
+Two challenges:
+1) An automated document extraction pipeline that combines OCR with a local LLM to produce structured JSON.
+2) A vision pipeline that extracts objects + a short summary from images using LLaVA (`objects.py`).
 
+Document extraction highlights:
 - Accepts document images (`.png`, `.jpg`, `.jpeg`, single-page `.pdf`) as input 🖼️
 - Uses OCR (Tesseract) to extract raw text from real-world receipts/invoices 🔎
 - Leverages a local LLM via Ollama to interpret noisy OCR output and normalize fields 🧠
 - Outputs a predictable JSON array of `{ "field": "...", "value": "..." }` pairs ✅
 - Targets multiple document types (e.g., supermarket invoices, gas station receipts, medical receipts) 🧾
 - Designed to run fully offline (local OCR + local LLM) 🏠
+
+Objects challenge notes (`src/objects.py`):
+- Scans `images-to-extract` and processes each image in a batch 🗂️
+- Sends Base64-encoded images to Ollama (`llava:7b`) via `/api/chat` 🧠
+- Enforces strict JSON output: `{ "objects": [...], "summary": "..." }` ✅
+- Includes light cleanup to handle model noise (extra text/code fences) 🧹
