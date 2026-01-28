@@ -148,7 +148,7 @@ uvicorn main:app --reload --host 0.0.0.0 --port 8000
 Line-by-line meaning:
 - uvicorn → runs the FastAPI app (ASGI server)
 - main:app → load app object from main.py
-- --reload → auto-restart the server when you change code (dev only)
+- --reload → auto-restart the server when we change code (dev only)
 - --host 0.0.0.0 → make the server accessible from outside the machine (not just localhost)
 - --port 8000 → expose the server on port 8000
 
@@ -351,7 +351,7 @@ from main import calc
 
 ![Run tests](./imgs/image-8.png)
 
-You should see the terminal output window:
+We should see the terminal output window:
 
 ![Test output](./imgs/image-9.png)
 
@@ -362,7 +362,7 @@ Inside the `vscode-extension` folder we have the core files. Let's start with `p
 {
   "name": "python-adventure",
   "displayName": "Python Adventure Smart Code Assistant",
-  "description": "Generate tests, add header comments and fix errors using your own LLM API.",
+  "description": "Generate tests, add header comments and fix errors using our own LLM API.",
   "version": "0.0.9",
   "publisher": "Renato Matos",
   "engines": {
@@ -441,7 +441,7 @@ Each item defines a command with two fields:
 
 `title`: Human-friendly label shown in the UI (Command Palette, etc.).
 
-`command`: Internal ID used in code. This must match what your extension listens for.
+`command`: Internal ID used in code. This must match what our extension listens for.
 
 For example, in TypeScript we register the command like this:
 
@@ -499,3 +499,90 @@ User with no selection only sees **Run Tests**.
 - `watch`: Same as compile, but watches for file changes and recompiles automatically while editing.
 - `vscode:prepublish`: VS Code uses this hook before publishing or packaging. It compiles everything first.
 - `build`: Runs `npm run compile` and then `vsce package`.
+
+## tsconfig.json file
+`tsconfig.json` tells the TypeScript compiler how to convert TypeScript (`.ts`) into JavaScript (`.js`).\n+Think of it as:\n+> “Here is how I want TypeScript to behave in this project.”
+\n+For this extension we configure the compiler as follows:
+```json
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "commonjs",
+    "lib": ["ES2020"],
+    "outDir": "out",
+    "rootDir": "src",
+    "strict": true,
+    "sourceMap": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["src"]
+}
+
+```
+
+### compilerOptions
+These settings affect how TypeScript compiles code.
+
+- `target: "ES2020"`  
+When generating JavaScript, use ES2020 features (async/await, classes, etc.).
+
+- `module: "commonjs"`
+Defines the module system for imports/exports. CommonJS is what Node.js uses:
+
+```ts
+module.exports = ...
+const x = require('...')
+```
+
+- `lib: ["ES2020"]`
+Tells TypeScript which built-in APIs exist in our environment (Promise, Map, Set, etc.).
+
+- `outDir: "out"`
+Generated `.js` files go into the `out/` folder.
+
+- `rootDir: "src"`
+Our `.ts` source files live in `src/`.
+
+- `strict: true`
+Enables all strict type checks, which helps catch bugs early (undefined variables, wrong types, missing returns).
+
+- `sourceMap: true`
+Generates `.map` files so we can debug TypeScript inside VS Code while running JavaScript.
+
+- `esModuleInterop: true`
+Lets us mix module styles:
+```javascript
+import fs from "fs"
+```
+
+instead of:
+```javascript
+import * as fs from "fs"
+```
+
+- skipLibCheck: true
+Skips type checking inside libraries we install via npm.
+Builds become faster, errors become less noisy.
+
+- forceConsistentCasingInFileNames: true
+Prevents bugs where file paths differ by upper/lowercase — especially useful on Windows vs Linux.
+Example bug without it:
+
+```javascript
+import "./Utils"
+import "./utils"
+```
+
+As a result, Linux would break, Windows wouldn’t.
+
+include:
+```json
+"include": ["src"]
+```
+
+“Only compile .ts files inside the src folder.”
+
+If you wish to learn more about TypeScript I have this amazing Udemy training
+https://www.udemy.com/course/microfrontend-na-pratica/
