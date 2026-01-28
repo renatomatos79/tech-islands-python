@@ -227,7 +227,43 @@ python3.11 ./src/phase01.py
       
 ```
 
-# Running the second app objects.py
+# Challenge Overview: Extracting Objects from Images
+In this challenge, we are going to build a vision-powered pipeline that scans a folder of images and automatically answers two key questions for each one:
+What objects are present in the image?
+What is this image  about? 
+To do this, we’ll combine a local vision LLM (llava:7b running on Ollama) with a small amount of Python glue code that:
+Loads each image from the images-to-extract folder
+Encodes it as Base64 and sends it to the Ollama /api/chat endpoint
+Asks the model (via a carefully crafted prompt) to return only valid JSON in a strict format:
+{
+  "objects": ["object1", "object2", "..."],
+  "summary": "short sentence describing what this image is about"
+}
+
+This challenge is about more than just calling a model once: it’s about designing a batch-friendly image analysis that:
+Handles noisy model outputs (extra text, code fences, etc.)
+Enforces a predictable JSON schema
+Can be reused in future steps (e.g., storing results in a database, building a UI, or combining with OCR for text-heavy images)
+
+## Why llava model?
+Unlike pure OCR or pure LLM models, LLaVA is trained to understand scenes and answer questions like:
+“What objects do you see?”
+“What is happening in the image?”
+“Is this a kitchen or a workshop?”
+“Does this look dangerous?”
+“What style is this painting?”
+“Is the car damaged?”
+So instead of just outputting text, it provides semantic understanding, which is crucial for tasks like:
+Automated labeling
+Vision QA
+Robotics
+Safety monitoring
+Dataset annotation
+RAG on images
+
+## Running the second app objects.py
+Before running the second app, we need to optimize our ollama container and also pull another image model named `llava:7b`
+
 Run Docker Ollama (port 11435):
 ```bash
 docker run -d --name ollama \
@@ -241,26 +277,11 @@ docker run -d --name ollama \
   ollama/ollama
 ```
 
-Pull the `llama3.2` model:
+Pull the `llava:7b` model:
 ```bash
 docker exec -it ollama bash
 ollama pull llava:7b
 ```
-
-Confirm the model was pulled:
-```bash
-docker exec -it ollama bash
-ollama list
-```
-
-docker exec -it <container_id> /bin/bash
-ollama pull llava
-
-docker ps
-CONTAINER ID   IMAGE           COMMAND               CREATED      STATUS       PORTS                                             NAMES
-c31b611ee2b5   ollama/ollama   "/bin/ollama serve"   5 days ago   Up 6 hours   0.0.0.0:11435->11434/tcp, [::]:11435->11434/tcp   ollama
-(challenge) renatomatos@PT-D144L6PXF0 python-adventure % docker exec -it ollama /bin/bash
-
 
 root@c31b611ee2b5:/# ollama pull llava
 pulling manifest 
@@ -274,18 +295,59 @@ verifying sha256 digest
 writing manifest 
 success 
 
+```bash
+docker exec -it ollama bash
 ollama list
-NAME               ID              SIZE      MODIFIED       
-llava:latest       8dd30f6b0cb1    4.7 GB    13 minutes ago    
-llama3.2:latest    a80c4f17acd5    2.0 GB    7 days ago   
+```
 
-lets validate ollama api is ok
-curl http://localhost:11435/api/tags
-{"models":[{"name":"llava:latest","model":"llava:latest","modified_at":"2026-01-27T15:59:45.933695009Z","size":4733363377,"digest":"8dd30f6b0cb19f555f2c7a7ebda861449ea2cc76bf1f44e262931f45fc81d081","details":{"parent_model":"","format":"gguf","family":"llama","families":["llama","clip"],"parameter_size":"7B","quantization_level":"Q4_0"}},{"name":"llama3.2:latest","model":"llama3.2:latest","modified_at":"2026-01-20T14:57:16.960827012Z","size":2019393189,"digest":"a80c4f17acd55265feec403c7aef86be0c25983ab279d83f3bcd3abbcb5b8b72","details":{"parent_model":"","format":"gguf","family":"llama","families":["llama"],"parameter_size":"3.2B","quantization_level":"Q4_K_M"}}]}%                               
+The output must contains `llava:7b` model
 
 ```bash
+NAME               ID              SIZE      MODIFIED     
+llava:7b           8dd30f6b0cb1    4.7 GB    17 hours ago  
+```
+
+Lets confirm ollama is ready to play using `curl http://localhost:11435/api/tags`
+
+```bash
+{"models":[{"name":"llava:latest","model":"llava:latest","modified_at":"2026-01-27T15:59:45.933695009Z","size":4733363377,"digest":"8dd30f6b0cb19f555f2c7a7ebda861449ea2cc76bf1f44e262931f45fc81d081","details":{"parent_model":"","format":"gguf","family":"llama","families":["llama","clip"],"parameter_size":"7B","quantization_level":"Q4_0"}},{"name":"llama3.2:latest","model":"llama3.2:latest","modified_at":"2026-01-20T14:57:16.960827012Z","size":2019393189,"digest":"a80c4f17acd55265feec403c7aef86be0c25983ab279d83f3bcd3abbcb5b8b72","details":{"parent_model":"","format":"gguf","family":"llama","families":["llama"],"parameter_size":"3.2B","quantization_level":"Q4_K_M"}}]}%                               
+```
+
+Ok, no more delays, running the app
+
+```bash
+cd py-from-zero-to-hero-12
 python3.11 -m venv challenge
 source challenge/bin/activate
 pip install -r ./requirements.txt
 python3.11 ./src/objects.py
+```
+
+The output should be:
+
+```bash
+python3.11 src/objects.py
+Found 5 image(s) in /Users/renatomatos/Desktop/projects/python-adventure/py-from-zero-to-hero-12/images-to-extract
+
+Reading image (1/5): cr7.jpeg....
+      Objects: ['man in suit holding a trophy', 'award stage']
+      Summary: A man in a tuxedo holds a golden ball on a stage
+
+Reading image (2/5): marvel.png....
+      Objects: ['Avengers', 'Captain Marvel', 'Spider-Man', 'Iron Man', 'Thor', 'Hulk', 'Black Panther', 'Dr. Strange', 'Wonder Woman', 'Star-Lord', 'Groot', 'Rocket Raccoon']
+      Summary: A promotional image featuring a group of Marvel superheroes.
+
+Reading image (3/5): minions.jpg....
+      Objects: ['Minions', 'costumes']
+      Summary: A group of minions dressed in costumes.
+
+Reading image (4/5): store.jpeg....
+      Objects: ['person', 'wine bottles']
+      Summary: A person holding wine bottles in front of a shop
+
+Reading image (5/5): work.jpeg....
+      Objects: ['person wearing headphones and glasses over eyes, office setting with desk and monitor']
+      Summary: A person with fake eyes sitting at a desk in an office setting.
+
+Done.
 ```
