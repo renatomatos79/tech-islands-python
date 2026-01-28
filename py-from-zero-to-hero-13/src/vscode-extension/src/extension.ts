@@ -91,6 +91,64 @@ async function setApiEndpoint(context: vscode.ExtensionContext) {
   }
 }
 
+async function handleGenerateTestsResult(
+  document: vscode.TextDocument,
+  languageId: string,
+  testCode: string
+) {
+  // Suggest a default test file name based on the current file
+  const originalFileName = document.fileName.split(/[\\/]/).pop() || 'code.py';
+
+  let defaultTestName = originalFileName;
+  if (originalFileName.endsWith('.py')) {
+    defaultTestName = `test_${originalFileName}`;
+  } else {
+    defaultTestName = `${originalFileName}.test`;
+  }
+
+  const testFileName = await vscode.window.showInputBox({
+    title: 'Python Adventure: Test file name',
+    prompt: 'Enter the filename to save the generated tests',
+    value: defaultTestName,
+    ignoreFocusOut: true
+  });
+
+  if (!testFileName) {
+    vscode.window.showWarningMessage(
+      'Python Adventure: tests not created (no file name provided).'
+    );
+    return;
+  }
+
+  const workspaceFolder = vscode.workspace.getWorkspaceFolder(document.uri);
+
+  if (!workspaceFolder) {
+    // No workspace open: just open an untitled document with the test code
+    const testDoc = await vscode.workspace.openTextDocument({
+      content: testCode,
+      language: languageId
+    });
+    await vscode.window.showTextDocument(testDoc);
+    return;
+  }
+
+  // Create the file in the workspace root (you could later make this configurable)
+  const testFileUri = vscode.Uri.joinPath(workspaceFolder.uri, testFileName);
+
+  // Write file contents
+  const encoder = new TextEncoder();
+  const bytes = encoder.encode(testCode);
+  await vscode.workspace.fs.writeFile(testFileUri, bytes);
+
+  const testDoc = await vscode.workspace.openTextDocument(testFileUri);
+  await vscode.window.showTextDocument(testDoc);
+
+  vscode.window.showInformationMessage(
+    `Python Adventure: tests written to ${testFileName}`
+  );
+}
+
+
 async function runTaskOnSelection(
   context: vscode.ExtensionContext,
   task: TaskType
@@ -119,11 +177,11 @@ async function runTaskOnSelection(
   // If no selection, operate on the whole file
   const range = selection.isEmpty
     ? new vscode.Range(
-      0,
-      0,
-      document.lineCount - 1,
-      document.lineAt(document.lineCount - 1).text.length
-    )
+        0,
+        0,
+        document.lineCount - 1,
+        document.lineAt(document.lineCount - 1).text.length
+      )
     : selection;
 
   const code = document.getText(range);
@@ -135,47 +193,56 @@ async function runTaskOnSelection(
 
   const languageId = document.languageId; // "python", "typescript", etc.
 
-  const loading = vscode.window.setStatusBarMessage(
-    `Python Adventure: running task '${task}'...`
+  await vscode.window.withProgress(
+    {
+      location: vscode.ProgressLocation.Notification,
+      title: `Python Adventure: processing request...`,
+      cancellable: false
+    },
+    async () => {
+      try {
+        const res = await fetch(`${apiBase}/analyze`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            task,
+            language: languageId,
+            code
+          })
+        });
+
+        if (!res.ok) {
+          const text = await res.text();
+          throw new Error(`HTTP ${res.status}: ${text}`);
+        }
+
+        const body = (await res.json()) as {
+          updated_code: string;
+          notes?: string;
+        };
+
+        if (task === 'generate_tests') {
+          await handleGenerateTestsResult(document, languageId, body.updated_code);
+        } else {
+          // For add_header_comments and fix_errors: replace code in place
+          await editor.edit((editBuilder) => {
+            editBuilder.replace(range, body.updated_code);
+          });
+        }
+
+        if (body.notes) {
+          vscode.window.showInformationMessage(body.notes);
+        } else {
+          vscode.window.showInformationMessage(
+            `Python Adventure: '${task}' completed.`
+          );
+        }
+      } catch (err: any) {
+        vscode.window.showErrorMessage(
+          `Python Adventure error: ${err?.message ?? String(err)}`
+        );
+      }
+    }
   );
-
-  try {
-    const res = await fetch(`${apiBase}/analyze`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        task,
-        language: languageId,
-        code
-      })
-    });
-
-    if (!res.ok) {
-      const text = await res.text();
-      throw new Error(`HTTP ${res.status}: ${text}`);
-    }
-
-    const body = (await res.json()) as {
-      updated_code: string;
-      notes?: string;
-    };
-
-    await editor.edit((editBuilder) => {
-      editBuilder.replace(range, stripCodeFences(body.updated_code));
-    });
-
-    if (body.notes) {
-      vscode.window.showInformationMessage(body.notes);
-    } else {
-      vscode.window.showInformationMessage(
-        `Python Adventure: '${task}' completed.`
-      );
-    }
-  } catch (err: any) {
-    vscode.window.showErrorMessage(
-      `Python Adventure error: ${err?.message ?? String(err)}`
-    );
-  } finally {
-    loading.dispose();
-  }
 }
+
