@@ -1,47 +1,39 @@
 import * as vscode from 'vscode';
-import fetch from 'node-fetch';
 
-const API_ENDPOINT_KEY = 'free-forever';
+const API_ENDPOINT_KEY = 'python-adventure.apiEndpoint';
 
 type TaskType = 'generate_tests' | 'add_header_comments' | 'fix_errors';
 
 export function activate(context: vscode.ExtensionContext) {
-  console.log("Python Adventure extension activated");
+  console.log('Python Adventure extension activated');
 
-  
   const setEndpointCmd = vscode.commands.registerCommand(
     'python-adventure.setApiEndpoint',
-    () => setApiEndpoint(context)
+    async () => {
+      await setApiEndpoint(context);
+    }
   );
 
   const generateTestsCmd = vscode.commands.registerCommand(
     'python-adventure.generateTests',
-    () => runTaskOnSelection(context, 'generate_tests')
+    async () => {
+      await runTaskOnSelection(context, 'generate_tests');
+    }
   );
 
   const addHeaderCommentsCmd = vscode.commands.registerCommand(
     'python-adventure.addHeaderComments',
-    () => runTaskOnSelection(context, 'add_header_comments')
+    async () => {
+      await runTaskOnSelection(context, 'add_header_comments');
+    }
   );
 
   const fixErrorsCmd = vscode.commands.registerCommand(
     'python-adventure.fixErrors',
-    () => {
-      const editor = vscode.window.activeTextEditor;
-      if (!editor) return;
-
-      const selection = editor.selection;
-      const text = editor.document.getText(selection);
-
-      if (!text) {
-        vscode.window.showInformationMessage('Select code first');
-        return;
-      }
-
-      runTaskOnSelection(context, 'fix_errors')
+    async () => {
+      await runTaskOnSelection(context, 'fix_errors');
     }
   );
-
 
   context.subscriptions.push(
     setEndpointCmd,
@@ -52,18 +44,24 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 export function deactivate() {
-  // nothing special
-  console.log("why? :(")
+  console.log('Python Adventure extension deactivated');
+}
+
+function stripCodeFences(text: string): string {
+  return text.replace(/```[\s\S]*?```/g, match => {
+    return match.replace(/```[\w]*/g, "").replace(/```/g, "").trim();
+  });
 }
 
 async function setApiEndpoint(context: vscode.ExtensionContext) {
   const current = context.globalState.get<string>(API_ENDPOINT_KEY);
 
   const url = await vscode.window.showInputBox({
-    title: 'Smart Code Assistant API URL',
-    prompt: 'Enter the base URL of your Python API (e.g. http://localhost:8000)',
+    title: 'Python Adventure API URL',
+    prompt:
+      'Enter the base URL of your Python Adventure API (e.g. http://localhost:8000)',
     value: current ?? 'http://localhost:8000',
-    ignoreFocusOut: true,
+    ignoreFocusOut: true
   });
 
   if (!url) {
@@ -84,7 +82,7 @@ async function setApiEndpoint(context: vscode.ExtensionContext) {
 
     await context.globalState.update(API_ENDPOINT_KEY, normalized);
     vscode.window.showInformationMessage(
-      `Smart Code Assistant endpoint set to ${normalized}`
+      `Python Adventure API endpoint set to ${normalized}`
     );
   } catch (err: any) {
     vscode.window.showErrorMessage(
@@ -106,7 +104,7 @@ async function runTaskOnSelection(
   const apiBase = context.globalState.get<string>(API_ENDPOINT_KEY);
   if (!apiBase) {
     const choice = await vscode.window.showWarningMessage(
-      'API endpoint not set. Configure it first.',
+      'Python Adventure API endpoint not set.',
       'Set API Endpoint'
     );
     if (choice === 'Set API Endpoint') {
@@ -118,6 +116,7 @@ async function runTaskOnSelection(
   const document = editor.document;
   const selection = editor.selection;
 
+  // If no selection, operate on the whole file
   const range = selection.isEmpty
     ? new vscode.Range(
       0,
@@ -137,7 +136,7 @@ async function runTaskOnSelection(
   const languageId = document.languageId; // "python", "typescript", etc.
 
   const loading = vscode.window.setStatusBarMessage(
-    `Smart Code Assistant: running task '${task}'...`
+    `Python Adventure: running task '${task}'...`
   );
 
   try {
@@ -147,8 +146,8 @@ async function runTaskOnSelection(
       body: JSON.stringify({
         task,
         language: languageId,
-        code,
-      }),
+        code
+      })
     });
 
     if (!res.ok) {
@@ -162,19 +161,19 @@ async function runTaskOnSelection(
     };
 
     await editor.edit((editBuilder) => {
-      editBuilder.replace(range, body.updated_code);
+      editBuilder.replace(range, stripCodeFences(body.updated_code));
     });
 
     if (body.notes) {
       vscode.window.showInformationMessage(body.notes);
     } else {
       vscode.window.showInformationMessage(
-        `Smart Code Assistant: '${task}' completed.`
+        `Python Adventure: '${task}' completed.`
       );
     }
   } catch (err: any) {
     vscode.window.showErrorMessage(
-      `Smart Code Assistant error: ${err?.message ?? String(err)}`
+      `Python Adventure error: ${err?.message ?? String(err)}`
     );
   } finally {
     loading.dispose();

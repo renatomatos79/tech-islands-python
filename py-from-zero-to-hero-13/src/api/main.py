@@ -59,7 +59,9 @@ def build_prompt(req: AnalyzeRequest) -> str:
             f"You are a senior {language} developer.\n"
             "Fix compilation/runtime errors, undefined variables, wrong loops, etc.\n"
             "Keep the style and structure; do not add new features.\n"
-            "Return the FULL fixed code, no explanations.\n"
+            "Return the FULL fixed code as plain code only.\n"
+            "Do NOT include Markdown formatting or code fences.\n"
+
         )
 
     # Fallback (should not normally be used)
