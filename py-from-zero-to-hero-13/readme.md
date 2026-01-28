@@ -124,4 +124,31 @@ with this output
 ```json
 {"updated_code":"```python\nprint(x)\n```","notes":"Task 'fix_errors' applied by LLM."}
 ```
-                                                                                                        
+
+## Builkding the VS Code Extension
+
+Installing nodejs
+
+```bash
+brew install node
+```
+
+Lets confirm everything is ok
+
+```bash
+node -v
+v25.5.0
+
+npm -11.8.0
+11.8.0
+```
+
+Installing project dependencies
+
+```bash
+ cd py-from-zero-to-hero-13/src/vscode-extension
+ npm install
+```
+
+
+

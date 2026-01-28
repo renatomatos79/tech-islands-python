@@ -1,0 +1,65 @@
+{
+  "name": "python-adventure",
+  "displayName": "Python Adventure Smart Code Assistant",
+  "description": "Generate tests, add header comments and fix errors using your own LLM API.",
+  "version": "0.0.1",
+  "publisher": "Renato Matos",
+  "engines": {
+    "vscode": "^1.84.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/renatomatos79/python-adventure.git"
+  },
+   "license": "MIT",
+  "main": "./out/extension.js",
+  "activationEvents": [
+    "onCommand:python-adventure.setApiEndpoint",
+    "onCommand:python-adventure.generateTests",
+    "onCommand:python-adventure.addHeaderComments",
+    "onCommand:python-adventure.fixErrors"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "python-adventure.setApiEndpoint",
+        "title": "Python Adventure: Set API Endpoint"
+      },
+      {
+        "command": "python-adventure.generateTests",
+        "title": "Python Adventure: Generate Unit Tests"
+      },
+      {
+        "command": "python-adventure.addHeaderComments",
+        "title": "Python Adventure: Add Header Comments"
+      },
+      {
+        "command": "python-adventure.fixErrors",
+        "title": "Python Adventure: Fix Errors"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "python-adventure.fixErrors",
+          "group": "python-adventure",
+          "when": "editorHasSelection"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "build-vsi": "vsce package"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "@types/vscode": "^1.84.0",
+    "@types/node": "^20.0.0",
+    "vsce": "^2.15.0",
+    "node-fetch": "^3.3.2",
+    "@types/node-fetch": "^2.6.4"
+  }
+}
