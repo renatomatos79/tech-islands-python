@@ -137,8 +137,20 @@ python3.11 -m venv vscodext
 source vscodext/bin/activate
 pip install -r ./src/api/requirements.txt
 cd ./src/api
+```
+
+Lets run the API
+
+```bash
 uvicorn main:app --reload --host 0.0.0.0 --port 8000
 ```
+
+Line-by-line meaning:
+- uvicorn → runs the FastAPI app (ASGI server)
+- main:app → load app object from main.py
+- --reload → auto-restart the server when you change code (dev only)
+- --host 0.0.0.0 → make the server accessible from outside the machine (not just localhost)
+- --port 8000 → expose the server on port 8000
 
 Expected output:
 ```bash
