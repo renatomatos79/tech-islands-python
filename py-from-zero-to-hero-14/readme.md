@@ -295,32 +295,34 @@ So when you run dev, you’re actually launching extra infrastructure that happe
 
 Getting the TOKEN
 ```bash
-curl -X POST http://localhost:8000/mcp \
+init='{
+  "jsonrpc": "2.0",
+  "id": "1",
+  "method": "initialize",
+  "params": {
+    "protocolVersion": "2024-11-05",
+    "capabilities": {},
+    "clientInfo": { "name": "curl-bash", "version": "1.0" }
+  }
+}'
+
+curl -i -X POST http://localhost:8000/mcp \
   -H "Content-Type: application/json" \
-  -H "Accept: application/json, text/event-stream" \
-  -d '{
-    "jsonrpc": "2.0",
-    "id": "1",
-    "method": "tools/call",
-    "params": {
-      "name": "get_random_name",
-      "arguments": {
-        "names": ["Renato", "Gabi", "Docker", "MCP"]
-      }
-    }
-  }'
+  -H "Accept: application/json" \
+  -d "$init"
 ```
 
 
 Using the response token (Session ID)
 ```bash
-curl -X POST http://localhost:8000/mcp \
+curl -i -X POST http://localhost:8000/mcp \
   -H "Accept: application/json, text/event-stream" \
   -H "Content-Type: application/json" \
-  -H "Mcp-Session-Id: 185b73d016764717a38b7635f75bcb1c" \
+  -H "Mcp-Session-Id: fdcb11c5a9b845cdb8004e3ca56300e7" \
+  -H "MCP-Protocol-Version: 2024-11-05" \
   -d '{
     "jsonrpc": "2.0",
-    "id": "2",
+    "id": 2,
     "method": "tools/call",
     "params": {
       "name": "get_random_name",
