@@ -237,21 +237,94 @@ uv run mcp dev main.py
 
 
 > build a docker image for our app
+```bash
 docker container rm random-names-mcp --force
 docker build -t random-names-mcp .
-docker run -d --name random-names-mcp \
-  -p 8000:8000 \
-  -p 6274:6274 \
-  -p 6277:6277 \
-  -e APP_PORT=8000 \
-  random-names-mcp
+```
 
+Using DEV mode
+```bash
+docker run -it --rm --name random-names-mcp \
+  -p 8000:8000 -p 6274:6274 -p 6277:6277 \
+  -e APP_PORT=8000 \
+  -e MCP_MODE=dev \
+  random-names-mcp
+```
+
+Prod mode
+```bash
+docker run --name random-names-mcp \
+  -p 8000:8000 \
+  -e APP_PORT=8000 \
+  -e MCP_MODE=run \
+  random-names-mcp
+```
 
 > running mcp using docker
 
+```bash
 docker mcp --help
 docker mcp catalog init
 docker mcp server enable playwright
 docker mcp gateway run
+```
 
-docker mcp gateway run --port 8080 --transport streaming
+## What mcp dev vs mcp run really mean
+
+🔹 mcp run main.py
+This means:
+Start only your MCP server
+✅ No Inspector
+✅ No proxy
+✅ No extra ports
+Meant for production / containers / servers
+Your FastMCP server should be reachable on:
+
+```bash
+APP_PORT = 8000
+```
+
+🔹 mcp dev main.py
+This means:
+Start three things inside the container:
+✅ Your MCP server → port 8000
+✅ MCP Inspector UI → port 6274
+✅ MCP Proxy → port 6277
+So when you run dev, you’re actually launching extra infrastructure that happens to make everything “work” in Docker.
+
+
+Getting the TOKEN
+```bash
+curl -X POST http://localhost:8000/mcp \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json, text/event-stream" \
+  -d '{
+    "jsonrpc": "2.0",
+    "id": "1",
+    "method": "tools/call",
+    "params": {
+      "name": "get_random_name",
+      "arguments": {
+        "names": ["Renato", "Gabi", "Docker", "MCP"]
+      }
+    }
+  }'
+```
+
+
+Using the response token (Session ID)
+```bash
+curl -X POST http://localhost:8000/mcp \
+  -H "Accept: application/json, text/event-stream" \
+  -H "Content-Type: application/json" \
+  -H "Mcp-Session-Id: 185b73d016764717a38b7635f75bcb1c" \
+  -d '{
+    "jsonrpc": "2.0",
+    "id": "2",
+    "method": "tools/call",
+    "params": {
+      "name": "get_random_name",
+      "arguments": { "names": ["Renato", "Gabi", "Docker", "MCP"] }
+    }
+  }'
+```
