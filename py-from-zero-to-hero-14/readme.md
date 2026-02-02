@@ -223,5 +223,36 @@ uv tool list
 uv tool uninstall ruff
 ```
 
+## MCP (Model Context Protocol)
+
+- https://github.com/modelcontextprotocol
+- https://github.com/modelcontextprotocol/servers
+
+Community version for a playground:
+
+> Community servers are untested and should be used at your own risk. They are not affiliated with or endorsed by Anthropic.
+
+https://github.com/modelcontextprotocol/servers
+
+> Installing our tools
+
+uv add tool mcp
+uv add mcp"[cli]"
+uv run mcp dev main.py
+
+Need to install the following packages:
+@modelcontextprotocol/inspector@0.19.0
 
 
+> build a docker image for our app
+docker build -t random-names-mcp .
+docker run -d --name random-names-mcp random-names-mcp
+
+> running mcp using docker
+
+docker mcp --help
+docker mcp catalog init
+docker mcp server enable playwright
+docker mcp gateway run
+
+docker mcp gateway run --port 8080 --transport streaming

@@ -1,0 +1,14 @@
+{
+  "servers": [
+    {
+      "name": "random_names",
+      "command": "docker",
+      "args": [
+        "run",
+        "--rm",
+        "-i",
+        "random-names-mcp"
+      ]
+    }
+  ]
+}
