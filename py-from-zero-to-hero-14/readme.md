@@ -244,7 +244,7 @@ docker build -t random-names-mcp .
 
 Using DEV mode
 ```bash
-docker run -it --rm --name random-names-mcp \
+docker run -d --name random-names-mcp \
   -p 8000:8000 -p 6274:6274 -p 6277:6277 \
   -e APP_PORT=8000 \
   -e MCP_MODE=dev \
@@ -253,10 +253,10 @@ docker run -it --rm --name random-names-mcp \
 
 Prod mode
 ```bash
-docker run --name random-names-mcp \
-  -p 8000:8000 \
-  -e APP_PORT=8000 \
-  -e MCP_MODE=run \
+docker run -d --name random-names-mcp ^
+  -p 8000:8000 ^
+  -e APP_PORT=8000 ^
+  -e MCP_MODE=run ^
   random-names-mcp
 ```
 

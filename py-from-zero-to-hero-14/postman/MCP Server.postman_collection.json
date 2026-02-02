@@ -165,6 +165,266 @@
         }
       },
       "response": []
+    },
+    {
+      "name": "Customers By IDs",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json, text/event-stream",
+            "type": "text"
+          },
+          {
+            "key": "Mcp-Session-Id",
+            "value": "{{MCP_SESSION_ID}}",
+            "type": "text"
+          },
+          {
+            "key": "MCP-Protocol-Version",
+            "value": "2024-11-05",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"jsonrpc\": \"2.0\",\r\n    \"id\": 2,\r\n    \"method\": \"tools/call\",\r\n    \"params\": {\r\n      \"name\": \"customers_search\",\r\n      \"arguments\": { \"ids\": [1, 2, 3] }\r\n    }\r\n  }",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8000/mcp",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8000",
+          "path": [
+            "mcp"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Customers By ID",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json, text/event-stream",
+            "type": "text"
+          },
+          {
+            "key": "Mcp-Session-Id",
+            "value": "{{MCP_SESSION_ID}}",
+            "type": "text"
+          },
+          {
+            "key": "MCP-Protocol-Version",
+            "value": "2024-11-05",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"jsonrpc\": \"2.0\",\r\n    \"id\": 2,\r\n    \"method\": \"tools/call\",\r\n    \"params\": {\r\n      \"name\": \"customers_get_by_id\",\r\n      \"arguments\": { \"id\": 1 }\r\n    }\r\n  }",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8000/mcp",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8000",
+          "path": [
+            "mcp"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Customers By Names",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json, text/event-stream",
+            "type": "text"
+          },
+          {
+            "key": "Mcp-Session-Id",
+            "value": "{{MCP_SESSION_ID}}",
+            "type": "text"
+          },
+          {
+            "key": "MCP-Protocol-Version",
+            "value": "2024-11-05",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"jsonrpc\": \"2.0\",\r\n    \"id\": 2,\r\n    \"method\": \"tools/call\",\r\n    \"params\": {\r\n      \"name\": \"customers_search_by_names\",\r\n      \"arguments\": { \"names\": [\"Ana\"] }\r\n    }\r\n  }",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8000/mcp",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8000",
+          "path": [
+            "mcp"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Orders by Customer ID",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json, text/event-stream",
+            "type": "text"
+          },
+          {
+            "key": "Mcp-Session-Id",
+            "value": "{{MCP_SESSION_ID}}",
+            "type": "text"
+          },
+          {
+            "key": "MCP-Protocol-Version",
+            "value": "2024-11-05",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"jsonrpc\": \"2.0\",\r\n    \"id\": 2,\r\n    \"method\": \"tools/call\",\r\n    \"params\": {\r\n      \"name\": \"customer_orders_get\",\r\n      \"arguments\": { \"customerID\": 1 }\r\n    }\r\n  }",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8000/mcp",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8000",
+          "path": [
+            "mcp"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Orders by Status",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json, text/event-stream",
+            "type": "text"
+          },
+          {
+            "key": "Mcp-Session-Id",
+            "value": "{{MCP_SESSION_ID}}",
+            "type": "text"
+          },
+          {
+            "key": "MCP-Protocol-Version",
+            "value": "2024-11-05",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"jsonrpc\": \"2.0\",\r\n    \"id\": 2,\r\n    \"method\": \"tools/call\",\r\n    \"params\": {\r\n      \"name\": \"customer_orders_by_status\",\r\n      \"arguments\": { \"status\": \"pending\" }\r\n    }\r\n  }",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8000/mcp",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8000",
+          "path": [
+            "mcp"
+          ]
+        }
+      },
+      "response": []
     }
   ]
 }
