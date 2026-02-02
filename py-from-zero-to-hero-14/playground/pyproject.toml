@@ -10,8 +10,3 @@ dependencies = [
     "requests>=2.32.5",
     "tool>=0.8.0",
 ]
-
-[dependency-groups]
-dev = [
-    "ruff>=0.14.14",
-]

@@ -228,25 +228,24 @@ uv tool uninstall ruff
 - https://github.com/modelcontextprotocol
 - https://github.com/modelcontextprotocol/servers
 
-Community version for a playground:
-
-> Community servers are untested and should be used at your own risk. They are not affiliated with or endorsed by Anthropic.
-
-https://github.com/modelcontextprotocol/servers
 
 > Installing our tools
 
-uv add tool mcp
-uv add mcp"[cli]"
+cd playground
+uv sync
 uv run mcp dev main.py
-
-Need to install the following packages:
-@modelcontextprotocol/inspector@0.19.0
 
 
 > build a docker image for our app
+docker container rm random-names-mcp --force
 docker build -t random-names-mcp .
-docker run -d --name random-names-mcp random-names-mcp
+docker run -d --name random-names-mcp \
+  -p 8000:8000 \
+  -p 6274:6274 \
+  -p 6277:6277 \
+  -e APP_PORT=8000 \
+  random-names-mcp
+
 
 > running mcp using docker
 
