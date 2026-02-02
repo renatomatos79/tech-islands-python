@@ -330,3 +330,69 @@ curl -i -X POST http://localhost:8000/mcp \
     }
   }'
 ```
+
+## MCP Tool x Copilot
+
+> Requesting orders by status
+![alt text](image.png)
+
+> Combining Customer Data x Order Data
+![alt text](image-1.png)
+
+> Json Response
+```json
+[
+  {
+    "order": {
+      "orderDate": "2026-01-10T11:15:00Z",
+      "orderValue": 24.9,
+      "description": "Haircut + beard trim",
+      "status": "done"
+    },
+    "customer": {
+      "id": 1,
+      "name": "Ana Silva",
+      "countryCode": "PT"
+    }
+  },
+  {
+    "order": {
+      "orderDate": "2026-01-22T09:05:00Z",
+      "orderValue": 19.99,
+      "description": "Haircut",
+      "status": "done"
+    },
+    "customer": {
+      "id": 2,
+      "name": "Bruno Costa",
+      "countryCode": "PT"
+    }
+  },
+  {
+    "order": {
+      "orderDate": "2026-01-12T14:10:00Z",
+      "orderValue": 29.5,
+      "description": "Beard styling + wax",
+      "status": "done"
+    },
+    "customer": {
+      "id": 7,
+      "name": "Giulia Rossi",
+      "countryCode": "IT"
+    }
+  },
+  {
+    "order": {
+      "orderDate": "2026-01-18T12:00:00Z",
+      "orderValue": 22,
+      "description": "Haircut + wash",
+      "status": "done"
+    },
+    "customer": {
+      "id": 9,
+      "name": "Inês Almeida",
+      "countryCode": "PT"
+    }
+  }
+]
+```
