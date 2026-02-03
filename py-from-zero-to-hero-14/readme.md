@@ -391,7 +391,7 @@ This is a single HTTP endpoint that behaves like a long-lived stream of messages
 - Streaming-friendly
 
 When should we use Streamable HTTP?
-- MCP server runs in Docker (what we built here! Really? Yeah, I give my word)
+- MCP server runs in Docker (what we built here! Really? Yeah, I give my word )
 - We want to deploy it
 - Multiple hosts need access
 - We want cloud access
@@ -429,70 +429,282 @@ customer_orders_by_status(status="pending")
 
 ## Time to code - Let´s start our playground
 
+Need that "muscle" icon \0/
 
-> Installing our tools
+> First of all, let´s start a new project using
 
+```bash
+uv init playground
 cd playground
-uv sync
-uv run mcp dev main.py
+uv add "fastmcp<3"
+uv add "mcp[cli]>=1.26.0"
+uv add "tool>=0.8.0"
+```
 
+Lets start using a simple tool (a method that we intend to expose) to the model.
+The idea is building a hardcoded customer dataset that can easily be replaced by database query to fetch
+our customers by their ids. So, replace the main.py file content using the code right below
+
+```python
+from mcp.server.fastmcp import FastMCP
+from typing import List, Dict, Optional, Literal
+
+# creates our "order_server" MCP server
+mcp = FastMCP("order_server")
+
+# --------------------------
+# Hardcoded customers dataset
+# --------------------------
+CUSTOMERS: List[Dict[str, object]] = [
+    {"id": 1, "name": "Ana Silva", "countryCode": "PT"},
+    {"id": 2, "name": "Bruno Costa", "countryCode": "PT"},
+    {"id": 3, "name": "Carla Souza", "countryCode": "BR"},
+    {"id": 4, "name": "Diego Santos", "countryCode": "BR"},
+    {"id": 5, "name": "Emma Johnson", "countryCode": "US"},
+    {"id": 6, "name": "Frank Miller", "countryCode": "US"},
+    {"id": 7, "name": "Giulia Rossi", "countryCode": "IT"},
+    {"id": 8, "name": "Hiro Tanaka", "countryCode": "JP"},
+    {"id": 9, "name": "Inês Almeida", "countryCode": "PT"},
+    {"id": 10, "name": "Juan Pérez", "countryCode": "ES"},
+]
+
+# search customers (filter by ids) and returns a collection (list of dictionary)
+@mcp.tool()
+def customers_search(ids: List[int] = []) -> List[Dict[str, object]]:
+    """Returns a hardcoded list of customers.
+    args:
+        ids: optional list of customer IDs to filter by. If empty, returns all customers.
+    returns:
+        A JSON array of customers: [{"id": int, "name": str, "countryCode": str}, ...]
+    """
+    if not ids:
+        return CUSTOMERS
+
+    ids_set = set(ids)
+    return [c for c in CUSTOMERS if c["id"] in ids_set]
+```
+
+Attention!
+
+**First of all:**
+Only a method that uses this annotation `@mcp.tool()` is going to be visible by the MCP ecosystem
+
+**Second:**
+The method the uses this annotation must contains the documentation (this is going to be used like a PROMPT) by
+the LLM map the user request into the right tool (from the available tools)
+
+```python
+  """Returns a hardcoded list of customers.
+  args:
+    ids: optional list of customer IDs to filter by. If empty, returns all customers.
+  returns:
+    A JSON array of customers: [{"id": int, "name": str, "countryCode": str}, ...]
+  """
+```
+
+Simple, isn´t?
+
+Let´s run our tool using this following command line 
+
+```bash
+cd playground
+uv run mcp dev main.py
+```
+
+We are using `mcp dev` in order to trigger the MCP inspector to validate our code
+This is not used into the production environment.. we use `mcp run` instead
+
+This must produces this output
+
+```bash
+Starting MCP inspector...
+⚙️ Proxy server listening on localhost:6277
+🔑 Session token: ecdd168c7f0f2b1a5d088d069e9c0bd00dac18cc449f59035b5580da457259b8
+   Use this token to authenticate requests or set DANGEROUSLY_OMIT_AUTH=true to disable auth
+
+🚀 MCP Inspector is up and running at:
+   http://localhost:6274/?MCP_PROXY_AUTH_TOKEN=ecdd168c7f0f2b1a5d088d069e9c0bd00dac18cc449f59035b5580da457259b8
+
+🌐 Opening browser...
+```
+
+Everytime we run the MCP Inspector we have a refresh token (produced during the handshake) to use the UI interface
+So, please, use the URL that contains the query string MCP_PROXY_AUTH_TOKEN
+
+```bash
+🚀 MCP Inspector is up and running at:
+   http://localhost:6274/?MCP_PROXY_AUTH_TOKEN=ecdd168c7f0f2b1a5d088d069e9c0bd00dac18cc449f59035b5580da457259b8
+```
+
+The UI contains the transport type: 
+- STDIO (local tool)
+
+Command:
+- uv
+
+Arguments to run the tool:
+- run --with mcp mcp run main.py
+
+So, then, click on `Connect` Button
+![alt text](./imgs/image-inspector.png)
+
+After that, you must select the Tools button into the top bar
+![alt text](./imgsimage-tools.png)
+
+Click on List Tools button
+![alt text](./imgsimage-list-tools.png)
+
+And select the customer_search tool
+![alt text](./imgsimage-customer-search.png)
+
+So here we details about our tool and the input parameter.. move the scroll bar to the bottom of the page and press the `Run Tool` button
+![alt text](./imgsimage-run-tool.png)
+
+The output must the customer hardcoded list
+![alt text](./imgsimage-tool-output.png)
+
+Easy, isn´t?
+
+Into the folder `py-from-zero-to-hero-14` we have a subfolder named `playground` build exactly like we did before
+We have a duplicated file:
+- main_dev.py
+- main_http.py
+
+**The content is almost the same.**
+The difference is because the main_http.py file contains these aditional lines at the end
+once into the production mode we set the transport protocol to be `http` rather than `stdio`
+and host parameter to be `host="0.0.0.0"` which is required inside the Docker that means
+“Listen on all network interfaces available to this process.”
+
+```python
+if __name__ == "__main__":
+    mcp.run(transport="http", host="0.0.0.0", port=port, path="/mcp")
+```
 
 > build a docker image for our app
 ```bash
-docker container rm random-names-mcp --force
-docker build -t random-names-mcp .
+# run the command below to remove the previous container when running this by the second time
+docker container rm order_mcp_server --force
+
+# into the playground folder run to build out docker image
+docker build -t order_mcp_server .
 ```
 
-Using DEV mode
+You should see a nice output like this
 ```bash
-docker run -d --name random-names-mcp \
+[+] Building 69.1s (12/12) FINISHED                                                                                          docker:desktop-linux
+ => [internal] load build definition from Dockerfile                                                                                         0.0s
+ => => transferring dockerfile: 559B                                                                                                         0.0s
+ => [internal] load metadata for docker.io/library/python:3.12-slim                                                                          7.7s
+ => [auth] library/python:pull token for registry-1.docker.io                                                                                0.0s
+ => [internal] load .dockerignore                                                                                                            0.1s
+ => => transferring context: 69B                                                                                                             0.0s
+ => [1/6] FROM docker.io/library/python:3.12-slim@sha256:87b49ee9d18db77b0afc7e3adbd994acb9544695217f6e8b4ff352a076a9e6a6                    2.0s
+ => => resolve docker.io/library/python:3.12-slim@sha256:87b49ee9d18db77b0afc7e3adbd994acb9544695217f6e8b4ff352a076a9e6a6                    0.0s
+ => => sha256:a6fedc9419a415417f019e53f667edf7ab87918bf80e074b3b873553439600f7 250B / 250B                                                   0.3s
+ => => sha256:91dcfb7be575893b4609e5d464dd07b6d5ac6061f32e2076ab640c7fe52de852 12.04MB / 12.04MB                                             0.7s
+ => => sha256:d114ab5c0e3396242408181b087cbc01b59c3417bb3233e8ac5bdb1bff139a44 1.27MB / 1.27MB                                               0.6s
+ => => sha256:3ea009573b472d108af9af31ec35a06fe3649084f6611cf11f7d594b85cf7a7c 30.14MB / 30.14MB                                             1.4s
+ => => extracting sha256:3ea009573b472d108af9af31ec35a06fe3649084f6611cf11f7d594b85cf7a7c                                                    0.4s
+ => => extracting sha256:d114ab5c0e3396242408181b087cbc01b59c3417bb3233e8ac5bdb1bff139a44                                                    0.0s
+ => => extracting sha256:91dcfb7be575893b4609e5d464dd07b6d5ac6061f32e2076ab640c7fe52de852                                                    0.1s
+ => => extracting sha256:a6fedc9419a415417f019e53f667edf7ab87918bf80e074b3b873553439600f7                                                    0.0s
+ => [internal] load build context                                                                                                            0.0s
+ => => transferring context: 14.67kB                                                                                                         0.0s
+ => [2/6] WORKDIR /app                                                                                                                       0.1s
+ => [3/6] RUN apt-get update && apt-get install -y     nodejs     npm     && rm -rf /var/lib/apt/lists/*                                    32.6s
+ => [4/6] RUN pip install -U uv                                                                                                              1.7s 
+ => [5/6] COPY . /app                                                                                                                        0.0s 
+ => [6/6] RUN uv sync                                                                                                                        3.1s 
+ => exporting to image                                                                                                                      21.8s 
+ => => exporting layers                                                                                                                     16.7s 
+ => => exporting manifest sha256:fa5d092f166e5fcac8f7795eea0cad843e9b1a2fa85ecba79dac601abf2c7c2c                                            0.0s 
+ => => exporting config sha256:91ca8388272c181d462e86d1c3ed0bd37a35532464db6258fbfd99fa53d8b2f2                                              0.0s 
+ => => exporting attestation manifest sha256:ff94442021ecbc3b5a1840b89ef2a7be6544ceeb81f5df383fdeb6f0d438e40a                                0.0s 
+ => => exporting manifest list sha256:c604cd289c8298a1b015ac80ff1bbe6386c261a1a343c171dca78035f46641e5                                       0.0s 
+ => => naming to docker.io/library/order_mcp_server:latest                                                                                   0.0s
+ => => unpacking to docker.io/library/order_mcp_server:latest                
+```
+
+We must use this env variable to run our container in dev mode `-e MCP_MODE=dev` (run with MCP Inspector)
+```bash
+docker run -d --name order_mcp_server \
   -p 8000:8000 -p 6274:6274 -p 6277:6277 \
   -e APP_PORT=8000 \
   -e MCP_MODE=dev \
-  random-names-mcp
+  order_mcp_server
 ```
+
+After that, running `docker ps` we should see
+```bash
+docker ps
+CONTAINER ID   IMAGE              COMMAND                  CREATED         STATUS         PORTS                                                                                                                                   NAMES
+ba147e59f1dc   order_mcp_server   "sh -lc '  set -eux;…"   3 seconds ago   Up 3 seconds   0.0.0.0:6274->6274/tcp, [::]:6274->6274/tcp, 0.0.0.0:6277->6277/tcp, [::]:6277->6277/tcp, 0.0.0.0:8000->8000/tcp, [::]:8000->8000/tcp   order_mcp_server
+```
+
+Let´s investigate the logs using the container ID and pick up the final URL, run `docker logs ba147e59f1dc`
+```bash
+docker logs ba147e59f1dc
+
++ echo MCP_MODE=dev APP_PORT=8000
++ [ dev = dev ]
++ exec uv run mcp dev main_dev.py
+MCP_MODE=dev APP_PORT=8000
+npm WARN exec The following package was not found and will be installed: @modelcontextprotocol/inspector@0.19.0
+npm WARN EBADENGINE Unsupported engine {
+npm WARN EBADENGINE   package: '@modelcontextprotocol/inspector@0.19.0',
+npm WARN EBADENGINE   required: { node: '>=22.7.5' },
+npm WARN EBADENGINE   current: { node: 'v20.19.2', npm: '9.2.0' }
+npm WARN EBADENGINE }
+npm WARN deprecated node-domexception@1.0.0: Use your platform's native DOMException instead
+Starting MCP inspector...
+⚙️ Proxy server listening on 0.0.0.0:6277
+🔑 Session token: fb7afc95d197104f6e3ce00cf3da9a789b6a029da6768106adcf44888d7e7db2
+   Use this token to authenticate requests or set DANGEROUSLY_OMIT_AUTH=true to disable auth
+
+🚀 MCP Inspector is up and running at:
+   http://0.0.0.0:6274/?MCP_PROXY_AUTH_TOKEN=fb7afc95d197104f6e3ce00cf3da9a789b6a029da6768106adcf44888d7e7db2
+
+🌐 Opening browser...
+```
+
+Copy/Paste the URL replacing 0.0.0.0 by localhost
+
+```bash
+http://localhost:6274/?MCP_PROXY_AUTH_TOKEN=fb7afc95d197104f6e3ce00cf3da9a789b6a029da6768106adcf44888d7e7db2
+```
+
+We should see the MCP Inspector Window again
+![alt text](./imgs/image-inspector-docker.png)
+
+Connect and run your tests.. Be happy!
+
+Let´s remove this container using `docker rm ba147e59f1dc --force`
+
+```bash
+docker rm ba147e59f1dc --force
+ba147e59f1dc
+```
+
+And build a new one using the production version `-e MCP_MODE=run`
 
 Prod mode
 ```bash
-docker run -d --name random-names-mcp ^
-  -p 8000:8000 ^
-  -e APP_PORT=8000 ^
-  -e MCP_MODE=run ^
-  random-names-mcp
+docker run -d --name order_mcp_server \
+  -p 8000:8000 \
+  -e APP_PORT=8000 \
+  -e MCP_MODE=run \
+  order_mcp_server
 ```
 
-> running mcp using docker
+Running `docker ps` we should see the container once more, but in this case witbhout inspector.
+It means we should be able to validate to validate our tools using some Host app, like Postman for instance.
 
 ```bash
-docker mcp --help
-docker mcp catalog init
-docker mcp server enable playwright
-docker mcp gateway run
+docker ps
+CONTAINER ID   IMAGE              COMMAND                  CREATED         STATUS         PORTS                                         NAMES
+6adf6a5d6227   order_mcp_server   "sh -lc '  set -eux;…"   3 seconds ago   Up 3 seconds   0.0.0.0:8000->8000/tcp, [::]:8000->8000/tcp   order_mcp_server
 ```
-
-## What mcp dev vs mcp run really means?
-
-🔹 mcp run main.py
-This means:
-Start only your MCP server
-- No Inspector
-- No proxy
-- No extra ports
-Meant for production / containers / servers
-Your FastMCP server should be reachable on:
-
-```bash
-APP_PORT = 8000
-```
-
-🔹 mcp dev main.py
-This means:
-Start three things inside the container:
-- Our MCP server → port 8000
-- MCP Inspector UI → port 6274
-- MCP Proxy → port 6277
-
-So when we run dev, you’re actually launching extra infrastructure that happens to make everything “work” in Docker.
 
 
 ## MCP Tool x Copilot

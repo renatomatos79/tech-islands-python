@@ -1,21 +1,7 @@
 from mcp.server.fastmcp import FastMCP
-from random import choice
 from typing import List, Dict, Optional, Literal
 
-mcp = FastMCP("random_name")
-
-# --------------------------
-# Initial tool
-# --------------------------
-@mcp.tool()
-def get_random_name(names: list = []) -> str:
-    """Gets a random peoples names. The names are stored in a local array
-    args:
-       names:the user can pass in a list of names to choose from, or it will default to a predefined list.
-    """
-    if len(names) > 0:
-        return choice(names)
-    return choice(["Alice","Bob","Charlie","Diana","Eve","Frank","Grace","Hank","Ivy","Jack"])
+mcp = FastMCP("order_mcp_server")
 
 # --------------------------
 # Hardcoded customers dataset
@@ -33,10 +19,7 @@ CUSTOMERS: List[Dict[str, object]] = [
     {"id": 10, "name": "Juan Pérez", "countryCode": "ES"},
 ]
 
-
-# --------------------------
-# New tool 1: search customers (filter by ids)
-# --------------------------
+# search customers (filter by ids) and returns a collection (list of dictionary)
 @mcp.tool()
 def customers_search(ids: List[int] = []) -> List[Dict[str, object]]:
     """Returns a hardcoded list of customers.

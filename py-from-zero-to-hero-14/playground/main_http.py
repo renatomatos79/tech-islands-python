@@ -5,7 +5,7 @@ from typing import List, Dict, Optional, Literal
 
 port = int(os.environ.get("APP_PORT", 8000))
 
-mcp = FastMCP("random_name")
+mcp = FastMCP("order_mcp_server")
 
 # --------------------------
 # Initial tool
