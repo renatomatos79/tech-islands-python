@@ -494,14 +494,14 @@ docker mcp server enable playwright
 docker mcp gateway run
 ```
 
-## What mcp dev vs mcp run really mean
+## What mcp dev vs mcp run really means?
 
 🔹 mcp run main.py
 This means:
 Start only your MCP server
-✅ No Inspector
-✅ No proxy
-✅ No extra ports
+- No Inspector
+- No proxy
+- No extra ports
 Meant for production / containers / servers
 Your FastMCP server should be reachable on:
 
@@ -512,57 +512,19 @@ APP_PORT = 8000
 🔹 mcp dev main.py
 This means:
 Start three things inside the container:
-✅ Your MCP server → port 8000
-✅ MCP Inspector UI → port 6274
-✅ MCP Proxy → port 6277
+- Our MCP server → port 8000
+- MCP Inspector UI → port 6274
+- MCP Proxy → port 6277
 So when you run dev, you’re actually launching extra infrastructure that happens to make everything “work” in Docker.
 
-
-Getting the TOKEN
-```bash
-init='{
-  "jsonrpc": "2.0",
-  "id": "1",
-  "method": "initialize",
-  "params": {
-    "protocolVersion": "2024-11-05",
-    "capabilities": {},
-    "clientInfo": { "name": "curl-bash", "version": "1.0" }
-  }
-}'
-
-curl -i -X POST http://localhost:8000/mcp \
-  -H "Content-Type: application/json" \
-  -H "Accept: application/json" \
-  -d "$init"
-```
-
-
-Using the response token (Session ID)
-```bash
-curl -i -X POST http://localhost:8000/mcp \
-  -H "Accept: application/json, text/event-stream" \
-  -H "Content-Type: application/json" \
-  -H "Mcp-Session-Id: fdcb11c5a9b845cdb8004e3ca56300e7" \
-  -H "MCP-Protocol-Version: 2024-11-05" \
-  -d '{
-    "jsonrpc": "2.0",
-    "id": 2,
-    "method": "tools/call",
-    "params": {
-      "name": "get_random_name",
-      "arguments": { "names": ["Renato", "Gabi", "Docker", "MCP"] }
-    }
-  }'
-```
 
 ## MCP Tool x Copilot
 
 > Requesting orders by status
-![alt text](image.png)
+![alt text](./imgs/image.png)
 
 > Combining Customer Data x Order Data
-![alt text](image-1.png)
+![alt text](./imgs/image-1.png)
 
 > Json Response
 ```json
