@@ -81,6 +81,31 @@ Python world with `uv`
 uv -> everything above
 ```
 
+## Installing `uv` (Windows)
+
+```bash
+# Open Windows Power Shell and Run the below command
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+
+# Using winget
+winget install --id=astral-sh.uv  -e
+
+# Using scoop
+scoop install main/uv
+```
+
+## Installing `uv` (Linux)
+
+```bash
+# Using curl
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# using wget
+wget -qO- https://astral.sh/uv/install.sh | sh
+
+# Add to path
+export PATH="$HOME/.cargo/bin:$PATH"
+```
 
 ## Installing `uv` (macOS)
 
