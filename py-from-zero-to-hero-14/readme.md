@@ -452,11 +452,11 @@ customer_orders_by_status(status="pending")
 6. The MCP Client sends the result back to the Host.
 7. The LLM processes the result and gives a final answer in plain English.
 
-## Time to code - Let´s start our playground
+## Time to Code - Let us Start Our Playground
 
 Need that "muscle" icon \0/
 
-> First of all, let´s start a new project using
+First, create a new project:
 
 ```bash
 uv init playground
@@ -466,13 +466,11 @@ uv add "mcp[cli]>=1.26.0"
 uv add "tool>=0.8.0"
 ```
 
-Lets start using a simple tool (a method that we intend to expose) to the model.
-The idea is building a hardcoded customer dataset that can easily be replaced by database query to fetch
-our customers by their ids. So, replace the main.py file content using the code right below
+Now we will expose a simple tool to the model. The idea is a hardcoded customer dataset that can later be replaced by a database query. Replace the contents of `main.py` with the code below:
 
 ```python
 from mcp.server.fastmcp import FastMCP
-from typing import List, Dict, Optional, Literal
+from typing import List, Dict
 
 # creates our "order_server" MCP server
 mcp = FastMCP("order_server")
@@ -489,11 +487,11 @@ CUSTOMERS: List[Dict[str, object]] = [
     {"id": 6, "name": "Frank Miller", "countryCode": "US"},
     {"id": 7, "name": "Giulia Rossi", "countryCode": "IT"},
     {"id": 8, "name": "Hiro Tanaka", "countryCode": "JP"},
-    {"id": 9, "name": "Inês Almeida", "countryCode": "PT"},
-    {"id": 10, "name": "Juan Pérez", "countryCode": "ES"},
+    {"id": 9, "name": "Ines Almeida", "countryCode": "PT"},
+    {"id": 10, "name": "Juan Perez", "countryCode": "ES"},
 ]
 
-# search customers (filter by ids) and returns a collection (list of dictionary)
+# search customers (filter by ids) and returns a collection (list of dictionaries)
 @mcp.tool()
 def customers_search(ids: List[int] = []) -> List[Dict[str, object]]:
     """Returns a hardcoded list of customers.
@@ -509,37 +507,35 @@ def customers_search(ids: List[int] = []) -> List[Dict[str, object]]:
     return [c for c in CUSTOMERS if c["id"] in ids_set]
 ```
 
-Attention!
+**Attention**
 
-**First of all:**
-Only a method that uses this annotation `@mcp.tool()` is going to be visible by the MCP ecosystem
+**First:**
+Only a method with the `@mcp.tool()` annotation is visible to the MCP ecosystem.
 
 **Second:**
-The method the uses this annotation must contains the documentation (this is going to be used like a PROMPT) by
-the LLM map the user request into the right tool (from the available tools)
+The method must include a docstring. This becomes the prompt the LLM uses to map user requests to the correct tool.
 
 ```python
-  """Returns a hardcoded list of customers.
-  args:
+"""Returns a hardcoded list of customers.
+args:
     ids: optional list of customer IDs to filter by. If empty, returns all customers.
-  returns:
+returns:
     A JSON array of customers: [{"id": int, "name": str, "countryCode": str}, ...]
-  """
+"""
 ```
 
-Simple, isn´t?
+Simple, right?
 
-Let´s run our tool using this following command line 
+Run the tool with:
 
 ```bash
 cd playground
 uv run mcp dev main.py
 ```
 
-We are using `mcp dev` in order to trigger the MCP inspector to validate our code
-This is not used into the production environment.. we use `mcp run` instead
+We use `mcp dev` to open the MCP Inspector for local validation. For production, we use `mcp run`.
 
-This must produces this output
+You should see output like this:
 
 ```bash
 Starting MCP inspector...
@@ -553,69 +549,67 @@ Starting MCP inspector...
 🌐 Opening browser...
 ```
 
-Everytime we run the MCP Inspector we have a refresh token (produced during the handshake) to use the UI interface
-So, please, use the URL that contains the query string MCP_PROXY_AUTH_TOKEN
+Every time the Inspector starts it generates a fresh token. Use the URL with the `MCP_PROXY_AUTH_TOKEN` query string.
 
 ```bash
 🚀 MCP Inspector is up and running at:
    http://localhost:6274/?MCP_PROXY_AUTH_TOKEN=ecdd168c7f0f2b1a5d088d069e9c0bd00dac18cc449f59035b5580da457259b8
 ```
 
-The UI contains the transport type: 
-- STDIO (remember this is a local tool)
+In the Inspector UI, set:
 
-Command:
-- `uv`
+- Transport: `STDIO` (local tool)
+- Command: `uv`
+- Arguments: `run --with mcp mcp run main.py`
 
-Arguments to run the tool:
-- `run --with mcp mcp run main.py`
-
-So, then, click on `Connect` Button
+Click `Connect`.
 ![alt text](./imgs/image-inspector.png)
 
-After that, you must select the Tools button into the top bar
-![alt text](./imgsimage-tools.png)
+Open the Tools tab.
+![alt text](./imgs/image-tools.png)
 
-Click on List Tools button
+Click `List Tools`.
 ![alt text](./imgs/image-list-tools.png)
 
-And select the customer_search tool
+Select `customers_search`.
 ![alt text](./imgs/image-customer-search.png)
 
-So here we details about our tool and the input parameter.. move the scroll bar to the bottom of the page and press the `Run Tool` button
+Scroll to the bottom and click `Run Tool`.
 ![alt text](./imgs/image-run-tool.png)
 
-The output must the customer hardcoded list
+You should see the hardcoded customer list.
 ![alt text](./imgs/image-tool-output.png)
 
-Easy, isn´t?
+Easy, right?
 
-Into the folder `py-from-zero-to-hero-14` we have a subfolder named `playground` build exactly like we did before
-We have a duplicated file:
-- main_dev.py
-- main_http.py
+## Playground Files
 
-**The content is almost the same.**
-The difference is because the main_http.py file contains these aditional lines at the end
-once into the production mode we set the transport protocol to be `http` rather than `stdio`
-and host parameter to be `host="0.0.0.0"` which is required inside the Docker that means
-“Listen on all network interfaces available to this process.”
+Inside `py-from-zero-to-hero-14/playground` there are two versions:
+
+- `main_dev.py`
+- `main_http.py`
+
+They are almost the same. The difference is that `main_http.py` adds the lines below. In production we switch the transport to `http` and bind to `host="0.0.0.0"` so the process listens on all network interfaces (required inside Docker).
 
 ```python
 if __name__ == "__main__":
     mcp.run(transport="http", host="0.0.0.0", port=port, path="/mcp")
 ```
 
-> build a docker image for our app
+## Docker: Build and Run
+
+Build the Docker image:
+
 ```bash
-# run the command below to remove the previous container when running this by the second time
+# remove the previous container if it already exists
 docker container rm order_mcp_server --force
 
-# into the playground folder run to build out docker image
+# in the playground folder
 docker build -t order_mcp_server .
 ```
 
-You should see a nice output like this
+You should see output like this:
+
 ```bash
 [+] Building 69.1s (12/12) FINISHED                                                                                          docker:desktop-linux
  => [internal] load build definition from Dockerfile                                                                                         0.0s
@@ -638,20 +632,21 @@ You should see a nice output like this
  => => transferring context: 14.67kB                                                                                                         0.0s
  => [2/6] WORKDIR /app                                                                                                                       0.1s
  => [3/6] RUN apt-get update && apt-get install -y     nodejs     npm     && rm -rf /var/lib/apt/lists/*                                    32.6s
- => [4/6] RUN pip install -U uv                                                                                                              1.7s 
- => [5/6] COPY . /app                                                                                                                        0.0s 
- => [6/6] RUN uv sync                                                                                                                        3.1s 
- => exporting to image                                                                                                                      21.8s 
- => => exporting layers                                                                                                                     16.7s 
- => => exporting manifest sha256:fa5d092f166e5fcac8f7795eea0cad843e9b1a2fa85ecba79dac601abf2c7c2c                                            0.0s 
- => => exporting config sha256:91ca8388272c181d462e86d1c3ed0bd37a35532464db6258fbfd99fa53d8b2f2                                              0.0s 
- => => exporting attestation manifest sha256:ff94442021ecbc3b5a1840b89ef2a7be6544ceeb81f5df383fdeb6f0d438e40a                                0.0s 
- => => exporting manifest list sha256:c604cd289c8298a1b015ac80ff1bbe6386c261a1a343c171dca78035f46641e5                                       0.0s 
+ => [4/6] RUN pip install -U uv                                                                                                              1.7s
+ => [5/6] COPY . /app                                                                                                                        0.0s
+ => [6/6] RUN uv sync                                                                                                                        3.1s
+ => exporting to image                                                                                                                      21.8s
+ => => exporting layers                                                                                                                     16.7s
+ => => exporting manifest sha256:fa5d092f166e5fcac8f7795eea0cad843e9b1a2fa85ecba79dac601abf2c7c2c                                            0.0s
+ => => exporting config sha256:91ca8388272c181d462e86d1c3ed0bd37a35532464db6258fbfd99fa53d8b2f2                                              0.0s
+ => => exporting attestation manifest sha256:ff94442021ecbc3b5a1840b89ef2a7be6544ceeb81f5df383fdeb6f0d438e40a                                0.0s
+ => => exporting manifest list sha256:c604cd289c8298a1b015ac80ff1bbe6386c261a1a343c171dca78035f46641e5                                       0.0s
  => => naming to docker.io/library/order_mcp_server:latest                                                                                   0.0s
- => => unpacking to docker.io/library/order_mcp_server:latest                
+ => => unpacking to docker.io/library/order_mcp_server:latest
 ```
 
-We must use this env variable to run our container in dev mode `-e MCP_MODE=dev` (run with MCP Inspector)
+Run the container in dev mode (Inspector enabled) using `-e MCP_MODE=dev`:
+
 ```bash
 docker run -d --name order_mcp_server \
   -p 8000:8000 -p 6274:6274 -p 6277:6277 \
@@ -660,14 +655,16 @@ docker run -d --name order_mcp_server \
   order_mcp_server
 ```
 
-After that, running `docker ps` we should see
+Verify with `docker ps`:
+
 ```bash
 docker ps
 CONTAINER ID   IMAGE              COMMAND                  CREATED         STATUS         PORTS                                                                                                                                   NAMES
 ba147e59f1dc   order_mcp_server   "sh -lc '  set -eux;…"   3 seconds ago   Up 3 seconds   0.0.0.0:6274->6274/tcp, [::]:6274->6274/tcp, 0.0.0.0:6277->6277/tcp, [::]:6277->6277/tcp, 0.0.0.0:8000->8000/tcp, [::]:8000->8000/tcp   order_mcp_server
 ```
 
-Let´s investigate the logs using the container ID and pick up the final URL, run `docker logs ba147e59f1dc`
+Inspect logs to find the Inspector URL:
+
 ```bash
 docker logs ba147e59f1dc
 
@@ -693,27 +690,26 @@ Starting MCP inspector...
 🌐 Opening browser...
 ```
 
-Copy/Paste the URL replacing 0.0.0.0 by localhost
+Copy the URL and replace `0.0.0.0` with `localhost`:
 
 ```bash
 http://localhost:6274/?MCP_PROXY_AUTH_TOKEN=fb7afc95d197104f6e3ce00cf3da9a789b6a029da6768106adcf44888d7e7db2
 ```
 
-We should see the MCP Inspector Window again
+You should see the Inspector window again.
 ![alt text](./imgs/image-inspector-docker.png)
 
-Connect and run your tests.. Be happy!
+Connect and run your tests.
 
-Let´s remove this container using `docker rm ba147e59f1dc --force`
+Remove the container when done:
 
 ```bash
 docker rm ba147e59f1dc --force
 ba147e59f1dc
 ```
 
-And build a new one using the production version `-e MCP_MODE=run`
+Run the production container using `-e MCP_MODE=run`:
 
-Prod mode
 ```bash
 docker run -d --name order_mcp_server \
   -p 8000:8000 \
@@ -722,8 +718,7 @@ docker run -d --name order_mcp_server \
   order_mcp_server
 ```
 
-Running `docker ps` we should see the container once more, but in this case witbhout inspector.
-It means we should be able to validate to validate our tools using some Host app, like Postman for instance.
+`docker ps` should show the container without the Inspector ports. At this point you can validate tools via a host app like Postman.
 
 ```bash
 docker ps
@@ -732,57 +727,60 @@ CONTAINER ID   IMAGE              COMMAND                  CREATED         STATU
 ```
 
 ## MCP Tool x Copilot
-> Open VS Code, and using our project folder
 
-Into the extension tab, add the oficial `GitHub Copilot Chat` extension
+Open VS Code using the project folder.
+
+Install the official `GitHub Copilot Chat` extension:
 https://marketplace.visualstudio.com/items?itemName=GitHub.copilot-chat
 
-- Open the `Command palette` and type `MCP: Add Server...`(CTRL + Shift + P)
-![alt text](./imgs/image-mcp-add-server.png)
+Add the MCP server:
 
-- Select HTTP 
-![alt text](./imgs/image-mcp-server-http.png)
+- Open the Command Palette and run `MCP: Add Server...` (CTRL + Shift + P).
+- Select `HTTP`.
+- Enter `http://localhost:8000/mcp`.
+- Use `order_mcp_server` as the name.
+- Choose a scope: `Global` or `Workspace`.
 
-- Fill up the URL field with `http://localhost:8000/mcp` 
-- Use `order_mcp_server` as the mcp server name
-- For the Scope you can use either `Global` or `Workspace`
+Confirm everything is working:
 
-Let´s confirm everything is working
-- Open the `Command palette` and type `MCP: List Servers`(CTRL + Shift + P)
-- Our server must be available at the bottom of the list
+- Open the Command Palette and run `MCP: List Servers`.
+- Your server should appear at the bottom of the list.
 ![alt text](./imgs/image-mcp-server-list.png)
 
-- Select our server and then select Show Configuration
+- Select the server and choose `Show Configuration`.
 ![alt text](./imgs/image-mcp-config.png)
 
-- Our server must be available onto the configuration file with status Running and also indication the number of available tools
+- The configuration file should show the server as `Running` and list the available tools.
 ![alt text](./imgs/image-mcp-json.png)
 
-- This is the corresponding MCP Settings JSON 
+MCP settings JSON example:
+
 ```json
 {
-    "servers": {
-        "order_mcp_server": {
-            "type": "http",
-            "url": "http://localhost:8000/mcp"    
-        }
+  "servers": {
+    "order_mcp_server": {
+      "type": "http",
+      "url": "http://localhost:8000/mcp"
     }
+  }
 }
 ```
 
-> Lets open the Copilot Chat and type something like
-"using my orders tools what orders are still pending?"
+Now open Copilot Chat and ask something like:
+
+`using my orders tools what orders are still pending?`
+
 ![alt text](./imgs/image-mcp-copilot-chat.png)
 
-Press blue allow button and verify the chat is using our mcp.tool customer_order_by_status with "status" parameter equals to "pending"
+Approve the tool call and verify Copilot uses `customer_orders_by_status` with `"status": "pending"`.
 
-However the output content is using customerID: 3 rather than corresponding customer data 
+The output will include only the `customerID`:
 
 ```javascript
 Status update: querying the orders tool for status "pending" now.
 
-Pending orders ✅
-Found 1 pending order — details below.
+Pending orders
+Found 1 pending order - details below.
 
 Order (customerID: 3)
 orderDate: 2026-01-30T13:20:00Z
@@ -791,17 +789,16 @@ description: Hair treatment package
 status: pending
 ```
 
-This is the beautiful of MCP with Chat integration.. Let´s ask to combine two mcp.tools in order to enrich the final output. Type something like
+Now ask Copilot to combine tools:
 
-"Instead of returning only the customerID from customer_orders_by_status, use that customerID as the input to customers_get_by_id, then combine the order and customer results into a single enriched response."
+`Instead of returning only the customerID from customer_orders_by_status, use that customerID as the input to customers_get_by_id, then combine the order and customer results into a single enriched response.`
 
-The output must be
-
+Expected output:
 
 ```javascript
-Status update: found the pending order and retrieved the matching customer record — combining them now. 🎉
+Status update: found the pending order and retrieved the matching customer record - combining them now.
 
-✅ Enriched response (order + customer)
+Enriched response (order + customer)
 ```
 
 ```json
@@ -821,6 +818,4 @@ Status update: found the pending order and retrieved the matching customer recor
     }
   }
 ]
-
 ```
-
