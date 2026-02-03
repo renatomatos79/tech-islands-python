@@ -223,10 +223,235 @@ uv tool list
 uv tool uninstall ruff
 ```
 
-## MCP (Model Context Protocol)
+## MCP (Model Context Protocol) brief introduction
 
+Into the MCP world we have some specific notations that need to be understood before going to dive into the code.
+Let´s try to breakdown the basic MCP concepts using these topics:
+- MCP Server (toolbox or capability provider)
+- MCP Client (protocol translator)
+- Protocols
+- Mental Model
+- Host
+
+In order to better understand these actos/players we are going to build a toolbox and connect them with Microsoft Copilot.
+
+But if you really want to go diving into the MCP world let me share the official github repo
 - https://github.com/modelcontextprotocol
-- https://github.com/modelcontextprotocol/servers
+
+
+## MCP Server
+MCP Server is not a HOST, a physical server, machine, with memory, CPU, on so.
+An application you build and control that exposes capabilities to AI assistants.
+
+Considering the role into the chain (I consider this piece into the game as most important one)
+The MCP Server owns the tools, data, and logic.
+Doing a comparison, it´s similar to:
+- a microservice
+- an API backend
+- or a plugin server
+
+Attention
+But its interface is standardized by MCP, not by REST or gRPC.
+
+What it contains
+Inside an MCP server we usually have:
+- Tools (functions the AI can call)
+- Resources (readable data)
+- Prompts (predefined system instructions)
+- Business logic
+- Databases, APIs, files, etc.
+
+For this challenge, our MCP Server provides tools like (where tools live inside the MCP Server):
+- customers_search
+- customers_get_by_id
+- customers_search_by_names
+- customer_orders_by_status
+- orders_get_by_status
+- orders_get_by_customer_id
+
+How communicates is handled into the MCP? It talks MCP over a transport such as:
+- stdio (local process)
+- HTTP (your localhost:8000/mcp)
+- WebSockets, etc.
+
+## MCP Client (polyglote - protocol translator)
+What it is? The MCP Client is a software layer that understands the MCP protocol and knows how to:
+- discover tools
+- call tools
+- send requests
+- receive responses
+- handle streaming, errors, etc.
+
+Do we need to implement this protocol?
+It is embedded inside tools like:
+- VS Code Copilot
+- Claude Desktop
+- Cline
+- Continue
+- MCP Inspector
+
+These apps contain an MCP Client internally.
+We are going to play with these two clients: 
+- VS Code Copilot 
+- MCP Inspector (used to validate our tool)
+
+Again, doing a simple analogy
+Let´s consider "MCP" like a HTTP protocol.
+- MCP Server = this is going to be our backend API
+- MCP Client = Postman / fetch library / HTTP client
+
+## Tools - “The verbs of the system”
+Tools are functions exposed by the MCP server that the AI can call.
+But do not see a tool like:
+- the host
+- the client
+- the LLM
+
+Tools are most like capabilities.
+A tool is basically “Something the AI can ask our server to do.”
+
+In out challenge, tools are like methods, endpoints and we have this specific notation for them
+
+```python
+@mcp.tool()
+def customers_search(ids: List[int] = []) -> List[Dict]:
+```
+
+Each tool has:
+- a name
+- a description
+- an input schema
+- an output
+
+
+Therefore "Tools" are verbs the "AI" can perform in your system.
+
+Tool	                      What it lets the AI do
+customers_search	          Read customers
+customers_get_by_id	        Fetch one customer
+customers_search_by_names	  Search by name
+customer_orders_by_status	  Fetch orders
+
+## Host “Where the AI lives and runs”
+No, no, no.. hosts are not a physical machine, server, application server, virtual environment, nothing like that.
+The Host is the application that runs the LLM and decides when to use tools.
+What?
+Yeah, consider the host like the software that we use to type our queries, ask AI do do something like these ones:
+- VS Code Copilot Chat
+- Claude Desktop
+- Cursor
+- Cline
+- Continue
+- MCP Inspector
+
+So, what are hosts really doing?
+- embeds the MCP Client
+- embeds an LLM (Claude, GPT, Copilot, etc.)
+- decides how the user interacts with tools
+
+## What MCP transports actually are
+We can understand "Transport" the way that language travels between client and server
+
+### The first transport - STDIO (standard input/output)
+This is a good choice for local process
+The MCP server is launched as a local process, and communication happens over:
+- stdin
+- stdout
+
+No HTTP, no ports, no URLs.
+
+Who uses this protocol? 
+- Claude Desktop (when triggering local tools)
+- Many CLI-based MCP tools
+- Some VS Code extensions
+
+So, Instead of a URL, the host runs something like:
+
+```python
+python my_mcp_server.py
+```
+
+and then talks to it through pipes. 
+
+When should we use STDIO?
+Unless our MCP server runs on the same machine as the host and we do not need network access
+Something when we want:
+- simplicity
+- speed
+- no authentication
+- no ports
+- Local dev tools
+- Personal automation
+- Desktop integrations
+
+**Pros 👍**
+Very reliable locally
+No CORS, no TLS, no firewall
+Easy for dev tools
+
+**Cons 👎**
+Cannot work across machines
+Cannot easily run inside cloud containers for multiple users
+Harder to scale or share
+
+### Second one - Streamable HTTP (recommended modern transport)
+We are going to use this one triggering our tools using this endpoint
+This is what you are goint to use use during our integration invoking requests against 
+
+```python
+http://localhost:8000/mcp
+```
+
+Another words, we can say, this is a single HTTP endpoint that behaves like a long-lived stream of messages between client and server.
+- HTTP-based
+- Bidirectional
+- Streaming-friendly
+
+When should you use Streamable HTTP?
+
+- MCP server is in Docker (this is what we are going to build here in this challenge)
+- We want to deploy it
+- We want multiple hosts to use it
+- We want cloud access
+- We want real security (TLS, OAuth, API keys, etc.)
+- Team-shared MCP servers
+- Production systems
+- Company tools
+
+**Pros 👍**
+Perfect for containers and microservices
+Works great behind reverse proxies
+Works over the internet
+Scales well
+Plays nicely with Kubernetes, AWS, Azure, etc.
+
+**Cons 👎**
+We may need:
+CORS
+Authentication
+HTTPS
+Proper streaming config
+
+### Finally, this one - SSE (Server-Sent Events) 
+This is legacy and being phased out :( 
+and it´s being replaced by Streamable HTTP.
+There is nothing else to say, I think :)
+
+### How everything works together (full flow)?
+1. An user (me, you, another service) type a message in VS Code Copilot Chat “Get all pending orders and summarize by customer.”
+2. Host (VS Code Copilot Chat) that chats with us. It reads your message and asks the LLM what to do
+3. LLM inside the Host thinks “I need to call a tool.”
+4. Host uses its MCP Client to call our tool
+
+```python
+customer_orders_by_status(status="pending")
+```
+
+5. our MCP Server executes the function and returns a JSON.
+6. MCP Client sends the result back to the Host.
+7. LLM processes the result and gives you a final answer in plain English.
+
+## Time to code - Let´s start our playground
 
 
 > Installing our tools
