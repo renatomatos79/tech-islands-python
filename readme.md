@@ -152,3 +152,13 @@ A two-part build that combines a local LLM API with a custom VS Code extension:
 - Simple `/ping` health check plus `/analyze` task endpoint for editor integrations 🔌
 - VS Code extension UI that sends selected code to the API and shows the updated result 🧩
 - Local-first workflow: run Ollama + API locally, then drive code updates inside VS Code 🏠
+
+## (14) py-from-zero-to-hero-14
+### 🧩🧠 What is it?
+An MCP (Model Context Protocol) playground that introduces the core concepts and ships a working server + tooling workflow:
+
+- MCP guide: server, client, tools, hosts, and transports (stdio vs streamable HTTP) 🧠
+- `playground/` source code with two MCP server modes: `main_dev.py` for local/Inspector workflows, and `main_http.py` for HTTP transport + Docker deployments 🧪🌐
+- Example tools over a simple “orders + customers” dataset (search, get by id, orders by status) 🧰
+- Dockerfile and run recipes for dev (Inspector enabled) and production modes 🐳
+- VS Code Copilot integration steps: add the MCP server, list tools, and execute tool calls in chat 🔌
