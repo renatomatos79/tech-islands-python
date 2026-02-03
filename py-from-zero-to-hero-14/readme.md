@@ -562,13 +562,13 @@ So, please, use the URL that contains the query string MCP_PROXY_AUTH_TOKEN
 ```
 
 The UI contains the transport type: 
-- STDIO (local tool)
+- STDIO (remember this is a local tool)
 
 Command:
-- uv
+- `uv`
 
 Arguments to run the tool:
-- run --with mcp mcp run main.py
+- `run --with mcp mcp run main.py`
 
 So, then, click on `Connect` Button
 ![alt text](./imgs/image-inspector.png)
@@ -577,16 +577,16 @@ After that, you must select the Tools button into the top bar
 ![alt text](./imgsimage-tools.png)
 
 Click on List Tools button
-![alt text](./imgsimage-list-tools.png)
+![alt text](./imgs/image-list-tools.png)
 
 And select the customer_search tool
-![alt text](./imgsimage-customer-search.png)
+![alt text](./imgs/image-customer-search.png)
 
 So here we details about our tool and the input parameter.. move the scroll bar to the bottom of the page and press the `Run Tool` button
-![alt text](./imgsimage-run-tool.png)
+![alt text](./imgs/image-run-tool.png)
 
 The output must the customer hardcoded list
-![alt text](./imgsimage-tool-output.png)
+![alt text](./imgs/image-tool-output.png)
 
 Easy, isn´t?
 
@@ -731,69 +731,96 @@ CONTAINER ID   IMAGE              COMMAND                  CREATED         STATU
 6adf6a5d6227   order_mcp_server   "sh -lc '  set -eux;…"   3 seconds ago   Up 3 seconds   0.0.0.0:8000->8000/tcp, [::]:8000->8000/tcp   order_mcp_server
 ```
 
-
 ## MCP Tool x Copilot
+> Open VS Code, and using our project folder
 
-> Requesting orders by status
-![alt text](./imgs/image.png)
+Into the extension tab, add the oficial `GitHub Copilot Chat` extension
+https://marketplace.visualstudio.com/items?itemName=GitHub.copilot-chat
 
-> Combining Customer Data x Order Data
-![alt text](./imgs/image-1.png)
+- Open the `Command palette` and type `MCP: Add Server...`(CTRL + Shift + P)
+![alt text](./imgs/image-mcp-add-server.png)
 
-> Json Response
+- Select HTTP 
+![alt text](./imgs/image-mcp-server-http.png)
+
+- Fill up the URL field with `http://localhost:8000/mcp` 
+- Use `order_mcp_server` as the mcp server name
+- For the Scope you can use either `Global` or `Workspace`
+
+Let´s confirm everything is working
+- Open the `Command palette` and type `MCP: List Servers`(CTRL + Shift + P)
+- Our server must be available at the bottom of the list
+![alt text](./imgs/image-mcp-server-list.png)
+
+- Select our server and then select Show Configuration
+![alt text](./imgs/image-mcp-config.png)
+
+- Our server must be available onto the configuration file with status Running and also indication the number of available tools
+![alt text](./imgs/image-mcp-json.png)
+
+- This is the corresponding MCP Settings JSON 
+```json
+{
+    "servers": {
+        "order_mcp_server": {
+            "type": "http",
+            "url": "http://localhost:8000/mcp"    
+        }
+    }
+}
+```
+
+> Lets open the Copilot Chat and type something like
+"using my orders tools what orders are still pending?"
+![alt text](./imgs/image-mcp-copilot-chat.png)
+
+Press blue allow button and verify the chat is using our mcp.tool customer_order_by_status with "status" parameter equals to "pending"
+
+However the output content is using customerID: 3 rather than corresponding customer data 
+
+```javascript
+Status update: querying the orders tool for status "pending" now.
+
+Pending orders ✅
+Found 1 pending order — details below.
+
+Order (customerID: 3)
+orderDate: 2026-01-30T13:20:00Z
+orderValue: 49.00
+description: Hair treatment package
+status: pending
+```
+
+This is the beautiful of MCP with Chat integration.. Let´s ask to combine two mcp.tools in order to enrich the final output. Type something like
+
+"Instead of returning only the customerID from customer_orders_by_status, use that customerID as the input to customers_get_by_id, then combine the order and customer results into a single enriched response."
+
+The output must be
+
+
+```javascript
+Status update: found the pending order and retrieved the matching customer record — combining them now. 🎉
+
+✅ Enriched response (order + customer)
+```
+
 ```json
 [
   {
     "order": {
-      "orderDate": "2026-01-10T11:15:00Z",
-      "orderValue": 24.9,
-      "description": "Haircut + beard trim",
-      "status": "done"
+      "customerID": 3,
+      "orderDate": "2026-01-30T13:20:00Z",
+      "orderValue": 49.00,
+      "description": "Hair treatment package",
+      "status": "pending"
     },
     "customer": {
-      "id": 1,
-      "name": "Ana Silva",
-      "countryCode": "PT"
-    }
-  },
-  {
-    "order": {
-      "orderDate": "2026-01-22T09:05:00Z",
-      "orderValue": 19.99,
-      "description": "Haircut",
-      "status": "done"
-    },
-    "customer": {
-      "id": 2,
-      "name": "Bruno Costa",
-      "countryCode": "PT"
-    }
-  },
-  {
-    "order": {
-      "orderDate": "2026-01-12T14:10:00Z",
-      "orderValue": 29.5,
-      "description": "Beard styling + wax",
-      "status": "done"
-    },
-    "customer": {
-      "id": 7,
-      "name": "Giulia Rossi",
-      "countryCode": "IT"
-    }
-  },
-  {
-    "order": {
-      "orderDate": "2026-01-18T12:00:00Z",
-      "orderValue": 22,
-      "description": "Haircut + wash",
-      "status": "done"
-    },
-    "customer": {
-      "id": 9,
-      "name": "Inês Almeida",
-      "countryCode": "PT"
+      "id": 3,
+      "name": "Carla Souza",
+      "countryCode": "BR"
     }
   }
 ]
+
 ```
+
