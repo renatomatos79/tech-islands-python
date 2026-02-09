@@ -16,6 +16,6 @@ ollama==0.4.7
 better-profanity==0.7.0
 unstructured==0.17.2
 unstructured[all-docs]
-redis==5.2.1
+redis==7.1.0
 numpy>=1.22.4,<2.0.0
 gunicorn==23.0.0
