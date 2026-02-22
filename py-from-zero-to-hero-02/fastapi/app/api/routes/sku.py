@@ -1,8 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
-from api.deps import get_session
-from schemas.sku import SkuCreate, SkuUpdate, SkuOut
-from uow import sku as crud
+
+from app.api.deps import get_session
+from app.schemas.sku import SkuCreate, SkuUpdate, SkuOut
+from app.uow import sku as crud
 
 router = APIRouter(prefix="/skus", tags=["skus"])
 

@@ -1,6 +1,7 @@
 from sqlalchemy import String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from db.base import Base
+
+from app.db.base import Base
 
 class UnitOfMeasurement(Base):
     __tablename__ = "unit_of_measurements"

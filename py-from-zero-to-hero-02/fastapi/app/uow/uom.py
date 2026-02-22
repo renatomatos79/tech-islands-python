@@ -1,8 +1,9 @@
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from models.uom import UnitOfMeasurement
 
-async def gt_all(session: AsyncSession) -> list[UnitOfMeasurement]:
+from app.models.uom import UnitOfMeasurement
+
+async def get_all(session: AsyncSession) -> list[UnitOfMeasurement]:
     res = await session.execute(select(UnitOfMeasurement).order_by(UnitOfMeasurement.id))
     return list(res.scalars().all())
 

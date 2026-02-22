@@ -1,6 +1,7 @@
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from models.sku import Sku
+
+from app.models.sku import Sku
 
 async def get_all(session: AsyncSession) -> list[Sku]:
     res = await session.execute(select(Sku).order_by(Sku.id))

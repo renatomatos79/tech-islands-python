@@ -4,10 +4,10 @@ services:
     environment:
       POSTGRES_USER: app
       POSTGRES_PASSWORD: app
-      POSTGRES_DB: appdb
+      POSTGRES_DB: inventorydb
     ports:
       - "5432:5432"
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - pgdata2:/var/lib/postgresql/data
 volumes:
-  pgdata:
+  pgdata2:

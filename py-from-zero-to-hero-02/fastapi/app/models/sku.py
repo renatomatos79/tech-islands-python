@@ -1,6 +1,7 @@
 from sqlalchemy import String, Numeric, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from db.base import Base
+
+from app.db.base import Base
 
 class Sku(Base):
     __tablename__ = "skus"

@@ -1,8 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
-from api.deps import get_session
-from schemas.uom import UomCreate, UomUpdate, UomOut
-from uow import uom as crud
+
+from app.api.deps import get_session
+from app.schemas.uom import UomCreate, UomUpdate, UomOut
+from app.uow import uom as crud
 
 router = APIRouter(prefix="/unit-of-measurements", tags=["unit_of_measurements"])
 
@@ -29,4 +30,4 @@ async def delete(uom_id: int, session: AsyncSession = Depends(get_session)):
     if not obj:
         raise HTTPException(404, "UOM not found")
     async with session.begin():
-        await crud.delete_uom(session, obj)
+        await crud.delete(session, obj)
