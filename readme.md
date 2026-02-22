@@ -32,11 +32,13 @@ A console-based CRUD application built with Python and SQLite, that contains con
 
 ## (2) py-from-zero-to-hero-02 
 ### 🌍 What is it? 
-A Flask-based web API with best practices for: 
-- Handling CRUD operations for user management 🛠️ 
-- Managing configurations with .env and separate dev/prod settings 🔧 
-- Running a Dockerized Flask API for scalable deployment 🐳 
-- Using SQLAlchemy for database interactions 📊 
+A web API module with two internal projects, `FlaskAPI` and `FastAPI`, with best practices for:
+- Handling CRUD operations for user management 🛠️
+- Managing configurations with `.env` and separate dev/prod settings 🔧
+- Running Dockerized APIs for scalable deployment 🐳
+- Using SQLAlchemy for database interactions 📊
+- FlaskAPI for a simple and flexible microframework approach
+- FastAPI for type-hint-first development, automatic docs, and async-ready performance
 
 ## (3) py-from-zero-to-hero-03
 ### 🤖 What is it?
