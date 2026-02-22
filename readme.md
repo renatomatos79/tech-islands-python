@@ -40,6 +40,11 @@ A web API module with two internal projects, `FlaskAPI` and `FastAPI`, with best
 - FlaskAPI for a simple and flexible microframework approach
 - FastAPI for type-hint-first development, automatic docs, and async-ready performance
 
+### Useful links:
+- https://docs.sqlalchemy.org/en/20/orm/quickstart.html
+- https://fastapi.tiangolo.com/
+- https://docs.astral.sh/uv/
+
 ## (3) py-from-zero-to-hero-03
 ### 🤖 What is it?
 Building upon everything we accomplished in the previous project, we are now expanding our API with new features as we embark on our journey into the world of LLMs. The enhancements include:
