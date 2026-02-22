@@ -16,18 +16,18 @@ async def create(payload: UomCreate, session: AsyncSession = Depends(get_session
     async with session.begin():
         return await crud.create(session, payload.name, payload.code)
 
-@router.put("/{uom_id}", response_model=UomOut)
+@router.put("/{uom_id}", response_model=UomOut, status_code=status.HTTP_200_OK)
 async def update(uom_id: int, payload: UomUpdate, session: AsyncSession = Depends(get_session)):
-    obj = await crud.get_by_id(session, uom_id)
-    if not obj:
-        raise HTTPException(404, "UOM not found")
     async with session.begin():
+        obj = await crud.get_by_id(session, uom_id)
+        if not obj:
+            raise HTTPException(404, "UOM not found")
         return await crud.update(session, obj, payload.name, payload.code)
 
 @router.delete("/{uom_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete(uom_id: int, session: AsyncSession = Depends(get_session)):
-    obj = await crud.get_by_id(session, uom_id)
-    if not obj:
-        raise HTTPException(404, "UOM not found")
     async with session.begin():
-        await crud.delete(session, obj)
+        obj = await crud.get_by_id(session, uom_id)
+        if not obj:
+            raise HTTPException(404, "UOM not found")
+        await crud.delete(session, obj)     

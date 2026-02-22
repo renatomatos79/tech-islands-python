@@ -18,16 +18,16 @@ async def create(payload: SkuCreate, session: AsyncSession = Depends(get_session
 
 @router.put("/{sku_id}", response_model=SkuOut)
 async def update(sku_id: int, payload: SkuUpdate, session: AsyncSession = Depends(get_session)):
-    obj = await crud.get_by_id(session, sku_id)
-    if not obj:
-        raise HTTPException(404, "SKU not found")
     async with session.begin():
+        obj = await crud.get_by_id(session, sku_id)
+        if not obj:
+            raise HTTPException(404, "SKU not found")
         return await crud.update(session, obj, payload.description, payload.unit_price, payload.uom_id)
 
 @router.delete("/{sku_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete(sku_id: int, session: AsyncSession = Depends(get_session)):
-    obj = await crud.get_by_id(session, sku_id)
-    if not obj:
-        raise HTTPException(404, "SKU not found")
     async with session.begin():
+        obj = await crud.get_by_id(session, sku_id)
+        if not obj:
+            raise HTTPException(404, "SKU not found")
         await crud.delete(session, obj)
