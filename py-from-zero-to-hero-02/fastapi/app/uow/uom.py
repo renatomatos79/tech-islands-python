@@ -10,6 +10,24 @@ async def get_all(session: AsyncSession) -> list[UnitOfMeasurement]:
 async def get_by_id(session: AsyncSession, uom_id: int) -> UnitOfMeasurement | None:
     return await session.get(UnitOfMeasurement, uom_id)
 
+async def get_by_code(
+    session: AsyncSession, code: str, exclude_id: int | None = None
+) -> UnitOfMeasurement | None:
+    stmt = select(UnitOfMeasurement).where(UnitOfMeasurement.code == code)
+    if exclude_id is not None:
+        stmt = stmt.where(UnitOfMeasurement.id != exclude_id)
+    res = await session.execute(stmt.limit(1))
+    return res.scalar_one_or_none()
+
+async def get_by_name(
+    session: AsyncSession, name: str, exclude_id: int | None = None
+) -> UnitOfMeasurement | None:
+    stmt = select(UnitOfMeasurement).where(UnitOfMeasurement.name == name)
+    if exclude_id is not None:
+        stmt = stmt.where(UnitOfMeasurement.id != exclude_id)
+    res = await session.execute(stmt.limit(1))
+    return res.scalar_one_or_none()
+
 async def create(session: AsyncSession, name: str, code: str) -> UnitOfMeasurement:
     obj = UnitOfMeasurement(name=name, code=code)
     session.add(obj)

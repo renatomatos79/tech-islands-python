@@ -7,6 +7,7 @@ class SkuCreate(BaseModel):
     uom_id: int
 
 class SkuUpdate(BaseModel):
+    code: str | None = None
     description: str | None = None
     unit_price: float | None = None
     uom_id: int | None = None
