@@ -1,0 +1,14 @@
+[project]
+name = "inventory"
+version = "0.1.0"
+description = "Inventory API"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "fastapi==0.115.8",
+    "uvicorn[standard]==0.30.6",
+    "SQLAlchemy==2.0.36",
+    "asyncpg==0.29.0",
+    "pydantic==2.9.2",
+    "pydantic-settings==2.6.1"
+]
