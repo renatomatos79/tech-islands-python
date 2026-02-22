@@ -166,7 +166,7 @@ docker compose down
 uv run python -m uvicorn app.main:app --reload --port 8001
 ```
 
-# (8) Comming soon
+# (8) Coming soon
 
 In the next version, we will add an authentication API with these endpoints:
 
