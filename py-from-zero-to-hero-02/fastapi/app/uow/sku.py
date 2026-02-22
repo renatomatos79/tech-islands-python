@@ -26,6 +26,11 @@ async def get_by_description(
     res = await session.execute(stmt.limit(1))
     return res.scalar_one_or_none()
 
+async def has_any_for_uom(session: AsyncSession, uom_id: int) -> bool:
+    stmt = select(Sku.id).where(Sku.uom_id == uom_id).limit(1)
+    res = await session.execute(stmt)
+    return res.scalar_one_or_none() is not None
+
 async def create(session: AsyncSession, code: str, description: str, unit_price: float, uom_id: int) -> Sku:
     obj = Sku(code=code, description=description, unit_price=unit_price, uom_id=uom_id)
     session.add(obj)

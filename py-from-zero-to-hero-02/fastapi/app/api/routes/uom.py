@@ -4,6 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.api.deps import get_session
 from app.schemas.uom import UomCreate, UomUpdate, UomOut
 from app.uow import uom as crud
+from app.uow import sku as sku_crud
 
 router = APIRouter(prefix="/unit-of-measurements", tags=["unit_of_measurements"])
 
@@ -44,4 +45,10 @@ async def delete(uom_id: int, session: AsyncSession = Depends(get_session)):
         obj = await crud.get_by_id(session, uom_id)
         if not obj:
             raise HTTPException(404, "UOM not found")
+        sku_exists = await sku_crud.has_any_for_uom(session, uom_id)
+        if sku_exists:
+            raise HTTPException(
+                status_code=409,
+                detail="Cannot delete UOM because it is used by one or more SKUs",
+            )
         await crud.delete(session, obj)     
