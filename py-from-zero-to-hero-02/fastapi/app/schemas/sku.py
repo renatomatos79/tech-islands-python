@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from app.schemas.uom import UomOut
 
 class SkuCreate(BaseModel):
     code: str
@@ -18,5 +19,15 @@ class SkuOut(BaseModel):
     description: str
     unit_price: float
     uom_id: int
+
+    model_config = {"from_attributes": True}
+
+
+class SkuGetOut(BaseModel):
+    id: int
+    code: str
+    description: str
+    unit_price: float
+    uom: UomOut
 
     model_config = {"from_attributes": True}

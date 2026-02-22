@@ -2,13 +2,13 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.deps import get_session
-from app.schemas.sku import SkuCreate, SkuUpdate, SkuOut
+from app.schemas.sku import SkuCreate, SkuGetOut, SkuUpdate, SkuOut
 from app.uow import sku as crud
 from app.uow import uom as uom_crud
 
 router = APIRouter(prefix="/skus", tags=["skus"])
 
-@router.get("", response_model=list[SkuOut])
+@router.get("", response_model=list[SkuGetOut])
 async def list_all(session: AsyncSession = Depends(get_session)):
     return await crud.get_all(session)
 
