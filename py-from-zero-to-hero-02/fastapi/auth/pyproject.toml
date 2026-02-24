@@ -1,8 +1,7 @@
 [project]
-name = "inventory"
+name = "auth"
 version = "0.1.0"
-description = "Inventory API"
-readme = "README.md"
+description = "Authentication API"
 requires-python = ">=3.12"
 dependencies = [
     "fastapi==0.131.0",
@@ -10,6 +9,12 @@ dependencies = [
     "asyncpg==0.31.0",
     "pydantic==2.12.5",
     "pydantic-settings==2.13.1",
+    "pydantic[email]",
+    "PyJWT[crypto]==2.11.0",
+    "passlib[bcrypt]==1.7.4",
+    "cryptography==46.0.5",
+    "python-multipart==0.0.22",
+    "bcrypt==4.0.1"
 ]
 
 [dependency-groups]

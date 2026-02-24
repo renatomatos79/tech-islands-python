@@ -1,13 +1,25 @@
 services:
-  api:
+  auth:
     build:
-      context: .
+      context: ./auth
       dockerfile: Dockerfile
-    container_name: fastapi-api
+    container_name: fastapi-auth
     environment:
       DATABASE_URL: postgresql+asyncpg://app:app@db:5432/inventorydb
     ports:
       - "8001:8000"
+    depends_on:
+      - db
+  
+  api:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    container_name: fastapi-app
+    environment:
+      DATABASE_URL: postgresql+asyncpg://app:app@db:5432/inventorydb
+    ports:
+      - "8002:8000"
     depends_on:
       - db
 

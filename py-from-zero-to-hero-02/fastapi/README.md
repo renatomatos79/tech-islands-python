@@ -175,3 +175,23 @@ In the next version, we will add an authentication API with these endpoints:
 
 After login, the API will issue a JWT access token.  
 Protected endpoints will require a valid JWT in the `Authorization: Bearer <token>` header.
+
+
+
+
+
+uv run python gen_keys.py
+
+
+docker compose down -v
+docker compose build --no-cache auth
+docker compose up -d db auth
+docker compose logs -f auth
+
+
+
+{
+  "email": "renato.matos79@gmail.com",
+  "username": "renato.matos79",
+  "password": "Senha@12345"
+}
